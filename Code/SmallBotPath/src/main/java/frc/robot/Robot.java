@@ -98,7 +98,8 @@ public class Robot extends TimedRobot
 
     drive.SetAuto();
 
-    autonomousCommand = new MoveForward();
+//    autonomousCommand = new MoveForward();
+    autonomousCommand = new FollowPath();
     Scheduler.getInstance().add(autonomousCommand);
     setStatus();
   }

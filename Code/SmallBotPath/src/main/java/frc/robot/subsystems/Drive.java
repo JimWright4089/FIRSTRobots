@@ -142,8 +142,8 @@ public class Drive extends Subsystem
     try
     {
       logFile.write(Timer.getFPGATimestamp() + ", " + speedL + ", " + speedR + ", " + heading + ", " + turn + ", "
-          + targetSpeedL + ", " + targetSpeedR + ", " + RobotMap.motorleftA.getSelectedSensorVelocity(0) + ", "
-          + RobotMap.motorRightA.getSelectedSensorVelocity(0) + ", " + RobotMap.motorleftA.getMotorOutputVoltage()
+          + targetSpeedL + ", " + targetSpeedR + ", " + RobotMap.motorLeftA.getSelectedSensorVelocity(0) + ", "
+          + RobotMap.motorRightA.getSelectedSensorVelocity(0) + ", " + RobotMap.motorLeftA.getMotorOutputVoltage()
           + ", " + RobotMap.motorRightA.getMotorOutputVoltage() + ", " + angle_difference + "\n");
     }
     catch (IOException e)
@@ -319,7 +319,7 @@ public class Drive extends Subsystem
     double targetSpeedL = (mActualSpeed + turn) * 4000;
     double targetSpeedR = (mActualSpeed - turn) * 4000;
 
-    RobotMap.motorleftA.set(ControlMode.Velocity, targetSpeedL);
+    RobotMap.motorLeftA.set(ControlMode.Velocity, targetSpeedL);
     RobotMap.motorRightA.set(ControlMode.Velocity, targetSpeedR);
   }
 

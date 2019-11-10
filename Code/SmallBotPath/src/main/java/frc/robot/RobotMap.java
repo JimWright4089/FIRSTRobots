@@ -5,6 +5,8 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Notifier;
+import jaci.pathfinder.followers.EncoderFollower;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -14,8 +16,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
  */
 public class RobotMap
 {
-  public static WPI_TalonSRX motorleftA;
-  public static WPI_TalonSRX motorleftB;
+  public static WPI_TalonSRX motorLeftA;
+  public static WPI_TalonSRX motorLeftB;
   public static WPI_TalonSRX motorRightA;
   public static WPI_TalonSRX motorRightB;
   public static PigeonIMU pigeonIMU;
@@ -23,10 +25,14 @@ public class RobotMap
 
   public static boolean isAutoFinished;
 
+  public static Notifier m_follower_notifier;
+  public static EncoderFollower m_left_follower;
+  public static EncoderFollower m_right_follower;
+
   public static void init()
   {
-    motorleftA = new WPI_TalonSRX(Constants.constMotorleftA);
-    motorleftB = new WPI_TalonSRX(Constants.constMotorleftB);
+    motorLeftA = new WPI_TalonSRX(Constants.constMotorLeftA);
+    motorLeftB = new WPI_TalonSRX(Constants.constMotorLeftB);
     motorRightA = new WPI_TalonSRX(Constants.constMotorRightA);
     motorRightB = new WPI_TalonSRX(Constants.constMotorRightB);
 
@@ -38,9 +44,9 @@ public class RobotMap
 
   public static void SetUpTalonsForTele()
   {
-    SetUpTalonForTele(motorleftA);
+    SetUpTalonForTele(motorLeftA);
     SetUpTalonForTele(motorRightA);
-    motorleftB.set(ControlMode.Follower, Constants.constMotorleftA);
+    motorLeftB.set(ControlMode.Follower, Constants.constMotorLeftA);
     motorRightB.set(ControlMode.Follower, Constants.constMotorRightA);
     motorRightA.setInverted(true);
     motorRightB.setInverted(true);
@@ -68,9 +74,9 @@ public class RobotMap
   }
   public static void SetUpTalonsForAuto()
   {
-    SetUpTalonForAuto(motorleftA);
+    SetUpTalonForAuto(motorLeftA);
     SetUpTalonForAuto(motorRightA);
-    motorleftB.set(ControlMode.Follower, Constants.constMotorleftA);
+    motorLeftB.set(ControlMode.Follower, Constants.constMotorLeftA);
     motorRightB.set(ControlMode.Follower, Constants.constMotorRightA);
     motorRightA.setInverted(true);
     motorRightB.setInverted(true);

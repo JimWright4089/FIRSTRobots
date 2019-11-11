@@ -215,7 +215,7 @@ public class Drive extends Subsystem
     double currentAngularRate = xyz_dps[2];
     double turnThrottle = turn;
 
-    // System.out.format("%f\n", mCurrentAngle);
+    System.out.format("Heading:%f\n", mCurrentAngle);
 
     // IF we are turning, turn off the gyro
     if (Math.abs(turn) > 0.2)
@@ -232,6 +232,7 @@ public class Drive extends Subsystem
         double maxThrot = DriveMath.MaxCorrection(speed, kMaxCorrectionRatio);
         turnThrottle = -1 * DriveMath.Cap(turnThrottle, maxThrot);
         RawDriveRobot(speed, turnThrottle);
+        //DriveRobotWithGyro(speed, turnThrottle);
       }
       else
       {
@@ -256,6 +257,10 @@ public class Drive extends Subsystem
     RobotMap.sPigeonIMU.getFusedHeading(fusionStatus);
 
     mCurrentAngle = fusionStatus.heading;
+
+    System.out.print("Heading:");
+    System.out.println(mCurrentAngle);
+
     double currentAngularRate = xyz_dps[Constants.kGyroZ];
     double turnThrottle = turn;
 

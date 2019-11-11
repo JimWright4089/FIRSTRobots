@@ -17,8 +17,9 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import frc.robot.RobotMap;
 import frc.robot.Constants;
 
-
 public class FollowPath extends CommandGroup {
+  boolean mRunLoop = true;
+
   public FollowPath() {
     InitPath(Constants.k_path_name);
   }
@@ -72,9 +73,13 @@ public class FollowPath extends CommandGroup {
   protected void end() {
   }
 
+  @Override
+  protected void interrupted() {
+    mRunLoop = false;
+  }
 
   private void followPath() {
-    if (isFinished()) {
+    if ((isFinished())||(false == mRunLoop)) {
       RobotMap.sFollowerNotifier.stop();
       RobotMap.sMotorLeftA.set(0);
       RobotMap.sMotorRightA.set(0);
@@ -87,11 +92,11 @@ public class FollowPath extends CommandGroup {
   
       double left_speed = RobotMap.sLeftFollower.calculate(RobotMap.sMotorLeftA.getSelectedSensorPosition(0)*-1);
       double right_speed = RobotMap.sRightFollower.calculate(RobotMap.sMotorRightA.getSelectedSensorPosition(0)*-1);
-      double heading = fusionStatus.heading;
+      double heading = fusionStatus.heading*-1;
       double desired_heading = Pathfinder.r2d(RobotMap.sLeftFollower.getHeading());
       double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
       double turn =  0.8 * (-1.0/80.0) * heading_difference;
-/*      
+      
       System.out.print(left_speed);
       System.out.print(" ");
       System.out.print(right_speed);
@@ -101,7 +106,7 @@ public class FollowPath extends CommandGroup {
       System.out.print(desired_heading);
       System.out.print(" ");
       System.out.println(turn);
-*/
+
       RobotMap.sMotorLeftA.set(-1*(left_speed + turn));
       RobotMap.sMotorRightA.set(-1*(right_speed - turn));
     }

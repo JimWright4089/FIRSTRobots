@@ -17,7 +17,6 @@ public class OI
     driveStick = new Joystick(0);
 
     // SmartDashboard Buttons
-    SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
     SmartDashboard.putData("UserDrive", new UserDrive());
   }
 

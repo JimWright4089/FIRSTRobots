@@ -30,28 +30,25 @@ public class FollowPath extends CommandGroup {
   public void InitPath(String name) {
     try
     {
-      System.out.println("Start of try");
-      System.out.println(name + ".Left");
-      System.out.println(name + ".Right");
-      System.out.println(PathfinderFRC.DEFAULT_JERK);
-      Trajectory left_trajectory = PathfinderFRC.getTrajectory(Constants.k_path_name + ".left");
-      Trajectory right_trajectory = PathfinderFRC.getTrajectory(Constants.k_path_name + ".right");
-      RobotMap.m_left_follower = new EncoderFollower(left_trajectory);
-      RobotMap.m_right_follower = new EncoderFollower(right_trajectory);
-      System.out.println("After Init");
+      System.out.println(name + ".left");
+      System.out.println(name + ".right");
+      Trajectory left_trajectory = PathfinderFRC.getTrajectory(name + ".left");
+      Trajectory right_trajectory = PathfinderFRC.getTrajectory(name + ".right");
+      RobotMap.sLeftFollower = new EncoderFollower(left_trajectory);
+      RobotMap.sRightFollower = new EncoderFollower(right_trajectory);
    
-      RobotMap.m_left_follower.configureEncoder(RobotMap.motorLeftA.getSelectedSensorPosition(0), 
+      RobotMap.sLeftFollower.configureEncoder(-1*RobotMap.sMotorLeftA.getSelectedSensorPosition(0), 
           Constants.k_ticks_per_rev, Constants.k_wheel_diameter);
       // You must tune the PID values on the following line!
-      RobotMap.m_left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.k_max_velocity, 0);
+      RobotMap.sLeftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.k_max_velocity, 0);
   
-      RobotMap.m_right_follower.configureEncoder(RobotMap.motorRightA.getSelectedSensorPosition(0), 
+      RobotMap.sRightFollower.configureEncoder(-1*RobotMap.sMotorRightA.getSelectedSensorPosition(0), 
       Constants.k_ticks_per_rev, Constants.k_wheel_diameter);
       // You must tune the PID values on the following line!
-      RobotMap.m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.k_max_velocity, 0);
+      RobotMap.sRightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.k_max_velocity, 0);
       
-      RobotMap.m_follower_notifier = new Notifier(this::followPath);
-      RobotMap.m_follower_notifier.startPeriodic(left_trajectory.get(0).dt);
+      RobotMap.sFollowerNotifier = new Notifier(this::followPath);
+      RobotMap.sFollowerNotifier.startPeriodic(left_trajectory.get(0).dt);
     }
     catch(Exception e)
     {
@@ -67,7 +64,7 @@ public class FollowPath extends CommandGroup {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-	  return RobotMap.m_left_follower.isFinished() || RobotMap.m_right_follower.isFinished();
+	  return RobotMap.sLeftFollower.isFinished() || RobotMap.sRightFollower.isFinished();
   }
 
   // Called once after isFinished returns true
@@ -78,21 +75,23 @@ public class FollowPath extends CommandGroup {
 
   private void followPath() {
     if (isFinished()) {
-      RobotMap.m_follower_notifier.stop();
+      RobotMap.sFollowerNotifier.stop();
+      RobotMap.sMotorLeftA.set(0);
+      RobotMap.sMotorRightA.set(0);
     } else {
 
       PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
       double[] xyz_dps = new double[3];
-      RobotMap.pigeonIMU.getRawGyro(xyz_dps);
-      RobotMap.pigeonIMU.getFusedHeading(fusionStatus);
+      RobotMap.sPigeonIMU.getRawGyro(xyz_dps);
+      RobotMap.sPigeonIMU.getFusedHeading(fusionStatus);
   
-      double left_speed = RobotMap.m_left_follower.calculate(RobotMap.motorLeftA.getSelectedSensorPosition(0));
-      double right_speed = RobotMap.m_right_follower.calculate(RobotMap.motorRightA.getSelectedSensorPosition(0));
+      double left_speed = RobotMap.sLeftFollower.calculate(RobotMap.sMotorLeftA.getSelectedSensorPosition(0)*-1);
+      double right_speed = RobotMap.sRightFollower.calculate(RobotMap.sMotorRightA.getSelectedSensorPosition(0)*-1);
       double heading = fusionStatus.heading;
-      double desired_heading = Pathfinder.r2d(RobotMap.m_left_follower.getHeading());
+      double desired_heading = Pathfinder.r2d(RobotMap.sLeftFollower.getHeading());
       double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
       double turn =  0.8 * (-1.0/80.0) * heading_difference;
-      
+/*      
       System.out.print(left_speed);
       System.out.print(" ");
       System.out.print(right_speed);
@@ -102,9 +101,9 @@ public class FollowPath extends CommandGroup {
       System.out.print(desired_heading);
       System.out.print(" ");
       System.out.println(turn);
-
-      RobotMap.motorLeftA.set(left_speed + turn);
-      RobotMap.motorRightA.set(right_speed - turn);
+*/
+      RobotMap.sMotorLeftA.set(-1*(left_speed + turn));
+      RobotMap.sMotorRightA.set(-1*(right_speed - turn));
     }
   }
 }

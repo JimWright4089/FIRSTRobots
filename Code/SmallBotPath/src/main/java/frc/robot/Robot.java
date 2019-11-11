@@ -94,12 +94,11 @@ public class Robot extends TimedRobot
 
     RobotMap.SetUpTalonsForAuto();
     drive.ClearCurrentAngle();
-    RobotMap.pigeonIMU.setFusedHeading(0.0, 30);
+    RobotMap.sPigeonIMU.setFusedHeading(0.0, 30);
 
     drive.SetAuto();
 
-//    autonomousCommand = new MoveForward();
-    autonomousCommand = new FollowPath();
+    autonomousCommand = new AutonomousRunner();
     Scheduler.getInstance().add(autonomousCommand);
     setStatus();
   }

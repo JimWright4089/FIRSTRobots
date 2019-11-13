@@ -30,7 +30,7 @@ package frc.robot;
 public class Constants
 {
   // Jaci's Pathfinder
-  public static final int k_ticks_per_rev = 4000;
+  public static final int k_ticks_per_rev = 4096;
   public static final double k_wheel_diameter = .5;
   public static final double k_max_velocity = 8;
   public static final String k_path_name = "SimpleForward";
@@ -45,7 +45,7 @@ public class Constants
   public static final double kNormalSpeed = 0.3;
   public static final double kNormalTurnSpeed = 0.4;
   public static final double kSlowSpeed = 0.15;
-  public static final double kSlowTurnSpeed = 0.3;
+  public static final double kSlowTurnSpeed = 0.25;
   
   // User Interface consts
   public static final int kFastButton = 1;

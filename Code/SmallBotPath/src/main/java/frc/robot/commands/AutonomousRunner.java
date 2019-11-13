@@ -35,8 +35,11 @@ public class AutonomousRunner extends CommandGroup {
         case('2'):
           addSequential(new FollowPath("BlueToRocket2"));
           break;  
-        case('3'):
+          case('3'):
           addSequential(new FollowPath("BlueToDepot2"));
+          break;  
+        case('T'):
+          addSequential(new FollowPath("TenFeet")); 
           break;  
         default:
           addSequential(new FollowPath("BlueOffLevel2"));

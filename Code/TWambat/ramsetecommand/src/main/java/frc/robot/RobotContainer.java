@@ -10,7 +10,6 @@ package frc.robot;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -25,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.DriveSubsystem;
 
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -38,7 +37,6 @@ import static frc.robot.Constants.DriveConstants.kPDriveVel;
 import static frc.robot.Constants.DriveConstants.kaVoltSecondsSquaredPerMeter;
 import static frc.robot.Constants.DriveConstants.ksVolts;
 import static frc.robot.Constants.DriveConstants.kvVoltSecondsPerMeter;
-import static frc.robot.Constants.OIConstants.kDriverControllerPort;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -51,8 +49,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(kDriverControllerPort);
-
+  public Joystick mDriveStick = new Joystick(0);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -66,8 +63,8 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_robotDrive
-            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft),
-                         m_driverController.getX(GenericHID.Hand.kRight)), m_robotDrive));
+            .arcadeDrive(mDriveStick.getRawAxis(0),
+            mDriveStick.getRawAxis(1)), m_robotDrive));
 
   }
 
@@ -79,10 +76,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
-    new JoystickButton(m_driverController, Button.kBumperRight.value)
-        .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
-
+    if(true == mDriveStick.getRawButton(0))
+    {
+        m_robotDrive.setMaxOutput(0.5);
+    }
+    else
+    {
+        m_robotDrive.setMaxOutput(1);
+    }
   }
 
 

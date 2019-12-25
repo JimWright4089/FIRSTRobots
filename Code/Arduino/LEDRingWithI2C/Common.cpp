@@ -1,0 +1,102 @@
+#include "Common.h"
+
+const uint8 colorArray[] = {
+0  , 0 , 255 ,
+0 , 128 , 0 ,
+255 , 0 , 0 ,
+255 , 255 , 0 ,
+255 , 165 , 0 ,
+0 , 255 , 255 ,
+255 , 0 , 255 ,
+245 , 222 , 179 ,
+0 , 0 , 139 ,
+0 , 100 , 0 ,
+165 , 42  , 42  ,
+255 , 215 , 0 ,
+255 , 69  , 0 ,
+135 , 206 , 235 ,
+139 , 0 , 139 ,
+189 , 183 , 107 ,
+100 , 149 , 237 ,
+173 , 255 , 47  ,
+240 , 128 , 128 ,
+184 , 134 , 11  ,
+127 , 255 , 212 ,
+106 , 90  , 205 ,
+255 , 99  , 71  ,
+219 , 112 , 147 ,
+0 , 255 , 0 ,
+238 , 130 , 238 ,
+128 , 0 , 0 ,
+60  , 179 , 113 ,
+72  , 61  , 139 ,
+216 , 191 , 184 ,
+128 , 128 , 0 ,
+65  , 105 , 225 ,
+255 , 192 , 203 ,
+160 , 82  , 45  ,
+255 , 255 , 255 ,
+0 , 0 , 0,
+0 , 255 , 0};
+
+const uint8 colorArrayText[] = {
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE,
+COLOR_BLACK,
+COLOR_WHITE}; 
+
+const uint8 CMND_SIZE[] = { 0, 7, 11, 5, 6, 6, 6, 20, 20, 20, 20, 8, 19, 20, 6, 5};
+
+const uint8 HEART1[]         = {0,1,0,1,0,
+                                1,1,1,1,1,
+                                1,1,1,1,1,
+                                0,1,1,1,0,
+                                0,0,1,0,0};
+
+const uint8 HEART2[]         = {0,0,0,0,0,
+                                0,1,0,1,0,
+                                0,1,1,1,0,
+                                0,0,1,0,0,
+                                0,0,0,0,0};
+
+const uint8 HEART3[]         = {0,0,0,0,0,
+                                0,0,0,0,0,
+                                0,1,0,1,0,
+                                0,0,1,0,0,
+                                0,0,0,0,0};
+
+const char teamNumbers[] = {
+  " 1 2 3 4 5 6 7 8 91011121314151617181920212223242526272829303132WHRDYLBK"};
+

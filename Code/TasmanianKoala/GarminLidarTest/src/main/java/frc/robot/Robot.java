@@ -8,26 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystem.Arduino;
 import frc.robot.subsystem.GarminLidarLiteV3;
-import frc.robot.subsystem.LIDARLite;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   private GarminLidarLiteV3 mLiteL = new GarminLidarLiteV3();
   private GarminLidarLiteV3 mLiteM = new GarminLidarLiteV3();
   private GarminLidarLiteV3 mLiteR = new GarminLidarLiteV3();
@@ -44,8 +27,6 @@ public class Robot extends TimedRobot {
   private int mDistM = 0;
   private int mDistR = 0;
 
-  private LIDARLite mLite;
-  private Arduino mArduino;
   private int mCount = 0;
   private int mSensorCount = 0;
 
@@ -55,13 +36,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-
-    mLite = new LIDARLite(Port.kOnboard);
-    mArduino = new Arduino(Port.kOnboard);
-
     mLiteL.turnOnDebug();
     mLiteM.turnOnDebug();
     mLiteR.turnOnDebug();
@@ -104,17 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-
   }
-
-@Override
-public void disabledInit() {
-  super.disabledInit();
-  mLite.stopMeasuring();
-}
 
   /**
    * This function is called periodically during autonomous.
@@ -141,16 +105,6 @@ public void disabledInit() {
 
       mCount = 0;
     }
-
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
   }
 
   /**
@@ -158,33 +112,5 @@ public void disabledInit() {
    */
   @Override
   public void teleopPeriodic() {
-  }
-
-  @Override
-  public void testInit() {
-    super.testInit();
-    System.out.println("Make lite ");
-    
-    mLite.startMeasuring();
-  }
-
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() {
-    mCount++;
-    if(mCount>20)
-    {
-      int dist = mLite.getDistance();
-      System.out.printf("dist:%4x\n",dist);
-
-      if((dist<0)||(dist>8000))
-      {
-        mLite.reset();
-      }
-
-      mCount = 0;
-    }
   }
 }

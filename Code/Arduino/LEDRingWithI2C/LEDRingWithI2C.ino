@@ -1,12 +1,12 @@
 //----------------------------------------------------------------------------
 //
-//  $Workfile: LEDRingWithI2C$
+//  $Workfile: LEDRing$
 //
 //  $Revision: X$
 //
 //  Project:    CHS217
 //
-//                            Copyright (c) 2018
+//                            Copyright (c) 2019
 //                              James A Wright
 //                            All Rights Reserved
 //
@@ -17,44 +17,61 @@
 //----------------------------------------------------------------------------
 
 #include <Wire.h>
-//#include <Adafruit_NeoPixel.h>
-//#include "Common.h"
-//#include "JORSUtils.h"
-
-#include <avr/wdt.h>
-#include <SoftwareSerial.h>
-#include <Adafruit_GFX.h>    // Core graphics library
-#include <Adafruit_ST7735.h> // Hardware-specific library
 #include <Adafruit_NeoPixel.h>
-#include <EEPROM.h>
-#include "Common.h"
-#include "JORSUtils.h"
 
+typedef unsigned char uint8;
 
 //----------------------------------------------------------------------------
 //  Constants
 //----------------------------------------------------------------------------
-const long MAX_TIME = 1000;
-const uint8  LEDPin       =  4;
-const int  COLORReduction = 27;
+const long MAX_TIME       = 1000;
+const uint8 MAX_LEDS      =   16;
+const uint8 LEDPin        =   21;
+const int  COLORReduction =   27;
+
+const uint8 COLOR_BLUE    =  0;
+const uint8 COLOR_GREEN   =  1;
+const uint8 COLOR_RED     =  2;
+const uint8 COLOR_YELLOW  =  3;
+const uint8 COLOR_CYAN    =  4;
+const uint8 COLOR_MAGENTA =  5;
+const uint8 COLOR_WHITE   =  6;
+const uint8 COLOR_BLACK   =  7;
+const uint8 COLOR_BRIGHT_GREEN = 8;
+const uint8 COLOR_ORANGE  =  9;
+const uint8 MAX_COLORS    = 10;
+
+const uint8 colorArray[] = 
+{
+  0,   0, 255,
+  0, 128,   0,
+255,   0,   0,
+255, 255,   0,
+  0, 255, 255,
+255,   0, 255,
+255, 255, 255,
+  0,   0,   0,
+  0, 255,   0,
+255, 165,   0};
+
+const uint8 ALL_OFF      = 0x20;
+const uint8 SOLID_GREEN  = 0x30;
+const uint8 SOLID_WHITE  = 0x32;
+const uint8 SOLID_BLUE   = 0x34;
+const uint8 SOLID_YELLOW = 0x36;
+const uint8 SOLID_RED    = 0x38;
+const uint8 SPIN_GREEN   = 0x40;
+const uint8 SPIN_WHITE   = 0x42;
+const uint8 SPIN_BLUE    = 0x44;
+const uint8 SPIN_YELLOW  = 0x46;
+const uint8 SPIN_RED     = 0x48;
 
 //----------------------------------------------------------------------------
-//  Variables
+//  Global Variables
 //----------------------------------------------------------------------------
 Adafruit_NeoPixel mStrip    = Adafruit_NeoPixel(MAX_LEDS, LEDPin, NEO_GRB + NEO_KHZ800);
-
 uint8 mSpinColor = 0;
-byte mAlliance = 'O';
-byte mLocation = 1;
-byte mEnabled = 'D';
-byte mExtra = 1;
-long mLastTime = 0;
-
-uint8 mBuffer[MAX_PACKET];
-uint8 mBufferLoc = 0;
-uint8 mSend[MAX_SEND];
-bool mGoodPacket = false;
-uint16 mCommCount = 0;
+uint8 mColor = ALL_OFF;
 
 //----------------------------------------------------------------------------
 //  Purpose:
@@ -68,13 +85,11 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(LEDPin, OUTPUT);
-  Wire.begin(43);              
-  Wire.onReceive(receiveEvent);
-  Wire.onRequest(requestEvent);
+  Wire.begin(0x30);             // join i2c bus with address #0x30
+  Wire.onReceive(receiveEvent); // register event
   mStrip.begin();
   mStrip.show();
-
-  Serial.print("Test");
+  IdlePatternSet();
 }
 
 //----------------------------------------------------------------------------
@@ -92,67 +107,45 @@ void loopGreen()
 
 void loop() 
 {
-  putU16IntoU8Array(mSend,LOC_DATA_START,mCommCount);
-  
-  if(true == mGoodPacket)
+  switch(mColor)
   {
-    int otherCommCount = GetU16FrombyteArray(mBuffer, LOC_DATA_START);
-   mCommCount++;
-   Serial.print("got:");
-    Serial.println(otherCommCount);
-    mAlliance = mBuffer[LOC_LED_STATUS];
-    RemoveDataForNextMessage(MAX_RECEIVE, true);
-    mGoodPacket = false;
-  }
-
-  if((millis()-mLastTime)>MAX_TIME)
-  {
-    ColorSet(COLOR_BRIGHT_GREEN);
-  }
-  else
-  {
-    if('B' == mAlliance)
-    {
-      SpinColor(COLOR_BLUE);      
-    }
-    else
-    {
-      if('R' == mAlliance)
-      {
-        SpinColor(COLOR_RED);      
-      }
-      else
-      {
-        ColorSet(COLOR_BRIGHT_GREEN);
-      }
-    }
+    case(ALL_OFF):
+      ColorSet(COLOR_BLACK);
+      break;
+    case(SOLID_GREEN):
+      ColorSet(COLOR_BRIGHT_GREEN);
+      break;
+    case(SOLID_WHITE):
+      ColorSet(COLOR_WHITE);
+      break;
+    case(SOLID_BLUE):
+      ColorSet(COLOR_BLUE);
+      break;
+    case(SOLID_RED):
+      ColorSet(COLOR_RED);
+      break;
+    case(SOLID_YELLOW):
+      ColorSet(COLOR_YELLOW);
+      break;
+    case(SPIN_GREEN):
+      SpinColor(COLOR_BRIGHT_GREEN);
+      break;
+    case(SPIN_WHITE):
+      SpinColor(COLOR_WHITE);
+      break;
+    case(SPIN_BLUE):
+      SpinColor(COLOR_BLUE);
+      break;
+    case(SPIN_RED):
+      SpinColor(COLOR_RED);
+      break;
+    case(SPIN_YELLOW):
+      SpinColor(COLOR_YELLOW);
+      break;
   }
   
   delay(10);
 }
-
-///--------------------------------------------------------------------
-/// Purpose:
-/// <summary>
-///      Pull a short out of a data buffer
-/// </summary>
-/// 
-/// Returns:
-/// <returns>
-///     The UInt16 from the data
-/// </returns>
-/// 
-/// Notes:
-/// <remarks>
-///     None.
-/// </remarks>
-///--------------------------------------------------------------------
-int GetU16FrombyteArray(uint8* data, int location)
-{
-  return (int)((data[location+1] << 8) +
-    data[location]);
-}
-
 
 //----------------------------------------------------------------------------
 //  Purpose:
@@ -209,242 +202,6 @@ void SpinColor(int color)
 //****************************************************************************
 //****************************************************************************
 //      
-//  I2C Handler
-//
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Send bytes to the I2C
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-void requestEventx() 
-{
-  Wire.write('1');
-  Wire.write('2');
-  Wire.write('3');
-  Wire.write('4');
-  Wire.write('5');
-}
-void requestEvent() 
-{
-  mSend[LOC_START] = SER_START;
-  mSend[MAX_SEND - LOC_CHECK_BYTE] = CalcCheckByte(mSend, LOC_PI_STATUS, MAX_SEND - LOC_DATA_END);
-  mSend[MAX_SEND - LOC_END] = SER_END;
-
-  for (uint8 index = 0; index < MAX_SEND; index++)
-  {
-    Wire.write(mSend[index]);
-  }
-}
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Get bytes from the I2C
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-void receiveEvent(int howMany) 
-{
-  uint8 theByte = 0;
-  uint8 count = 0;
-
-  while ((Wire.available() > 0) && (mBufferLoc < MAX_PACKET))
-  {
-    theByte = Wire.read();
-
-    // Add the byte to the buffer
-    mBuffer[mBufferLoc] = theByte;
-    mBufferLoc++;
-  }
-
-  count = 0;
-  // Trim the garbage from the start
-  while ((SER_START != mBuffer[0]) && (count < mBufferLoc))
-  {
-    count++;
-  }
-
-  if (count > 0)
-  {
-    RemoveDataForNextMessage(count, true);
-  }
-
-  // find if we are good or have garbage
-  int nextMessage = FindNextMessage();
-
-  if (true == DoWeHaveAGoodMessage())
-  {
-    mGoodPacket = true;
-  }
-  else
-  {
-    // Trim garbage if there is any
-    if (nextMessage > 0)
-    {
-      RemoveDataForNextMessage(nextMessage, true);
-    }
-  }
-}
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Return if the packet is well formed
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-bool DoWeHaveAGoodMessage()
-{
-  bool returnValue = false;
-  uint8 theLength = MAX_RECEIVE;
-
-  if ((mBufferLoc >= theLength) && (mBufferLoc != 0) && (theLength != 0))
-  {
-    //Is the preamble where it should be
-    if ((mBuffer[LOC_START] == SER_START) && (mBuffer[theLength - LOC_END] == SER_END))
-    {
-      uint8 checkByte = CalcCheckByte(mBuffer, LOC_PI_STATUS, theLength - LOC_DATA_END);
-
-      if (checkByte == mBuffer[theLength - LOC_CHECK_BYTE])
-      {
-        returnValue = true;
-      }
-      else
-      {
-        RemoveDataForNextMessage(theLength, true);
-      }
-    }
-    else
-    {
-      RemoveDataForNextMessage(theLength, true);
-    }
-  }
-  return returnValue;
-}
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Calc a check byte from the data
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-uint8 CalcCheckByte(uint8* data, uint8 start, uint8 number)
-{
-  uint8 checkByte = 0xFF;
-
-  for (uint8 index = 0; index < number; index++)
-  {
-    checkByte ^= data[start + index];
-  }
-  return checkByte;
-}
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Find the next message after the first one
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-uint8 FindNextMessage()
-{
-  uint8 nextMessIndex = 0;
-  bool found = false;
-  uint8 theLength = MAX_RECEIVE;
-
-  //Is the preamble where it should be
-  if ((mBuffer[LOC_START] == SER_START)&&(mBufferLoc>2))
-  {
-    theLength = MAX_RECEIVE;
-    //From the end of the message search the rest of what we have gotten
-    //for another preamble.
-    for (nextMessIndex = 1; nextMessIndex < mBufferLoc; nextMessIndex++)
-    {
-      if (mBuffer[nextMessIndex] == SER_START)
-      {
-        //If we found one stop
-        found = true;
-        break;
-      }
-    }
-  }
-
-  //If we found one the nextMessIndex should be good.
-  //If not then set it to 0 and return 0.
-  if (found == false)
-  {
-    nextMessIndex = 0;
-  }
-  return nextMessIndex;
-}
-
-//----------------------------------------------------------------------------
-//  Purpose:
-//      Trim the front of the buffer
-//
-//  Notes:
-//      None
-//
-//----------------------------------------------------------------------------
-void RemoveDataForNextMessage(uint8 offset, bool isBad)
-{
-  int index;
-
-  //Move the first 'offset' number of bytes forward.
-  for (index = 0; index < mBufferLoc - offset; index++)  // JSF162 JSF213 Exception
-  {
-    mBuffer[index] = mBuffer[offset + index];
-  }
-
-  //if we have been asked to remove more bytes than we have set the number
-  //of bytes to 0.
-  if (offset > mBufferLoc)
-  {
-    mBufferLoc = 0;
-  }
-  else
-  {
-    //If not then reduce the number of bytes we have by the offset.
-    mBufferLoc -= offset;
-  }
-
-  //Move the rest of the message down to right after the 'offset' bytes.
-  // Process the rest of the buffer
-  for (; index < MAX_PACKET; index++)   // JSF200 JSF162 Exception
-  {
-    //If we are under the MAX packet size then move the data.
-    if ((offset + index) < (mBufferLoc))
-    {
-      mBuffer[index] = mBuffer[offset + index];
-    }
-    else
-    {
-      //If we are over the MAX packet size then clear out the bytes.
-      mBuffer[index] = 0;
-    }
-  }
-}
-
-
-
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-//      
 //  LED Handler
 //
 //****************************************************************************
@@ -484,24 +241,15 @@ uint32_t GetLEDColor(uint8_t colorIndex)
 //----------------------------------------------------------------------------
 void ColorSet(uint8 team) 
 {
-  if(COLOR_NO_COMM == team)
+  uint8 theColor = team;
+  
+  uint32_t color = GetLEDColor(theColor);
+  
+  for(uint8 i=0; i<MAX_LEDS; i++) 
   {
-    IdlePatternSet();
+      mStrip.setPixelColor(i, color);
   }
-  else
-  {
-    {
-      uint8 theColor = team;
-      
-      uint32_t color = GetLEDColor(theColor);
-      
-      for(uint8 i=0; i<MAX_LEDS; i++) 
-      {
-          mStrip.setPixelColor(i, color);
-      }
-      mStrip.show();
-    }
-  }
+  mStrip.show();
 }
 
 //----------------------------------------------------------------------------
@@ -543,4 +291,18 @@ void IdlePatternSet()
   mStrip.show();
 }
 
-
+//----------------------------------------------------------------------------
+//  Purpose:
+//      Read from the I2C
+//
+//  Notes:
+//      None
+//
+//----------------------------------------------------------------------------
+void receiveEvent(int howMany) 
+{
+  while (0 < Wire.available()) 
+  { 
+    mColor = Wire.read(); 
+  }
+}

@@ -87,6 +87,7 @@ int mCurrentCommand = COMMAND_ALL_OFF;
 //----------------------------------------------------------------------------
 int main() 
 {
+  std::this_thread::sleep_for(std::chrono::seconds(20));
   auto inst = nt::GetDefaultInstance();
   InitI2C();
 

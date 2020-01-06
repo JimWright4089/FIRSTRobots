@@ -59,7 +59,7 @@ const uint8 colorArray[] =
   0, 255,   0,
 255, 165,   0};
 
-
+const int delayTime = 2000;
 //----------------------------------------------------------------------------
 //  Global Variables
 //----------------------------------------------------------------------------
@@ -97,15 +97,34 @@ void loopGreen()
 }
 
 void loop() 
-{
-//  SpinColor(COLOR_WHITE);
-//  SpinColor(COLOR_YELLOW);
-//  SpinColor(COLOR_MAGENTA);
-//  SpinColor(COLOR_ORANGE);
-//  SpinColor(COLOR_BLUE);      
-//  SpinColor(COLOR_RED);      
-//  ColorSet(COLOR_BRIGHT_GREEN);
+{ 
+  ColorSet(COLOR_WHITE);
+}
+
+void loopz() 
+{ 
+  SpinColor(COLOR_WHITE);
+  delay(delayTime);
+  SpinColor(COLOR_YELLOW);
+  delay(delayTime);
+  SpinColor(COLOR_GREEN);
+  delay(delayTime);
+  SpinColor(COLOR_BLUE);
+  delay(delayTime);
+  SpinColor(COLOR_RED);
+  delay(delayTime);
+  ColorSet(COLOR_WHITE);
+  delay(delayTime);
+  ColorSet(COLOR_YELLOW);
+  delay(delayTime);
+  ColorSet(COLOR_GREEN);
+  delay(delayTime);
+  ColorSet(COLOR_BLUE);
+  delay(delayTime);
+  ColorSet(COLOR_RED);
+  delay(delayTime);
   ColorSet(COLOR_BLACK);
+  delay(delayTime);
   
   delay(10);
 }

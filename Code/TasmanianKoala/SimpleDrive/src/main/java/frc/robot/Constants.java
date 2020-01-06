@@ -21,7 +21,12 @@ public final class Constants {
     public static final int kLeftMotor2Port = 3;
     public static final int kRightMotor1Port = 2;
     public static final int kRightMotor2Port = 4;
-
+    public static final int kLeftEncoderPort = 11;
+    public static final int kRightEncoderPort = 12;
+    public static final int kGyroPort = 10;
+    public static final boolean kLeftEncoderReversed = false;
+    public static final boolean kRightEncoderReversed = true;
+    
     public static final int kEncoderCPR = 4096;
     public static final int kEncoderPulsePerSecond = 10;
     public static final double kWheelDiameterMeters = 0.1524;

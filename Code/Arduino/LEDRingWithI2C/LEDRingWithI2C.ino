@@ -26,7 +26,7 @@ typedef unsigned char uint8;
 //----------------------------------------------------------------------------
 const long MAX_TIME       = 1000;
 const uint8 MAX_LEDS      =   16;
-const uint8 LEDPin        =   21;
+const uint8 LEDPin        =   20;
 const int  COLORReduction =   27;
 
 const uint8 COLOR_BLUE    =  0;

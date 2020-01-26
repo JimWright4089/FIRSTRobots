@@ -9,7 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.Constants.OIConstants;
 
 /**
@@ -21,11 +24,13 @@ import frc.robot.Constants.OIConstants;
 public class RobotContainer {
   // The driver's controller
   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+  DriveSubsystem mDriveSubsystem;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
+  public RobotContainer(DriveSubsystem driveSubsystem) {
+    mDriveSubsystem = driveSubsystem;
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -37,10 +42,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    /*
+    
     // Grab the hatch when the 'A' button is pressed.
     new JoystickButton(m_driverController, Button.kA.value)
-        .whenPressed(new GrabHatch(m_hatchSubsystem));
+     .whenPressed(new RunForwardRelative(mDriveSubsystem));
+     //new JoystickButton(m_driverController, Button.kA.value)
+    // .whenReleased( new ResetEncoders(mDriveSubsystem));
+    /*    
     // Release the hatch when the 'B' button is pressed.
     new JoystickButton(m_driverController, Button.kB.value)
         .whenPressed(new ReleaseHatch(m_hatchSubsystem));

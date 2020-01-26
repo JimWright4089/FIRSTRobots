@@ -12,13 +12,18 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.*;
+import edu.wpi.first.networktables.*;
 
 public class Robot extends TimedRobot {
   private DriveSubsystem mDriveSubsystem = new DriveSubsystem();
   private Command mAutonomousCommand;
+  private RobotContainer mRobotContainer;
+  private NetworkTableEntry mEntry;
 
   @Override
   public void robotInit() {
+    mRobotContainer = new RobotContainer(mDriveSubsystem);
+    mEntry = NetworkTableInstance.getDefault().getEntry("/limelight/ty2");
   }
 
   @Override
@@ -33,6 +38,7 @@ public class Robot extends TimedRobot {
     if (mAutonomousCommand != null) {
       mAutonomousCommand.schedule();
     }
+    mDriveSubsystem.resetEncoders();
   }
 
   @Override
@@ -48,6 +54,8 @@ public class Robot extends TimedRobot {
  
   @Override
   public void teleopPeriodic() {
+    System.out.format("%8.2f\n",mEntry.getDouble(0.00));
+    //mDriveSubsystem.tankDrive(mEntry.getDouble(0.00), 0.00);
   }
 
   @Override

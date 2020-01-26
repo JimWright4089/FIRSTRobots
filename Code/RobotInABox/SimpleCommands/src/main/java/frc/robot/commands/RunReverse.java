@@ -38,7 +38,15 @@ public class RunReverse extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    if( mDriveSubsystem.getLeftEncoderPosition() < mPosition)
+    {
+      return true;
+    }
+    else 
+    {
       return false;
+    }
+      
   }
 
   @Override

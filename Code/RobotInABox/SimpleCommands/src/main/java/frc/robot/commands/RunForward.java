@@ -34,11 +34,19 @@ public class RunForward extends CommandBase {
   public void execute() {
       mDriveSubsystem.tankDrive(0.5, 0.5);
       System.out.println("Run Forward");
-  }
+    }
 
   @Override
   public boolean isFinished() {
+    if( mDriveSubsystem.getLeftEncoderPosition() > mPosition)
+    {
+      return true;
+    }
+    else 
+    {
       return false;
+    }
+      
   }
 
   @Override

@@ -15,7 +15,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
     addCommands(
         // Drive forward the specified distance
         new RunForward(10000, drive),
+        new RunReverse(5000, drive),
+        new RunForward(10000, drive),
         new RunReverse(5000, drive));
+        
   }
 
 }

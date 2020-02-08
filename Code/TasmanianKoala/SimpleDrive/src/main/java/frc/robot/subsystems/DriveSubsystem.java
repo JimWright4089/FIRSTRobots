@@ -29,6 +29,7 @@ import static frc.robot.Constants.DriveConstants.kTimeoutMs;
 import static frc.robot.Constants.DriveConstants.kLeftEncoderPort;
 import static frc.robot.Constants.DriveConstants.kRightEncoderPort;
 import static frc.robot.Constants.DriveConstants.kGyroPort;
+import frc.robot.utils.DriveParam;
 
 public class DriveSubsystem extends SubsystemBase {
   private final CANSparkMax  sMotorLeftA = new CANSparkMax(kLeftMotor1Port,MotorType.kBrushless);
@@ -104,6 +105,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry() {
+    resetEncoders();
+    sOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(getHeading()));
+  }
+
+  /**
    * Drives the robot using arcade controls.
    *
    * @param fwd the commanded forward movement
@@ -111,6 +122,16 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     sDrive.arcadeDrive(fwd, rot);
+  }
+
+  /**
+   * Drives the robot using arcade controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void arcadeDrive(DriveParam driveParam) {
+    sDrive.arcadeDrive(driveParam.getForward(), driveParam.getRotation());
   }
 
   /**

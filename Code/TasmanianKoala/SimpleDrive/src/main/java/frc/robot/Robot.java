@@ -8,12 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,11 +22,9 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-    // The driver's controller
-    public Joystick mDriveStick = new Joystick(0);
-    NetworkTableEntry mLEDRing;
+  private RobotContainer mRobotContainer;
+  private DriveSubsystem mDrive;
+  NetworkTableEntry mLEDRing;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -35,6 +32,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    mRobotContainer = new RobotContainer();
+    mDrive = mRobotContainer.getDriveSubsystem();
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     mLEDRing = inst.getEntry("/LEDColor");
   }
@@ -64,8 +63,8 @@ public class Robot extends TimedRobot {
         mLEDRing.setDouble((double)'r');
       }
     }
+    mDrive.periodic();
     CommandScheduler.getInstance().run();
-    m_robotDrive.periodic();
   }
 
   /**
@@ -81,6 +80,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    mDrive.zeroHeading();
+    mDrive.resetOdometry();
   }
 
   /**
@@ -93,17 +94,14 @@ public class Robot extends TimedRobot {
 
 
   public void teleopInit() {
+    mDrive.zeroHeading();
+    mDrive.resetOdometry();
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    m_robotDrive.arcadeDrive(mDriveStick.getRawAxis(1)*-1,mDriveStick.getRawAxis(0));
-    System.out.printf("H:%8.2f LS:%f LP:%f RS:%f RP:%f p:%s\n",m_robotDrive.getHeading(),
-        m_robotDrive.getLeftEncoderSpeed(),m_robotDrive.getLeftEncoderPosition(),
-        m_robotDrive.getRightEncoderSpeed(),m_robotDrive.getLeftEncoderPosition(),
-        m_robotDrive.getPose().toString());     
   }
 
   /**
@@ -111,14 +109,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    double left = mDriveStick.getRawAxis(1);
-    double right = mDriveStick.getRawAxis(5);
-    
-    m_robotDrive.tankDrive(left, right);
-    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f p:%s\n",
-        left,right,m_robotDrive.getHeading(),
-        m_robotDrive.getLeftEncoderSpeed(),m_robotDrive.getLeftEncoderPosition(),
-        m_robotDrive.getRightEncoderSpeed(),m_robotDrive.getRightEncoderPosition(),
-        m_robotDrive.getPose().toString());     
   }
 }

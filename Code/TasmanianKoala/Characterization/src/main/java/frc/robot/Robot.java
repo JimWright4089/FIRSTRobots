@@ -9,6 +9,11 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,14 +24,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.sensors.CANCoder;
 
 public class Robot extends TimedRobot {
 
   static private double WHEEL_DIAMETER = 0.1524;
-  static private double ENCODER_PULSE_PER_REV = 4096 / 4.;
+  static private double ENCODER_PULSE_PER_REV = 360;
   public static final int kLeftMotor1Port = 1;
   public static final int kLeftMotor2Port = 3;
   public static final int kRightMotor1Port = 2;
@@ -35,7 +37,6 @@ public class Robot extends TimedRobot {
   public static final int kLeftEncoderPort = 11;
   public static final int kRightEncoderPort = 12;
   public static final int kGyroPort = 10;
-
   Joystick stick;
   DifferentialDrive drive;
 
@@ -43,17 +44,19 @@ public class Robot extends TimedRobot {
   Supplier<Double> leftEncoderRate;
   Supplier<Double> rightEncoderPosition;
   Supplier<Double> rightEncoderRate;
+  Supplier<Double> gyroAngleRadians;
 
   NetworkTableEntry autoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
   NetworkTableEntry telemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
+  NetworkTableEntry rotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
   double priorAutospeed = 0;
-  Number[] numberArray = new Number[9];
+  Number[] numberArray = new Number[10];
 
   @Override
   public void robotInit() {
-
-    stick = new Joystick(0);
+ 
+   stick = new Joystick(0);
 
     CANSparkMax leftMotor1 = new CANSparkMax(kLeftMotor1Port,MotorType.kBrushless);
     CANSparkMax rightMotor1 = new CANSparkMax(kRightMotor1Port,MotorType.kBrushless);
@@ -65,11 +68,25 @@ public class Robot extends TimedRobot {
     rightMotors[0] = new CANSparkMax(kRightMotor2Port,MotorType.kBrushless);
 
     //
+    // Configure gyro
+    //
+
+    // Note that the angle from the NavX and all implementors of wpilib Gyro
+    // must be negated because getAngle returns a clockwise positive angle
+    // Uncomment for Pigeon
+    PigeonIMU pigeon = new PigeonIMU(kGyroPort);
+    gyroAngleRadians = () -> {
+      // Allocating a new array every loop is bad but concise
+      double[] xyz = new double[3];
+      pigeon.getAccumGyro(xyz);
+      return Math.toRadians(xyz[2]);
+    };
+
+    //
     // Configure drivetrain movement
     //
 
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMotor1, leftMotors);
-
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMotor1, rightMotors);
 
     drive = new DifferentialDrive(leftGroup, rightGroup);
@@ -134,7 +151,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    drive.arcadeDrive(-stick.getY(), stick.getX());
+    drive.arcadeDrive(-stick.getY()*.4, stick.getX()*.4);
   }
 
   @Override
@@ -173,7 +190,10 @@ public class Robot extends TimedRobot {
     priorAutospeed = autospeed;
 
     // command motors to do things
-    drive.tankDrive(autospeed, autospeed, false);
+    drive.tankDrive(
+      (rotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed,
+      false
+    );
 
     // send telemetry data array back to NT
     numberArray[0] = now;
@@ -185,6 +205,7 @@ public class Robot extends TimedRobot {
     numberArray[6] = rightPosition;
     numberArray[7] = leftRate;
     numberArray[8] = rightRate;
+    numberArray[9] = gyroAngleRadians.get();
 
     telemetryEntry.setNumberArray(numberArray);
   }

@@ -59,8 +59,8 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_robotDrive
-            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft),
-                         m_driverController.getX(GenericHID.Hand.kRight)), m_robotDrive));
+            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft)*.6,
+                         m_driverController.getX(GenericHID.Hand.kRight)*.6), m_robotDrive));
 
   }
 
@@ -74,7 +74,7 @@ public class RobotContainer {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kBumperRight.value)
         .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
+        .whenReleased(() -> m_robotDrive.setMaxOutput(0.4));
 
   }
 
@@ -110,11 +110,11 @@ public class RobotContainer {
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
         List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)
+            new Translation2d(1, 0),
+            new Translation2d(2, 0)
         ),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(90)),
+        new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
         config
     );

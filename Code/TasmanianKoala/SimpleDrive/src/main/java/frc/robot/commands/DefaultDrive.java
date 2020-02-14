@@ -112,9 +112,12 @@ public class DefaultDrive extends CommandBase {
       {
         double angleError = (mTargetAngle - mDrive.getHeading());
         turnThrottle = angleError * kPgain - (mDrive.getTurnRate()) * kDgain;
+        System.out.format("tt:%8.2f  ", turnThrottle);
         double maxThrot = DriveMath.MaxCorrection(driveParam.getForward(), kMaxCorrectionRatio);
         turnThrottle = -1 * DriveMath.Cap(turnThrottle, maxThrot);
+        System.out.format("tt:%8.2f ae:%8.2f mt:%8.2f ", turnThrottle, angleError, maxThrot);
         driveParam.setRotation(turnThrottle);
+        System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
       }
       else
       {

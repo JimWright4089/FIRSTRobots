@@ -109,5 +109,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    double left = .3;
+    double right = .3;
+
+    mDrive.tankDrive(left, right);
+
+    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f p:%s\n",
+    left,right,
+    mDrive.getHeading(),
+    mDrive.getLeftEncoderSpeed(),mDrive.getLeftEncoderPosition(),
+    mDrive.getRightEncoderSpeed(),mDrive.getRightEncoderPosition(),
+    mDrive.getPose().toString());  
   }
 }

@@ -42,8 +42,8 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new DefaultDrive(
             mRobotDrive,
-            () -> mDriverController.getY(GenericHID.Hand.kLeft),
-            () -> mDriverController.getX(GenericHID.Hand.kLeft),
+            () -> mDriverController.getRawAxis(1),
+            () -> mDriverController.getRawAxis(0),
             () -> mDriverController.getAButton(),
             () -> mDriverController.getBButton()));
   }

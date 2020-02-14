@@ -34,8 +34,8 @@ public final class Constants {
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
-    public static final int kEncoderCPR = 4096;
-    public static final double kWheelDiameterMeters = 0.15;
+    public static final int kEncoderCPR = 360;
+    public static final double kWheelDiameterMeters = 0.1524;
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
@@ -47,12 +47,12 @@ public final class Constants {
     // for *your* robot's drive.
     // The Robot Characterization Toolsuite provides a convenient tool for obtaining these
     // values for your robot.
-    public static final double ksVolts = 2.34;
-    public static final double kvVoltSecondsPerMeter = 0.1333;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.0748;
+    public static final double ksVolts = 1.28;
+    public static final double kvVoltSecondsPerMeter = 0.0305;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.0445;
 
     // Example value only - as above, this must be tuned for your drive!
-    public static final double kPDriveVel = 7.38;
+    public static final double kPDriveVel = 0.0305;
     public static final int kTimeoutMs = 20;
   }
 
@@ -61,8 +61,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = .3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = .3;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;

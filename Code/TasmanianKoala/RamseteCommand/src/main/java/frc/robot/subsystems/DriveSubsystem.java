@@ -29,6 +29,7 @@ import static frc.robot.Constants.DriveConstants.kTimeoutMs;
 import static frc.robot.Constants.DriveConstants.kLeftEncoderPort;
 import static frc.robot.Constants.DriveConstants.kRightEncoderPort;
 import static frc.robot.Constants.DriveConstants.kGyroPort;
+import static frc.robot.Constants.DriveConstants.kEncoderDistancePerPulse;
 
 public class DriveSubsystem extends SubsystemBase {
   private final CANSparkMax  sMotorLeftA = new CANSparkMax(kLeftMotor1Port,MotorType.kBrushless);
@@ -66,14 +67,14 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-    sDrive.setMaxOutput(0.4);
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    sOdometry.update(Rotation2d.fromDegrees(getHeading()), sLeftEncoder.getPosition(),
-                      sRightEncoder.getPosition());
+    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    sOdometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPosition(),
+                      getRightEncoderPosition());
   }
 
   /**
@@ -91,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(sLeftEncoder.getVelocity(), sRightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderSpeed(), getRightEncoderSpeed());
   }
 
   /**
@@ -131,11 +132,11 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    double left = (leftVolts>4)?2.0:leftVolts;
-    double right = (rightVolts>4)?2.0:rightVolts;
+    double left = (leftVolts>4)?leftVolts:leftVolts;
+    double right = (rightVolts>4)?rightVolts:rightVolts;
     System.out.printf("%f %f \n",left,right);
-    sLeftMotors.setVoltage(-left);
-    sRightMotors.setVoltage(right);
+    sLeftMotors.setVoltage(left);
+    sRightMotors.setVoltage(-right);
   }
 
   /**
@@ -195,18 +196,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getLeftEncoderPosition()
   {
-    return sLeftEncoder.getPosition();
+    return sLeftEncoder.getPosition() * kEncoderDistancePerPulse;
   }
   public double getRightEncoderPosition()
   {
-    return sRightEncoder.getPosition();
+    return sRightEncoder.getPosition() * kEncoderDistancePerPulse;
   }
   public double getLeftEncoderSpeed()
   {
-    return sLeftEncoder.getVelocity();
+    return sLeftEncoder.getVelocity() * kEncoderDistancePerPulse;
   }
   public double getRightEncoderSpeed()
   {
-    return sRightEncoder.getVelocity();
+    return sRightEncoder.getVelocity() * kEncoderDistancePerPulse;
   }
 }

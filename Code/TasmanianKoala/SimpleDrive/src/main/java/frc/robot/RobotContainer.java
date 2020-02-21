@@ -43,10 +43,11 @@ public class RobotContainer {
         new DefaultDrive(
             mRobotDrive,
             () -> mDriverController.getRawAxis(1),
-            () -> mDriverController.getRawAxis(0),
+            () -> mDriverController.getRawAxis(4),
             () -> mDriverController.getAButton(),
             () -> mDriverController.getBButton()));
-  }
+ 
+}
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by

@@ -49,12 +49,13 @@ public final class Constants {
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPDriveVel = 0.5;
 
-    public static final double kSpeedGain = 0.05; // The ramp for the speed
+    public static final double kSpeedGain = 0.02; // The ramp for the speed
     public static final double kSlowSpeed = .2;
     public static final double kSlowTurnSpeed = .3;
-    public static final double kNormalSpeed = .5;
-    public static final double kNormalTurnSpeed = .6;
+    public static final double kNormalSpeed = .7;
+    public static final double kNormalTurnSpeed = .7;
     public static final double kDeadBand = .08;
+    public static final double kDeadBandRot = .18;
     public static final double kPgain = 0.003; /* percent throttle per degree of error */
     public static final double kDgain = 0.0002; /* percent throttle per angular velocity dps */
     public static final double kMaxCorrectionRatio = 0.20; /*
@@ -63,7 +64,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 1;
+    public static final int kDriverControllerPort = 0;
   }
 
   public static final class AutoConstants {

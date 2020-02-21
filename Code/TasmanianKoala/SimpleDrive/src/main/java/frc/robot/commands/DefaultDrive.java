@@ -20,6 +20,7 @@ import static frc.robot.Constants.DriveConstants.kSlowTurnSpeed;
 import static frc.robot.Constants.DriveConstants.kNormalSpeed;
 import static frc.robot.Constants.DriveConstants.kNormalTurnSpeed;
 import static frc.robot.Constants.DriveConstants.kDeadBand;
+import static frc.robot.Constants.DriveConstants.kDeadBandRot;
 import static frc.robot.Constants.DriveConstants.kPgain;
 import static frc.robot.Constants.DriveConstants.kDgain;
 import static frc.robot.Constants.DriveConstants.kMaxCorrectionRatio;
@@ -58,10 +59,10 @@ public class DefaultDrive extends CommandBase {
 
   @Override
   public void execute() {
-    DriveParam driveParam = new DriveParam(mForward.getAsDouble(), mRotation.getAsDouble());
+    DriveParam driveParam = new DriveParam(mForward.getAsDouble()*-1, mRotation.getAsDouble());
     driveParam = applyDeadBand(driveParam);
     driveParam = applyButtons(driveParam);
-    driveParam = applyGyro(driveParam);
+   // driveParam = applyGyro(driveParam);
     applyRamps(driveParam);
     mDrive.arcadeDrive(mCurDriveParam);
   }
@@ -69,7 +70,7 @@ public class DefaultDrive extends CommandBase {
   private DriveParam applyDeadBand(DriveParam driveParam)
   {
     driveParam.setForward(DriveMath.DeadBand(driveParam.getForward(), kDeadBand));   
-    driveParam.setRotation(DriveMath.DeadBand(driveParam.getRotation(), kDeadBand));   
+    driveParam.setRotation(DriveMath.DeadBand(driveParam.getRotation(), kDeadBandRot));   
     return driveParam;
   }
 
@@ -101,9 +102,9 @@ public class DefaultDrive extends CommandBase {
     double turnThrottle = driveParam.getRotation();
  
     // IF we are turning, turn off the gyro
-    if (Math.abs(driveParam.getRotation()) > 0.2)
+    if (Math.abs(driveParam.getRotation()) > 0.5)
     {
-      driveParam.multiply(0.5, 0.5);
+      driveParam.multiply(0.6, 0.6);
       mTargetAngle = mDrive.getHeading();
     }
     else
@@ -112,12 +113,9 @@ public class DefaultDrive extends CommandBase {
       {
         double angleError = (mTargetAngle - mDrive.getHeading());
         turnThrottle = angleError * kPgain - (mDrive.getTurnRate()) * kDgain;
-        System.out.format("tt:%8.2f  ", turnThrottle);
         double maxThrot = DriveMath.MaxCorrection(driveParam.getForward(), kMaxCorrectionRatio);
         turnThrottle = -1 * DriveMath.Cap(turnThrottle, maxThrot);
-        System.out.format("tt:%8.2f ae:%8.2f mt:%8.2f ", turnThrottle, angleError, maxThrot);
         driveParam.setRotation(turnThrottle);
-        System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
       }
       else
       {
@@ -131,6 +129,7 @@ public class DefaultDrive extends CommandBase {
 
   private void applyRamps(DriveParam driveParam)
   {
+    mCurDriveParam.setRotation(driveParam.getRotation());
     // Ramp the speed
     if (mCurDriveParam.getForward() != driveParam.getForward())
     {

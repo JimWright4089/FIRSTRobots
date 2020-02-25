@@ -61,6 +61,8 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry sOdometry;
 
+  private int mCount = 0;
+
   /**
    * Creates a new DriveSubsystem.
    */
@@ -72,7 +74,12 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    if(mCount>10)
+    {
+      System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+      mCount = 0;
+    }
+    mCount++;
     sOdometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPosition(),
                       getRightEncoderPosition());
   }
@@ -134,7 +141,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     double left = (leftVolts>4)?leftVolts:leftVolts;
     double right = (rightVolts>4)?rightVolts:rightVolts;
-    System.out.printf("%f %f \n",left,right);
+    //System.out.printf("%f %f \n",left,right);
     sLeftMotors.setVoltage(left);
     sRightMotors.setVoltage(-right);
   }

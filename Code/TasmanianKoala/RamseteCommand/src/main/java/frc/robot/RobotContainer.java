@@ -138,4 +138,10 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
   }
+
+  void clearDrive()
+  {
+    m_robotDrive.zeroHeading();
+    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+  }
 }

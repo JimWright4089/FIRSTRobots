@@ -28,6 +28,8 @@
 #include <stdio.h>
 #include <iostream>
 
+#define FROM_IMAGE
+
 using namespace cv;
 using namespace std;
 
@@ -49,14 +51,15 @@ Mat mSourceImage;
 //--------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-    VideoCapture cap(1); //capture the video from web cam
     int low1Value   =   0;
-    int high1Value  =  39;
-    int low2Value   =   0;
-    int high2Value  =  32;
-    int low3Value   =  40;
-    int high3Value  = 130;
+    int high1Value  = 255;
+    int low2Value   =  90;
+    int high2Value  = 226;
+    int low3Value   = 214;
+    int high3Value  = 255;
 
+#ifndef FROM_IMAGE
+    VideoCapture cap(1); //capture the video from web cam
     // Can't open the camera
     if (!cap.isOpened())  // if not success, exit program
     {
@@ -65,7 +68,7 @@ int main(int argc, char** argv)
     }
 
     bool bSuccess = cap.read(mSourceImage); // read a new frame from video
-
+#endif
     Size matSize;
     matSize.width = mSourceImage.cols;
     matSize.height = mSourceImage.rows;
@@ -73,6 +76,9 @@ int main(int argc, char** argv)
     // Idle loop
     while (true)
     {
+#ifdef FROM_IMAGE
+        mSourceImage = imread("F:\\JimsRobot\\FIRSTRobots\\Code\\Windows\\TheBall.jpg", 3);
+#else`
         bool bSuccess = cap.read(mSourceImage); // read a new frame from video
 
         if (!bSuccess) //if not success, break loop
@@ -80,7 +86,7 @@ int main(int argc, char** argv)
             cout << "Cannot read a frame from video stream" << endl;
             break;
         }
-
+#endif
         Mat imgThresholded;
         Mat imgThresholdedCopy;
 

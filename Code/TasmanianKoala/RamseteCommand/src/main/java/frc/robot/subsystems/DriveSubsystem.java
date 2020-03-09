@@ -133,8 +133,10 @@ public class DriveSubsystem extends SubsystemBase {
     double left = leftVolts;
     double right = rightVolts;
     //System.out.printf("%f %f \n",left,right);
+    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
     sLeftMotors.setVoltage(left);
     sRightMotors.setVoltage(-right);
+    sDrive.feed();
   }
 
   /**

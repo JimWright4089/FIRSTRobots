@@ -78,11 +78,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-        .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
+        .whenPressed(() -> m_robotDrive.setMaxOutput(0.6))
         .whenReleased(() -> m_robotDrive.setMaxOutput(1));
-
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -123,8 +121,8 @@ public class RobotContainer {
         // Pass config
         config
     );
-/*
-    String trajectoryJSON = "Paths/GetThreeBalls.wpilib.json";
+
+    String trajectoryJSON = "Paths/GetThreeBall.wpilib.json";
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -133,7 +131,7 @@ public class RobotContainer {
     }
 
     System.out.println("opened trajectory: " + trajectoryJSON);
-*/
+
     RamseteCommand ramseteCommand = new RamseteCommand(
       exampleTrajectory,
       m_robotDrive::getPose,
@@ -152,5 +150,12 @@ public class RobotContainer {
 
       // Run path following command, then stop at the end.
       return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
+  }
+
+
+  public void clear()
+  {
+    m_robotDrive.resetOdometry(new Pose2d());
+    m_robotDrive.zeroHeading();
   }
 }

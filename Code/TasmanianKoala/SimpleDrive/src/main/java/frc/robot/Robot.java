@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -104,20 +105,27 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   }
 
+  
+  PowerDistributionPanel mPDP = new PowerDistributionPanel(18);
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
-    double left = .2;
-    double right = .2;
+    double left = .7;
+    double right = .7;
 
     mDrive.tankDrive(left, right);
 
-    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f\n",
+    if(mPDP.getCurrent(15) > 0) 
+    {
+    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f T:%8.2f E:%8.2f 1:%8.2f 2:%8.2f\n",
     left,right,
     mDrive.getHeading(),
     mDrive.getLeftEncoderSpeed(),mDrive.getLeftEncoderPosition(),
-    mDrive.getRightEncoderSpeed(),mDrive.getRightEncoderPosition());  
+    mDrive.getRightEncoderSpeed(),mDrive.getRightEncoderPosition(),
+    mPDP.getTotalCurrent(),mPDP.getTotalPower(),
+    mPDP.getCurrent(14), mPDP.getCurrent(15));
+    }  
   }
 }

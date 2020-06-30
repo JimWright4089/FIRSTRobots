@@ -132,7 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void arcadeDrive(DriveParam driveParam) {
     sDrive.arcadeDrive(driveParam.getForward(), driveParam.getRotation());
-    System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
+    //System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
   }
 
   /**
@@ -143,6 +143,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void tankDrive(double left, double right) {
     sDrive.tankDrive(left, right);
+    sDrive.feed();
   }
 
   /**

@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_robotContainer.ResetRobot();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     /*
@@ -96,6 +97,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    m_robotContainer.ResetRobot();
   }
 
   /**

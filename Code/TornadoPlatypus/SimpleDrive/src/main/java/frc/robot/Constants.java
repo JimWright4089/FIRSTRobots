@@ -46,10 +46,10 @@ public final class Constants {
     public static final double kPDriveVel = 0.5;
 
     public static final double kSpeedGain = 0.02; // The ramp for the speed
-    public static final double kSlowSpeed = .2;
+    public static final double kSlowSpeed = .4;
     public static final double kSlowTurnSpeed = .3;
-    public static final double kNormalSpeed = .7;
-    public static final double kNormalTurnSpeed = .7;
+    public static final double kNormalSpeed = .6;
+    public static final double kNormalTurnSpeed = .5;
     public static final double kDeadBand = .08;
     public static final double kDeadBandRot = .18;
     public static final double kPgain = 0.003; /* percent throttle per degree of error */
@@ -57,6 +57,20 @@ public final class Constants {
     public static final double kMaxCorrectionRatio = 0.20; /*
                                                      * cap corrective turning throttle to 30 percent of forward throttle
                                                      */
+
+
+
+
+    public static final double kMoveP = .005;
+    public static final double kMoveI = 0;
+    public static final double kMoveD = 0;                                                     
+
+    public static final double kMaxMoveRateDegPerS = 1;
+    public static final double kMaxMoveAccelerationDegPerSSquared = .4;
+
+    public static final double kMoveToleranceDeg = 50;
+    public static final double kMoveRateToleranceDegPerS = .3; // degrees per second
+
   }
 
   public static final class OIConstants {

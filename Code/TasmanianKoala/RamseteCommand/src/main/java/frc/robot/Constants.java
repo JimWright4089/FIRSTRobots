@@ -42,11 +42,6 @@ public final class Constants {
 
     public static final boolean kGyroReversed = true;
 
-    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or theoretically
-    // for *your* robot's drive.
-    // The Robot Characterization Toolsuite provides a convenient tool for obtaining these
-    // values for your robot.
     public static final double ksVolts = 0.101;
     public static final double kvVoltSecondsPerMeter = 1.87;
     public static final double kaVoltSecondsSquaredPerMeter = 0.0656;

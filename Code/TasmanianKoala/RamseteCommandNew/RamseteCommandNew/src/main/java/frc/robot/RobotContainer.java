@@ -46,24 +46,31 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
+  public void ResetRobot()
+  {
+    m_robotDrive.zeroHeading();
+    m_robotDrive.resetEncoders();
+    m_robotDrive.resetOdometry(new Pose2d(0.0,0.0,new Rotation2d()));
+  }
+
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_robotDrive
-            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft),
-                         m_driverController.getX(GenericHID.Hand.kRight)), m_robotDrive));
+            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft)*0.8,
+                         m_driverController.getX(GenericHID.Hand.kRight)*0.5), m_robotDrive));
 
   }
-
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -74,10 +81,9 @@ public class RobotContainer {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kBumperRight.value)
         .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
+        .whenReleased(() -> m_robotDrive.setMaxOutput(1.0));
 
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -103,21 +109,42 @@ public class RobotContainer {
             .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
+/*
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
+
+        
         List.of(
-            new Translation2d(2, 0),
-            new Translation2d(4, 0)
+            new Translation2d(2, 1),
+            new Translation2d(4, -1)
         ),
+        
         // End 3 meters straight ahead of where we started, facing forward
         new Pose2d(6, 0, new Rotation2d(0)),
         // Pass config
         config
     );
+*/
+
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+
+        
+        List.of(
+            new Translation2d(-2, 1),
+            new Translation2d(-4, -1)
+        ),
+        
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(-6, 0, new Rotation2d(0)),
+        // Pass config
+        config
+    );
+
 
     RamseteCommand ramseteCommand = new RamseteCommand(
         exampleTrajectory,
@@ -132,6 +159,7 @@ public class RobotContainer {
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         m_robotDrive::tankDriveVolts,
+//        m_robotDrive::tankDriveVoltsBackwards,
         m_robotDrive
     );
 

@@ -65,9 +65,10 @@ public class DriveSubsystem extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
   public DriveSubsystem() {
+    sDrive.setMaxOutput(0.4);
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-    sDrive.setSafetyEnabled(false);
+    sDrive.setSafetyEnabled(true);
   }
 
   @Override
@@ -110,6 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
+    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
     sDrive.arcadeDrive(fwd, rot);
   }
 
@@ -133,9 +135,19 @@ public class DriveSubsystem extends SubsystemBase {
     double left = leftVolts;
     double right = rightVolts;
     //System.out.printf("%f %f \n",left,right);
-    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+   //System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
     sLeftMotors.setVoltage(left);
     sRightMotors.setVoltage(-right);
+    sDrive.feed();
+  }
+
+  public void tankDriveVoltsBackwards(double leftVolts, double rightVolts) {
+    double left = leftVolts;
+    double right = rightVolts;
+    //System.out.printf("%f %f \n",left,right);
+   //System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    sLeftMotors.setVoltage(-left);
+    sRightMotors.setVoltage(right);
     sDrive.feed();
   }
 

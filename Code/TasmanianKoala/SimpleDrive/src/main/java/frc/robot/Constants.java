@@ -51,9 +51,9 @@ public final class Constants {
 
     public static final double kSpeedGain = 0.02; // The ramp for the speed
     public static final double kSlowSpeed = .2;
-    public static final double kSlowTurnSpeed = .3;
-    public static final double kNormalSpeed = .7;
-    public static final double kNormalTurnSpeed = .7;
+    public static final double kSlowTurnSpeed = .2;
+    public static final double kNormalSpeed = .5;
+    public static final double kNormalTurnSpeed = .4;
     public static final double kDeadBand = .08;
     public static final double kDeadBandRot = .18;
     public static final double kPgain = 0.003; /* percent throttle per degree of error */

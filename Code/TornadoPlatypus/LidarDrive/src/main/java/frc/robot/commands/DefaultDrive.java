@@ -1,12 +1,29 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+//
+//  $Workfile: DefaultDrive.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tornado Platypus
+//
+//                            Copyright (c) 2020
+//                              James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.commands;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -25,12 +42,21 @@ import static frc.robot.Constants.DriveConstants.kPgain;
 import static frc.robot.Constants.DriveConstants.kDgain;
 import static frc.robot.Constants.DriveConstants.kMaxCorrectionRatio;
 
-/**
- * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s). Written
- * explicitly for pedagogical purposes - actual code should inline a command this simple with {@link
- * edu.wpi.first.wpilibj2.command.RunCommand}.
- */
-public class DefaultDrive extends CommandBase {
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DefaultDrive
+//
+// Purpose:
+//   Drives the robot with a joystick, this builds up the input stack
+//
+//----------------------------------------------------------------------------
+public class DefaultDrive extends CommandBase 
+{
+  //----------------------------------------------------------------------------
+  //  Class Attributes
+  //----------------------------------------------------------------------------
   private final DriveSubsystem mDrive;
   private final DoubleSupplier mForward;
   private final DoubleSupplier mRotation;
@@ -39,13 +65,14 @@ public class DefaultDrive extends CommandBase {
   private DriveParam mCurDriveParam;
   private double mTargetAngle = 0.0;
 
-  /**
-   * Creates a new DefaultDrive.
-   *
-   * @param subsystem The drive subsystem this command wil run on.
-   * @param forward The control input for driving forwards/backwards
-   * @param rotation The control input for turning
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Contstructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier rotation,
                        BooleanSupplier fastButton, BooleanSupplier slowButton) {
     mDrive = subsystem;
@@ -57,8 +84,17 @@ public class DefaultDrive extends CommandBase {
     addRequirements(mDrive);
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is called every frame of the scheduler
+  //
+  //  Notes:
+  //      This builds up the drive params, you can pull things in or out
+  //
+  //----------------------------------------------------------------------------
   @Override
-  public void execute() {
+  public void execute() 
+  {
     DriveParam driveParam = new DriveParam(mForward.getAsDouble()*-1, mRotation.getAsDouble());
     driveParam = applyDeadBand(driveParam);
     driveParam = applyButtons(driveParam);
@@ -67,6 +103,14 @@ public class DefaultDrive extends CommandBase {
     mDrive.arcadeDrive(mCurDriveParam);
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is applies dead bands
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   private DriveParam applyDeadBand(DriveParam driveParam)
   {
     driveParam.setForward(DriveMath.DeadBand(driveParam.getForward(), kDeadBand));   
@@ -74,6 +118,14 @@ public class DefaultDrive extends CommandBase {
     return driveParam;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is applies buttons
+  //
+  //  Notes:
+  //      The buttons control the speed of the robot
+  //
+  //----------------------------------------------------------------------------
   private DriveParam applyButtons(DriveParam driveParam)
   {
     // Adjust for speed, check if the fast button is pushed
@@ -97,6 +149,14 @@ public class DefaultDrive extends CommandBase {
     return driveParam;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is applies gyro to the driver input to help go straight
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   private DriveParam applyGyro(DriveParam driveParam)
   {
     double turnThrottle = driveParam.getRotation();
@@ -127,6 +187,15 @@ public class DefaultDrive extends CommandBase {
     return driveParam;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is applies speed ramps so that if the user moves the joystick
+  //      from all the forward to all the way backward, it does not jam the motors
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   private void applyRamps(DriveParam driveParam)
   {
     mCurDriveParam.setRotation(driveParam.getRotation());

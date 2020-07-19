@@ -40,7 +40,8 @@ public final class Constants {
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
-    public static final boolean kGyroReversed = true;
+    public static final boolean kGyroReversed = false;
+    public static final int kTimeoutMs = 20;
 
     public static final double ksVolts = 0.101;
     public static final double kvVoltSecondsPerMeter = 1.87;
@@ -48,7 +49,6 @@ public final class Constants {
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPDriveVel = 2.4;
-    public static final int kTimeoutMs = 20;
   }
 
   public static final class OIConstants {
@@ -56,8 +56,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAccelerationMetersPerSecondSquared = .2;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;

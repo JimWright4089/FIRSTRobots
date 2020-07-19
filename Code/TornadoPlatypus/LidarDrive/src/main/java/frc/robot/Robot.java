@@ -1,12 +1,29 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+//
+//  $Workfile: Robot.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tornado Platypus
+//
+//                            Copyright (c) 2020
+//                              James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.networktables.*;
@@ -17,44 +34,51 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Lidar;
-import frc.robot.commands.MoveTo500mm;
 import frc.robot.commands.FollowLeftWall;;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: Robot
+//
+// Purpose:
+//   The entry point
+//
+//----------------------------------------------------------------------------
 public class Robot extends TimedRobot {
-  private RobotContainer mRobotContainer;
-  private DriveSubsystem mDrive;
+  // ----------------------------------------------------------------------------
+  // Class Attributes
+  // ----------------------------------------------------------------------------
+  private DriveSubsystem mDrive = DriveSubsystem.getInstance();
   NetworkTableEntry mLEDRing;
   private Joystick mJoystick = new Joystick(0);
-  private Lidar mLidar = new Lidar();
+  private Lidar mLidar = Lidar.getInstance();
   private Command mAutoCommand;
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
+  PowerDistributionPanel mPDP = new PowerDistributionPanel(18);
+
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Gets everything ready to run the robot
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void robotInit() {
-    mRobotContainer = new RobotContainer();
-    mDrive = mRobotContainer.getDriveSubsystem();
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     mLEDRing = inst.getEntry("/LEDColor");
-    
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Call this every frame
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void robotPeriodic() {
     if(false == DriverStation.getInstance().isDisabled())
@@ -76,23 +100,20 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Gets the auto ready to run
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void autonomousInit() {
     mDrive.zeroHeading();
     mDrive.resetOdometry();
 
-    mAutoCommand = new FollowLeftWall(800, mDrive, mLidar).withTimeout(200);
+    mAutoCommand = new FollowLeftWall(800).withTimeout(200);
 
     if (mAutoCommand != null) 
     {
@@ -101,15 +122,26 @@ public class Robot extends TimedRobot {
 
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Auto loop
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
-
   public void autonomousPeriodic() {
   }
 
-
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Stops any auto and gets the teleop really to run
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   public void teleopInit() {
     mDrive.zeroHeading();
     mDrive.resetOdometry();
@@ -119,9 +151,15 @@ public class Robot extends TimedRobot {
     }
 
   }
-  /**
-   * This function is called periodically during operator control.
-   */
+
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Tele loop
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void teleopPeriodic() {
     System.out.format("-45:%8.2f 0:%8.2f 45:%8.2f 60:%8.2f \n", 
@@ -151,49 +189,15 @@ public class Robot extends TimedRobot {
     mDrive.arcadeDrive(speed,turn);
   }
 
-  
-  PowerDistributionPanel mPDP = new PowerDistributionPanel(18);
-  /**
-   * This function is called periodically during test mode.
-   */
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Test loop
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void testPeriodic() {
-    double left = -.4;
-    double right = -.4;
-
-    double adjst = (mLidar.getNdeg45()/700)*.03;
-  
-    System.out.format("L:%8.2f R:%8.2f -70:%8.2f a:%8.2f ",
-    left,right,
-    mLidar.getNdeg45(),
-    adjst);
-    
-    right+=adjst;
-
-    if(right<-.7)
-    {
-      right = -.7;
-    }
-    if(right>-.1)
-    {
-      right = -.1;
-    }
-
-    System.out.format("R:%8.2f\n",
-    right);
-  
-
-    mDrive.tankDrive(left, right);
-/*
-    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f T:%8.2f E:%8.2f 1:%8.2f 2:%8.2f 0d:%8.2f -70d:%8.2f\n",
-    left,right,
-    mDrive.getHeading(),
-    mDrive.getLeftEncoderSpeed(),mDrive.getLeftEncoderPosition(),
-    mDrive.getRightEncoderSpeed(),mDrive.getRightEncoderPosition(),
-    mPDP.getTotalCurrent(),mPDP.getTotalPower(),
-    mPDP.getCurrent(14), mPDP.getCurrent(15),
-    mLidar.get0(),
-    mLidar.getNdeg70());
-*/    
   }
 }

@@ -6,7 +6,7 @@
 //
 //  Project:    Stealth Libraries
 //
-//                            Copyright (c) 2018
+//                            Copyright (c) 2020
 //                           Cedarcrest High School
 //                            All Rights Reserved
 //

@@ -9,11 +9,7 @@ package frc.robot;
 
 import java.util.List;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -22,7 +18,6 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
@@ -51,24 +46,31 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
+  public void ResetRobot()
+  {
+    m_robotDrive.zeroHeading();
+    m_robotDrive.resetEncoders();
+    m_robotDrive.resetOdometry(new Pose2d(0.0,0.0,new Rotation2d()));
+  }
+
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_robotDrive
-            .arcadeDrive(m_driverController.getY(GenericHID.Hand.kLeft)*.6,
-                         m_driverController.getX(GenericHID.Hand.kRight)*.6), m_robotDrive));
+            .arcadeDrive(-1*m_driverController.getY(GenericHID.Hand.kLeft)*0.8,
+                         m_driverController.getX(GenericHID.Hand.kRight)*0.5), m_robotDrive));
 
   }
-
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -78,8 +80,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-        .whenPressed(() -> m_robotDrive.setMaxOutput(0.6))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
+        .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
+        .whenReleased(() -> m_robotDrive.setMaxOutput(1.0));
+
   }
 
   /**
@@ -106,56 +109,61 @@ public class RobotContainer {
             .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
+/*
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
+
+        
         List.of(
-            new Translation2d(1, 0),
-            new Translation2d(2, 0)
+            new Translation2d(2, 1),
+            new Translation2d(4, -1)
         ),
+        
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(6, 0, new Rotation2d(0)),
+        // Pass config
+        config
+    );
+*/
+
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+
+        
+        List.of(
+            new Translation2d(2, 1),
+            new Translation2d(4, -1)
+        ),
+        
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(6, 0, new Rotation2d(0)),
         // Pass config
         config
     );
 
-    String trajectoryJSON = "Paths/GetThreeBall.wpilib.json";
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      System.out.println("Unable to open trajectory: " + trajectoryJSON);
-    }
-
-    System.out.println("opened trajectory: " + trajectoryJSON);
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-      exampleTrajectory,
-      m_robotDrive::getPose,
-      new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-      new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                 DriveConstants.kvVoltSecondsPerMeter,
-                                 DriveConstants.kaVoltSecondsSquaredPerMeter),
-      DriveConstants.kDriveKinematics,
-      m_robotDrive::getWheelSpeeds,
-      new PIDController(DriveConstants.kPDriveVel, 0, 0),
-      new PIDController(DriveConstants.kPDriveVel, 0, 0),
-      // RamseteCommand passes volts to the callback
-      m_robotDrive::tankDriveVolts,
-      m_robotDrive
-  );
+        exampleTrajectory,
+        m_robotDrive::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_robotDrive::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_robotDrive::tankDriveVolts,
+//        m_robotDrive::tankDriveVoltsBackwards,
+        m_robotDrive
+    );
 
-      // Run path following command, then stop at the end.
-      return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
-  }
-
-
-  public void clear()
-  {
-    m_robotDrive.resetOdometry(new Pose2d());
-    m_robotDrive.zeroHeading();
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
   }
 }

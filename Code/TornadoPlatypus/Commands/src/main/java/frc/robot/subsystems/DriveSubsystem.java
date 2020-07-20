@@ -1,5 +1,29 @@
+//----------------------------------------------------------------------------
+//
+//  $Workfile: DriveSubsystem.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tornado Platypus
+//
+//                            Copyright (c) 2020
+//                              James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.subsystems;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -16,202 +40,323 @@ import static frc.robot.Constants.DriveConstants.kLeftMotor1Port;
 import static frc.robot.Constants.DriveConstants.kRightMotor1Port;
 import static frc.robot.Constants.DriveConstants.kTimeoutMs;
 import static frc.robot.Constants.DriveConstants.kGyroPort;
-import static frc.robot.Constants.DriveConstants.kLeftEncoderReversed;
-import static frc.robot.Constants.DriveConstants.kRightEncoderReversed;
-
 import frc.robot.utils.DriveParam;
 
-public class DriveSubsystem extends SubsystemBase {
-  private final WPI_TalonFX  sMotorLeftA =             new WPI_TalonFX(kLeftMotor1Port);
-  private final WPI_TalonFX  sMotorRightA =            new WPI_TalonFX(kRightMotor1Port);
-  // The motors on the left side of the drive.
-  private final SpeedControllerGroup sLeftMotors =     new SpeedControllerGroup(sMotorLeftA);
-
-  // The motors on the right side of the drive.
-  private final SpeedControllerGroup sRightMotors =    new SpeedControllerGroup(sMotorRightA);
-
-  // The robot's drive
-  private final DifferentialDrive sDrive =             new DifferentialDrive(sLeftMotors, sRightMotors);
-
-  // The gyro sensor
-  private final PigeonIMU sGyro =                      new PigeonIMU(kGyroPort);
-  private PigeonIMU.FusionStatus mFusionStatus =       new PigeonIMU.FusionStatus();
-  private double[] mXYZDegreePerSecond =               new double[3];
-
-  // Odometry class for tracking robot pose
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DriveSubsystem
+//
+// Purpose:
+//   Handles all the hardware and management of the drive base
+//
+//----------------------------------------------------------------------------
+public class DriveSubsystem extends SubsystemBase 
+{
+  //----------------------------------------------------------------------------
+  //  Class Statics
+  //----------------------------------------------------------------------------
+  private final WPI_TalonFX          sMotorLeftA  = new WPI_TalonFX(kLeftMotor1Port);
+  private final WPI_TalonFX          sMotorRightA = new WPI_TalonFX(kRightMotor1Port);
+  private final SpeedControllerGroup sLeftMotors  = new SpeedControllerGroup(sMotorLeftA);
+  private final SpeedControllerGroup sRightMotors = new SpeedControllerGroup(sMotorRightA);
+  private final DifferentialDrive    sDrive       = new DifferentialDrive(sLeftMotors, sRightMotors);
+  private final PigeonIMU            sGyro        = new PigeonIMU(kGyroPort);
   private final DifferentialDriveOdometry sOdometry;
+   
+  //----------------------------------------------------------------------------
+  //  Class Attributes
+  //----------------------------------------------------------------------------
+  private PigeonIMU.FusionStatus mFusionStatus = new PigeonIMU.FusionStatus();
+  private double[] mXYZDegreePerSecond = new double[3];
+  static DriveSubsystem mInstance;
 
-  /**
-   * Creates a new DriveSubsystem.
-   */
-  public DriveSubsystem() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Returns the singleton instance
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public static DriveSubsystem getInstance()
+  {
+    if(null == mInstance)
+    {
+      mInstance = new DriveSubsystem();
+    }
+    return mInstance;
+  }
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Contstructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  private DriveSubsystem() 
+  {
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      This is called every frame
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
-  public void periodic() {
-    // Update the odometry in the periodic block
+  public void periodic() 
+  {
     sOdometry.update(Rotation2d.fromDegrees(getHeading()), sMotorLeftA.getSelectedSensorPosition(),
         sMotorRightA.getSelectedSensorPosition());
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
-  public Pose2d getPose() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the drives pose
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public Pose2d getPose() 
+  {
     return sOdometry.getPoseMeters();
   }
 
-  /**
-   * Returns the current wheel speeds of the robot.
-   *
-   * @return The current wheel speeds.
-   */
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the differential wheel speeds, mostly for following paths
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() 
+  {
     return new DifferentialDriveWheelSpeeds(sMotorLeftA.getSelectedSensorVelocity(), sMotorRightA.getSelectedSensorVelocity());
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry(Pose2d pose) {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Resets the pose
+  //
+  //  Notes:
+  //      Sort of teleporting the robot around the field
+  //
+  //----------------------------------------------------------------------------
+  public void resetOdometry(Pose2d pose) 
+  {
     resetEncoders();
     sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Resets the odometry to 0,0 theta 0
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void resetOdometry() 
+  {
     resetEncoders();
     sOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(getHeading()));
   }
 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(double fwd, double rot) {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      One stick drive
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void arcadeDrive(double fwd, double rot) 
+  {
     sDrive.arcadeDrive(fwd, rot);
   }
 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(DriveParam driveParam) {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      One stick drive with processed parameters
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void arcadeDrive(DriveParam driveParam) 
+  {
     sDrive.arcadeDrive(driveParam.getForward(), driveParam.getRotation());
-    //System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
   }
 
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
-  public void tankDrive(double left, double right) {
-
-    System.out.print(left);
-    System.out.print(" ");
-    System.out.print(right);
-    System.out.print(" ");
-
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      two stick drive from joystick
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void tankDrive(double left, double right) 
+  {
     sDrive.tankDrive(left, right);
     sDrive.feed();
   }
 
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      two stick drive from volts
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     sLeftMotors.setVoltage(leftVolts);
     sRightMotors.setVoltage(-rightVolts);
   }
 
-  /**
-   * Resets the drive encoders to currently read a position of 0.
-   */
-  public void resetEncoders() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Clear the encocders to 0
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void resetEncoders() 
+  {
     sMotorLeftA.setSelectedSensorPosition(-0);
     sMotorRightA.setSelectedSensorPosition(-0);
   }
 
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Get the center of the robots position
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public double getAverageEncoderDistance() 
+  {
     return (sMotorLeftA.getSelectedSensorPosition() + sMotorRightA.getSelectedSensorPosition()) / 2.0;
   }
 
-  /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Sets the max output percentage that the motors can go
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void setMaxOutput(double maxOutput) 
+  {
     sDrive.setMaxOutput(maxOutput);
   }
 
-  /**
-   * Zeroes the heading of the robot.
-   */
-  public void zeroHeading() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Clear the gyro to 0
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public void zeroHeading() 
+  {
     sGyro.setFusedHeading(0.0, kTimeoutMs);
   }
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from 180 to 180
-   */
-  public double getHeading() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the heading in CW dir
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public double getHeading() 
+  {
     sGyro.getFusedHeading(mFusionStatus);
 
     return Math.IEEEremainder(mFusionStatus.heading, 360) * (kGyroReversed ? -1.0 : 1.0);  
   }
 
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return how fast the gyro is going
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public double getTurnRate() 
+  {
     sGyro.getRawGyro(mXYZDegreePerSecond);
 
     return mXYZDegreePerSecond[2] * (kGyroReversed ? -1.0 : 1.0);
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the position of the wheel 
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public double getLeftEncoderPosition()
   {
-    return ((true == kLeftEncoderReversed) ? -1 : 1)*sMotorLeftA.getSelectedSensorPosition();
+    return sMotorLeftA.getSelectedSensorPosition();
   }
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the position of the wheel 
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public double getRightEncoderPosition()
   {
-    return ((true == kRightEncoderReversed) ? -1 : 1)*sMotorRightA.getSelectedSensorPosition();
+    return sMotorRightA.getSelectedSensorPosition();
   }
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the speed of the wheel 
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public double getLeftEncoderSpeed()
   {
-    return ((true == kLeftEncoderReversed) ? -1 : 1)*sMotorLeftA.getSelectedSensorVelocity();
+    return sMotorLeftA.getSelectedSensorVelocity();
   }
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //      Return the speed of the wheel 
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public double getRightEncoderSpeed()
   {
-    return ((true == kRightEncoderReversed) ? -1 : 1)*sMotorRightA.getSelectedSensorVelocity();
+    return sMotorRightA.getSelectedSensorVelocity();
   }
 }

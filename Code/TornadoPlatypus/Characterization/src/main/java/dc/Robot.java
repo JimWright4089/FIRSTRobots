@@ -1,17 +1,32 @@
-/**
- * This is a very simple robot program that can be used to send telemetry to
- * the data_logger script to characterize your drivetrain. If you wish to use
- * your actual robot code, you only need to implement the simple logic in the
- * autonomousPeriodic function and change the NetworkTables update rate
- */
+//----------------------------------------------------------------------------
+//
+//  $Workfile: FollowLeftWall.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tornado Platypus
+//
+//                            Copyright (c) 2020
+//                              James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package dc;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import java.util.function.Supplier;
-
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,8 +37,20 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: Robot
+//
+// Purpose:
+//   The entry point
+//
+//----------------------------------------------------------------------------
 public class Robot extends TimedRobot {
-
+  // ----------------------------------------------------------------------------
+  // Class Constants
+  // ----------------------------------------------------------------------------
   public static final int kLeftMotor1Port = 1;
   public static final int kRightMotor1Port = 2;
   public static final int kGyroPort = 10;
@@ -34,52 +61,55 @@ public class Robot extends TimedRobot {
   public static final double kFirstStage = 50.0/10.0;
   public static final double kSecondStage = 48.0/16.0;
   public static final double kEncoderCPR = kRawEncoderCPR * kFirstStage * kSecondStage;
-    public static final double kWheelDiameterMeters = 0.1524;
+  public static final double kWheelDiameterMeters = 0.1524;
   public static final double kEncoderDistancePerPulse =
       // Assumes the encoders are directly mounted on the wheel shafts
       (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
   public static final boolean kGyroReversed = true;
 
-
-  Joystick stick;
+  // ----------------------------------------------------------------------------
+  // Class Statics
+  // ----------------------------------------------------------------------------
   private final WPI_TalonFX  sMotorLeftA = new WPI_TalonFX(kLeftMotor1Port);
   private final WPI_TalonFX  sMotorRightA = new WPI_TalonFX(kRightMotor1Port);
-    // The motors on the left side of the drive.
-  private final SpeedControllerGroup sLeftMotors =
-      new SpeedControllerGroup(sMotorLeftA);
-
-  // The motors on the right side of the drive.
-  private final SpeedControllerGroup sRightMotors =
-      new SpeedControllerGroup(sMotorRightA);
-
-  // The robot's drive
+  private final SpeedControllerGroup sLeftMotors = new SpeedControllerGroup(sMotorLeftA);
+  private final SpeedControllerGroup sRightMotors = new SpeedControllerGroup(sMotorRightA);
   private final DifferentialDrive sDrive = new DifferentialDrive(sLeftMotors, sRightMotors);
 
-  Supplier<Double> leftEncoderPosition;
-  Supplier<Double> leftEncoderRate;
-  Supplier<Double> rightEncoderPosition;
-  Supplier<Double> rightEncoderRate;
-  Supplier<Double> gyroAngleRadians;
+  // ----------------------------------------------------------------------------
+  // Class Attributes
+  // ----------------------------------------------------------------------------
+  Joystick mStick;
+  Supplier<Double> mLeftEncoderPosition;
+  Supplier<Double> mLeftEncoderRate;
+  Supplier<Double> mRightEncoderPosition;
+  Supplier<Double> mRightEncoderRate;
+  Supplier<Double> mGyroAngleRadians;
 
-  NetworkTableEntry autoSpeedEntry =
-      NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
-  NetworkTableEntry telemetryEntry =
-      NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
-  NetworkTableEntry rotateEntry =
-    NetworkTableInstance.getDefault().getEntry("/robot/rotate");
+  NetworkTableEntry mAutoSpeedEntry =  NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
+  NetworkTableEntry mTelemetryEntry =  NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
+  NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
-  double priorAutospeed = 0;
-  Number[] numberArray = new Number[10];
+  double mPriorAutospeed = 0;
+  Number[] mNumberArray = new Number[10];
 
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Get Robot ready to go
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void robotInit() {
     if (!isReal()) SmartDashboard.putData(new SimEnabler());
 
-    stick = new Joystick(0);
+    mStick = new Joystick(0);
 
     PigeonIMU pigeon = new PigeonIMU(10);
-    gyroAngleRadians = () -> {
+    mGyroAngleRadians = () -> {
       // Allocating a new array every loop is bad but concise
       double[] xyz = new double[3];
       pigeon.getAccumGyro(xyz);
@@ -91,15 +121,10 @@ public class Robot extends TimedRobot {
     double encoderConstant =
     (1 / kEncoderCPR) * kWheelDiameterMeters * Math.PI;
 
-    leftEncoderPosition = ()
-        -> (double)(sMotorLeftA.getSelectedSensorPosition()) * encoderConstant;
-    leftEncoderRate = ()
-        -> (double)(sMotorLeftA.getSelectedSensorVelocity()) * encoderConstant;
-
-    rightEncoderPosition = ()
-        -> -1.0*(double)(sMotorRightA.getSelectedSensorPosition()) * encoderConstant;
-    rightEncoderRate = ()
-        -> -1.0*(double)(sMotorRightA.getSelectedSensorVelocity()) * encoderConstant;
+    mLeftEncoderPosition  = () -> (double)(sMotorLeftA.getSelectedSensorPosition()) * encoderConstant;
+    mLeftEncoderRate      = () -> (double)(sMotorLeftA.getSelectedSensorVelocity()) * encoderConstant;
+    mRightEncoderPosition = () -> -1.0*(double)(sMotorRightA.getSelectedSensorPosition()) * encoderConstant;
+    mRightEncoderRate     = () -> -1.0*(double)(sMotorRightA.getSelectedSensorVelocity()) * encoderConstant;
 
     // Reset encoders
     sMotorLeftA.setSelectedSensorPosition(-0);
@@ -110,42 +135,57 @@ public class Robot extends TimedRobot {
     NetworkTableInstance.getDefault().setUpdateRate(0.010);
   }
 
-  @Override
-  public void disabledInit() {
-    System.out.println("Robot disabled");
-    sDrive.tankDrive(0, 0);
-  }
-
-  @Override
-  public void disabledPeriodic() {}
-
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Get Robot ready to go
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void robotPeriodic() {
     // feedback for users, but not used by the control program
-    SmartDashboard.putNumber("l_encoder_pos", leftEncoderPosition.get());
-    SmartDashboard.putNumber("l_encoder_rate", leftEncoderRate.get());
-    SmartDashboard.putNumber("r_encoder_pos", rightEncoderPosition.get());
-    SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
+    SmartDashboard.putNumber("l_encoder_pos",  mLeftEncoderPosition.get());
+    SmartDashboard.putNumber("l_encoder_rate", mLeftEncoderRate.get());
+    SmartDashboard.putNumber("r_encoder_pos",  mRightEncoderPosition.get());
+    SmartDashboard.putNumber("r_encoder_rate", mRightEncoderRate.get());
   }
 
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Get Teleop ready to go
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void teleopInit() {
     System.out.println("Robot in operator control mode");
   }
 
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Tele Loop
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void teleopPeriodic() {
     System.out.printf("%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f\n",
-    leftEncoderPosition.get(),
-    rightEncoderPosition.get(),
-    leftEncoderRate.get(),
-    rightEncoderRate.get(),
+    mLeftEncoderPosition.get(),
+    mRightEncoderPosition.get(),
+    mLeftEncoderRate.get(),
+    mRightEncoderRate.get(),
     sMotorLeftA.getMotorOutputVoltage(),
     sMotorRightA.getMotorOutputVoltage(),
-    gyroAngleRadians.get());
-    sDrive.arcadeDrive(-stick.getY()*.5, stick.getX()*.4);
+    mGyroAngleRadians.get());
+    sDrive.arcadeDrive(-mStick.getY()*.5, mStick.getX()*.4);
 
-    if(true == stick.getRawButton(1))
+    if(true == mStick.getRawButton(1))
     {
       // Reset encoders
       sMotorLeftA.setSelectedSensorPosition(-0);
@@ -153,59 +193,107 @@ public class Robot extends TimedRobot {
     }
   }
 
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Gets the auto ready to run
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void autonomousInit() {
     System.out.println("Robot in autonomous mode");
   }
 
-  @Override
-  public void testPeriodic()
-  {
-    System.out.printf("%f %f %f %f \n",
-    leftEncoderPosition.get(),rightEncoderPosition.get(),
-    leftEncoderRate.get(),rightEncoderRate.get());
-    sDrive.tankDrive(.4,.4);
-  }
-
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Auto Loop
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   @Override
   public void autonomousPeriodic() {
 
     // Retrieve values to send back before telling the motors to do something
     double now = Timer.getFPGATimestamp();
 
-    double leftPosition = leftEncoderPosition.get();
-    double leftRate = leftEncoderRate.get();
-
-    double rightPosition = rightEncoderPosition.get();
-    double rightRate = rightEncoderRate.get();
-
-    double battery = RobotController.getBatteryVoltage();
-
-    double leftMotorVolts = sMotorLeftA.getMotorOutputVoltage();
+    double leftPosition    = mLeftEncoderPosition.get();
+    double leftRate        = mLeftEncoderRate.get();
+    double rightPosition   = mRightEncoderPosition.get();
+    double rightRate       = mRightEncoderRate.get();
+    double battery         = RobotController.getBatteryVoltage();
+    double leftMotorVolts  = sMotorLeftA.getMotorOutputVoltage();
     double rightMotorVolts = -1.0*sMotorRightA.getMotorOutputVoltage();
 
     // Retrieve the commanded speed from NetworkTables
-    double autospeed = autoSpeedEntry.getDouble(0);
-    priorAutospeed = autospeed;
+    double autospeed = mAutoSpeedEntry.getDouble(0);
+    mPriorAutospeed = autospeed;
 
     // command motors to do things
     sDrive.tankDrive(
-      (rotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed,
+      (mRotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed,
       false
     );
 
     // send telemetry data array back to NT
-    numberArray[0] = now;
-    numberArray[1] = battery;
-    numberArray[2] = autospeed;
-    numberArray[3] = leftMotorVolts;
-    numberArray[4] = rightMotorVolts;
-    numberArray[5] = leftPosition;
-    numberArray[6] = rightPosition;
-    numberArray[7] = leftRate;
-    numberArray[8] = rightRate;
-    numberArray[9] = gyroAngleRadians.get();
+    mNumberArray[0] = now;
+    mNumberArray[1] = battery;
+    mNumberArray[2] = autospeed;
+    mNumberArray[3] = leftMotorVolts;
+    mNumberArray[4] = rightMotorVolts;
+    mNumberArray[5] = leftPosition;
+    mNumberArray[6] = rightPosition;
+    mNumberArray[7] = leftRate;
+    mNumberArray[8] = rightRate;
+    mNumberArray[9] = mGyroAngleRadians.get();
 
-    telemetryEntry.setNumberArray(numberArray);
+    mTelemetryEntry.setNumberArray(mNumberArray);
+  }
+
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Get Disable ready to go
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
+  @Override
+  public void disabledInit() {
+    System.out.println("Robot disabled");
+    sDrive.tankDrive(0, 0);
+  }
+
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Loop while disabled
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
+  @Override
+  public void disabledPeriodic() {}
+
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Test Loop
+  //
+  // Notes:
+  // Make sure everything is driving in the right direction
+  //
+  // ----------------------------------------------------------------------------
+  @Override
+  public void testPeriodic()
+  {
+    System.out.printf("%f %f %f %f \n",
+    mLeftEncoderPosition.get(),
+    mRightEncoderPosition.get(),
+    mLeftEncoderRate.get(),
+    mRightEncoderRate.get());
+    sDrive.tankDrive(.4,.4);
   }
 }

@@ -1,28 +1,61 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------
+//
+//  $Workfile: Main.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tornado Platypus
+//
+//                            Copyright (c) 2020
+//                              James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import edu.wpi.first.wpilibj.RobotBase;
 
-/**
- * Do NOT add any static variables to this class, or any initialization at all.
- * Unless you know what you are doing, do not modify this file except to
- * change the parameter class to the startRobot call.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: Main
+//
+// Purpose:
+//   The entry point
+//
+//----------------------------------------------------------------------------
 public final class Main {
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Contstructor
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   private Main() {
   }
 
-  /**
-   * Main initialization function. Do not perform any initialization here.
-   *
-   * <p>If you change your main robot class, change the parameter type.
-   */
+  // ----------------------------------------------------------------------------
+  // Purpose:
+  // Run the actual robot
+  //
+  // Notes:
+  // None
+  //
+  // ----------------------------------------------------------------------------
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
   }

@@ -79,6 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
     sDrive.setMaxOutput(0.4);
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    System.out.println("new DifferentialDriveOdometry");
     sDrive.setSafetyEnabled(true);
   }
 
@@ -111,6 +112,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
+    System.out.println("resetOdometry");
     resetEncoders();
     sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
@@ -145,8 +147,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     double left = leftVolts;
     double right = rightVolts;
-    //System.out.printf("%f %f \n",left,right);
-   //System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+//    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
     sLeftMotors.setVoltage(left);
     sRightMotors.setVoltage(-right);
     sDrive.feed();

@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import frc.robot.commands.DriveExample;
-import frc.robot.commands.DrivePath;
+import frc.robot.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -69,9 +68,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.ResetRobot();
-//    m_autonomousCommand = new DriveExample();
-//    m_autonomousCommand = new DrivePath("Paths/SixBallCollect.wpilib.json");
-    m_autonomousCommand = new DrivePath("Paths/FiveBallAuto.wpilib.json");
+//    m_autonomousCommand = new AutoDriveDefault();
+//    m_autonomousCommand = new AutoDriveDefaultForwBack();
+//    m_autonomousCommand = new AutoDrivePath("Paths/DriveTenFeet.wpilib.json");
+//      m_autonomousCommand = new AutoDrivePathBackward("Paths/DriveTenFeetBackwards.wpilib.json");
+//      m_autonomousCommand = new AutoDrivePathForwBack();
+      m_autonomousCommand = new AutoDriveExampleForwBack();
+      
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.ramsete;
 
 import java.nio.file.Path;
 import java.io.IOException;
@@ -8,23 +8,20 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DriverStation;
 
-import frc.robot.commands.DriveRamseteForward;
 import frc.robot.trajectory.DefaultTrajectory;
 
-public class DrivePath extends SequentialCommandGroup
+public class DrivePath 
 {
-    DriveRamseteForward mDriveRamseteForward = new DriveRamseteForward();
+    DriveRamsete mDriveRamsete = new DriveRamsete();
     DriveSubsystem mDriveSubsystem = DriveSubsystem.getInstance();
 
     public DrivePath() {
         Trajectory trajectory = DefaultTrajectory.getTrajectory();
 
-        mDriveRamseteForward = new DriveRamseteForward(trajectory);
-        addCommands(
-            mDriveRamseteForward.getRamsete());
+        mDriveRamsete = new DriveRamsete(trajectory);
       }    
 
     public DrivePath(String name) {
@@ -43,7 +40,12 @@ public class DrivePath extends SequentialCommandGroup
         System.out.printf("%s\n",mDriveSubsystem.getPose().toString());
         System.out.printf("%s\n",trajectory.getInitialPose().toString());
 
-        mDriveRamseteForward = new DriveRamseteForward(trajectory);
-        addCommands(mDriveRamseteForward.getRamsete());
-    }    
+        mDriveRamsete = new DriveRamsete(trajectory);
+    }  
+    
+    public Command getCommand()
+    {
+      return mDriveRamsete.getRamsete(); 
+    }      
+    
 }

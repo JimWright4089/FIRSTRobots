@@ -34,6 +34,7 @@ public class RobotContainer {
 
   public void ResetRobot()
   {
+    System.out.println("ResetRobot");
     m_robotDrive.zeroHeading();
     m_robotDrive.resetEncoders();
     m_robotDrive.resetOdometry(new Pose2d(0.0,0.0,new Rotation2d()));

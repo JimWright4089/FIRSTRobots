@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.ramsete;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.trajectory.DefaultTrajectory;
@@ -17,14 +17,14 @@ import static frc.robot.Constants.DriveConstants.kaVoltSecondsSquaredPerMeter;
 import static frc.robot.Constants.DriveConstants.kDriveKinematics;
 import static frc.robot.Constants.DriveConstants.kPDriveVel;
 
-public class DriveRamseteForward {
+public class DriveRamsete {
     private final DriveSubsystem mRobotDrive = DriveSubsystem.getInstance();
     private Trajectory mTrajectory = DefaultTrajectory.getTrajectory();
 
-    public DriveRamseteForward() {
+    public DriveRamsete() {
     }
 
-    public DriveRamseteForward(Trajectory trajectory) {
+    public DriveRamsete(Trajectory trajectory) {
         mTrajectory = trajectory;
     }
 

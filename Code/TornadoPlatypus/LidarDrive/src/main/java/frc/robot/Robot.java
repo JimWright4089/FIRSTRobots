@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Lidar;
-import frc.robot.commands.FollowLeftWall;;
+import frc.robot.commands.FollowRightWall;;
 
 //----------------------------------------------------------------------------
 // Class Declarations
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
     mDrive.zeroHeading();
     mDrive.resetOdometry();
 
-    mAutoCommand = new FollowLeftWall(800).withTimeout(200);
+    mAutoCommand = new FollowRightWall(800).withTimeout(200);
 
     if (mAutoCommand != null) 
     {

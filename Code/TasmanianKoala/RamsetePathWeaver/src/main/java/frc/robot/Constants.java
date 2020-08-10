@@ -49,6 +49,13 @@ public final class Constants {
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPDriveVel = 2.4;
+
+    public static final double kTurnP = 0.0002;
+    public static final double kTurnI = 0.0005;
+    public static final double kTurnD = 0.0006;
+
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
   }
 
   public static final class OIConstants {

@@ -3,7 +3,6 @@ package frc.robot.ramsete;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.trajectory.DefaultTrajectoryBackward;
-import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveDefaultBackward 
 {

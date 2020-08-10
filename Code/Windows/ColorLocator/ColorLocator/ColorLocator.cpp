@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     while (true)
     {
 #ifdef FROM_IMAGE
-        mSourceImage = imread("F:\\JimsRobot\\FIRSTRobots\\Code\\Windows\\TheBall.jpg", 3);
+        mSourceImage = imread("F:\\JimsRobot\\FIRSTRobots\\Code\\Windows\\Ball.png", 3);
 #else`
         bool bSuccess = cap.read(mSourceImage); // read a new frame from video
 
@@ -104,15 +104,15 @@ int main(int argc, char** argv)
 
         // Convert the captured frame from BGR to HSV
         // I like working in Hue Sat Value
-        //cvtColor(mSourceImage, imageInHueSatVal, COLOR_BGR2HSV);
-        mSourceImage.copyTo(imageInHueSatVal);
+        cvtColor(mSourceImage, imageInHueSatVal, COLOR_BGR2HSV);
+        //mSourceImage.copyTo(imageInHueSatVal);
 
         Mat imgThresholded;
         Mat imgThresholdedCopy;
 
         inRange(imageInHueSatVal, Scalar(iLowH, iLowS, iLowV), 
             Scalar(iHighH, iHighS, iHighV), imgThresholded); //Threshold the image
-/*
+
         //morphological opening (remove small objects from the foreground)
         erode(imgThresholded, imgThresholded, 
             getStructuringElement(MORPH_ELLIPSE, Size(mMorphSize, mMorphSize)));
@@ -124,7 +124,7 @@ int main(int argc, char** argv)
             getStructuringElement(MORPH_ELLIPSE, Size(mMorphSize, mMorphSize)));
         erode(imgThresholded, imgThresholded, 
             getStructuringElement(MORPH_ELLIPSE, Size(mMorphSize, mMorphSize)));
-*/
+
         // finding the contours corupts the image passed in
         imgThresholded.copyTo(imgThresholdedCopy);
 /*

@@ -97,6 +97,11 @@ public class DriveSubsystem extends SubsystemBase {
     return sOdometry.getPoseMeters();
   }
 
+  public double getPoseThetaDegrees()
+  {
+    return sOdometry.getPoseMeters().getRotation().getDegrees();
+  }
+
   /**
    * Returns the current wheel speeds of the robot.
    *
@@ -124,7 +129,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
-//    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    System.out.printf("%f  -  ",rot);
     sDrive.arcadeDrive(fwd, rot);
   }
 

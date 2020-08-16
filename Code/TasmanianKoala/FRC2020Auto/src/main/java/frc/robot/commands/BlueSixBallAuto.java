@@ -1,3 +1,23 @@
+//----------------------------------------------------------------------------
+//
+//  $Workfile: BlueSixBallAuto.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -12,12 +32,14 @@ public class BlueSixBallAuto extends SequentialCommandGroup
     DriveTrajectory drivePath1 = new DriveTrajectory(BlueSixBallAutoCollectThree.getTrajectory());  
     DriveTrajectory drivePath2 = new DriveTrajectory(BlueSixBallAutoBackToLine.getTrajectory());      
     addCommands(new TurnToCenterLowGoal(0, DriveSubsystem.getInstance(), RaspPiCamera.getInstance()));
+    addCommands(new WaitTime(1000));
     addCommands(new TurnToAngle(0,DriveSubsystem.getInstance()));
     addCommands(drivePath1.getCommand());
-    addCommands(new WaitTime().withTimeout(1));
+    addCommands(new WaitTime(1000));
     addCommands(drivePath2.getCommand());
     addCommands(new TurnToAngle(180,DriveSubsystem.getInstance()));
     addCommands(new TurnToCenterLowGoal(0, DriveSubsystem.getInstance(), RaspPiCamera.getInstance()));
+    addCommands(new WaitTime(1000));
   } 
   
   @Override

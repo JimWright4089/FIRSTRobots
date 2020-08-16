@@ -1,3 +1,23 @@
+//----------------------------------------------------------------------------
+//
+//  $Workfile: ExampleTrajectoryBackward.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.trajectory;
 
 import java.util.List;

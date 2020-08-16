@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: Robot.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.*;
@@ -25,8 +40,11 @@ import frc.robot.commands.*;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final DriveSubsystem m_robotDrive = DriveSubsystem.getInstance();
+  XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
   private RobotContainer m_robotContainer;
   private Command mBlueSixBallAuto;
+  private Command mRandomBackToStart;
+  private Command mInTakeBall;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -38,6 +56,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     mBlueSixBallAuto = new BlueSixBallAuto();
+    mRandomBackToStart = new RandomBackToStart();
+    mInTakeBall = new IntakeThatBall();
   }
 
   /**
@@ -65,7 +85,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    m_robotDrive.resetOdometry(new Pose2d(3.126, -1.85, new Rotation2d(3.1415)));
+//    m_robotDrive.resetOdometry(new Pose2d(3.126, -1.85, new Rotation2d(3.1415)));
+    m_robotDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
     m_robotDrive.zeroHeading();
   }
 
@@ -76,10 +97,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     System.out.println("autonomousInit()");
 
-    m_robotDrive.resetOdometry(new Pose2d(3.126, -1.85, new Rotation2d(3.1415)));
+//    m_robotDrive.resetOdometry(new Pose2d(3.126, -1.85, new Rotation2d(3.1415)));
     m_robotDrive.zeroHeading();
-    m_autonomousCommand = mBlueSixBallAuto;
-      
+    //m_autonomousCommand = mBlueSixBallAuto;
+    //m_autonomousCommand = mRandomBackToStart;
+    m_autonomousCommand = mInTakeBall;
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -117,7 +139,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    m_robotDrive.arcadeDrive(-1*m_driverController.getY(GenericHID.Hand.kLeft)*0.5,
+    m_driverController.getX(GenericHID.Hand.kRight)*0.3);
   }
 
   @Override

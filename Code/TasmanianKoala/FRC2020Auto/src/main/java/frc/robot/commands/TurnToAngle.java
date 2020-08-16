@@ -1,3 +1,23 @@
+//----------------------------------------------------------------------------
+//
+//  $Workfile: TurnToAngle.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -49,7 +69,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
 
     System.out.printf("iF:%f %s\n",posError,DriveSubsystem.getInstance().getPose().toString());
 
-    return posError < .5;
+    return posError < DriveConstants.kTurnToleranceDeg;
 
 //    return getController().atGoal();
   }

@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: Constants.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -53,12 +66,17 @@ public final class Constants {
     public static final double kTurnP = 0.002;
     public static final double kTurnI = 0.0005;
     public static final double kTurnD = 0.0006;
+    public static final double kTurnPFind = 0.002;
+    public static final double kTurnIFind = 0.0005;
+    public static final double kTurnDFind = 0.0006;
 
-    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnToleranceDeg = 2;
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
     public static final double kMaxTurnRateDegPerS = 100;
     public static final double kMaxTurnAccelerationDegPerSSquared = 300; 
+    public static final double kMaxTurnRateDegPerSFind = 100;
+    public static final double kMaxTurnAccelerationDegPerSSquaredFind = 300; 
   }
 
   public static final class OIConstants {

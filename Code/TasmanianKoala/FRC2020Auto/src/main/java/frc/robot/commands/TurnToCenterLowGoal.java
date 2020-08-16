@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: TurnToCenterLowGoal.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -25,10 +38,10 @@ public class TurnToCenterLowGoal extends ProfiledPIDCommand {
 
   public TurnToCenterLowGoal(double targetAngleDegrees, DriveSubsystem drive, RaspPiCamera camera) {
     super(
-        new ProfiledPIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
-                                  DriveConstants.kTurnD, new TrapezoidProfile.Constraints(
-            DriveConstants.kMaxTurnRateDegPerS,
-            DriveConstants.kMaxTurnAccelerationDegPerSSquared)),
+        new ProfiledPIDController(DriveConstants.kTurnPFind, DriveConstants.kTurnIFind,
+                                  DriveConstants.kTurnDFind, new TrapezoidProfile.Constraints(
+            DriveConstants.kMaxTurnRateDegPerSFind,
+            DriveConstants.kMaxTurnAccelerationDegPerSSquaredFind)),
         // Close loop on heading
         camera::getX,
         // Set reference to target

@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: DriveSubsystem.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -76,7 +89,6 @@ public class DriveSubsystem extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
   private DriveSubsystem() {
-    sDrive.setMaxOutput(0.4);
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     System.out.println("new DifferentialDriveOdometry");
@@ -117,7 +129,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    System.out.println("resetOdometry");
     resetEncoders();
     sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }

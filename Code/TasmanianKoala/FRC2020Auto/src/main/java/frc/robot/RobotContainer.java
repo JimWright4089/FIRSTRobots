@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: RobotContainer.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -47,16 +60,16 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
+/*    
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_robotDrive
-            .arcadeDrive(-1*m_driverController.getY(GenericHID.Hand.kLeft)*0.8,
-                         m_driverController.getX(GenericHID.Hand.kRight)*0.5), m_robotDrive));
-
+            .arcadeDrive(-1*m_driverController.getY(GenericHID.Hand.kLeft)*0.6,
+                         m_driverController.getX(GenericHID.Hand.kRight)*0.3), m_robotDrive));
+*/
   }
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by

@@ -1,10 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+//----------------------------------------------------------------------------
+//
+//  $Workfile: RaspPiCamera.java$
+//
+//  $Revision: X$
+//
+//  Project:    Tasmanian Koala
+//
+//                            Copyright (c) 2020
+//                                 Jim Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//  Package
+//----------------------------------------------------------------------------
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +28,7 @@ import static frc.robot.Constants.RaspPiImage.kXCenter;
 public class RaspPiCamera extends SubsystemBase {
 
   NetworkTableEntry mX;  
+  NetworkTableEntry mArea;  
 
   static RaspPiCamera mInstance;
 
@@ -30,6 +44,7 @@ public class RaspPiCamera extends SubsystemBase {
   private RaspPiCamera() {
       NetworkTableInstance inst = NetworkTableInstance.getDefault();
       mX = inst.getEntry("/rp/x");
+      mArea = inst.getEntry("/rp/area");
   }
 
   @Override
@@ -43,6 +58,10 @@ public class RaspPiCamera extends SubsystemBase {
    */
   public double getX() {
     return (kXCenter - mX.getDouble(kXCenter));
+  }
+
+  public double getArea() {
+    return (mArea.getDouble(0));
   }
 
 }

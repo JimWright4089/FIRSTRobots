@@ -20,10 +20,23 @@
 //----------------------------------------------------------------------------
 package frc.robot.commands;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ramsete.*;
 import frc.robot.subsystems.DriveSubsystem;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: AutoDriveDefaultForwBack
+//
+// Purpose:
+//   Drive the default auto path backwards
+//
+//----------------------------------------------------------------------------
 public class AutoDriveDefaultForwBack extends SequentialCommandGroup
 {
   DriveDefault mDriveDefault = new DriveDefault();  

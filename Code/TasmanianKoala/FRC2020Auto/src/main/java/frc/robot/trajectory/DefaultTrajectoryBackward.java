@@ -20,8 +20,10 @@
 //----------------------------------------------------------------------------
 package frc.robot.trajectory;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import java.util.List;
-
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -33,6 +35,9 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.subsystems.DriveSubsystem;
 
+//----------------------------------------------------------------------------
+//  Import static consts
+//----------------------------------------------------------------------------
 import static frc.robot.Constants.AutoConstants.kMaxSpeedMetersPerSecond;
 import static frc.robot.Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared;
 import static frc.robot.Constants.DriveConstants.kDriveKinematics;
@@ -40,7 +45,21 @@ import static frc.robot.Constants.DriveConstants.ksVolts;
 import static frc.robot.Constants.DriveConstants.kvVoltSecondsPerMeter;
 import static frc.robot.Constants.DriveConstants.kaVoltSecondsSquaredPerMeter;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DefaultTrajectoryBackward
+//
+// Purpose:
+//   Run one meter backwards
+//
+//----------------------------------------------------------------------------
 public class DefaultTrajectoryBackward {
+
+  // ----------------------------------------------------------------------------
+  // Class Static Attributes
+  // ----------------------------------------------------------------------------
   static DriveSubsystem mDriveSubsystem = DriveSubsystem.getInstance();
   static DifferentialDriveVoltageConstraint mAutoVoltageConstraint =
     new DifferentialDriveVoltageConstraint(
@@ -50,6 +69,14 @@ public class DefaultTrajectoryBackward {
         kDriveKinematics,
         10);
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Return the trajectory to the ramesete command
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public static Trajectory getTrajectory()
     {
       Pose2d startPose = mDriveSubsystem.getPose();

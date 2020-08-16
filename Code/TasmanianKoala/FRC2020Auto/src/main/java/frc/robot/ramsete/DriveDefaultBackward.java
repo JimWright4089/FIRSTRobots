@@ -20,22 +20,52 @@
 //----------------------------------------------------------------------------
 package frc.robot.ramsete;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.trajectory.DefaultTrajectoryBackward;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DriveDefaultBackward
+//
+// Purpose:
+//   Run the default trajectory backwards
+//
+//----------------------------------------------------------------------------
 public class DriveDefaultBackward 
 {
+    // ----------------------------------------------------------------------------
+    // Class Attributes
+    // ----------------------------------------------------------------------------
     DriveRamsete mDriveRamsete = new DriveRamsete();
-//    DriveSubsystem mDriveSubsystem = DriveSubsystem.getInstance();
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Constructor
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public DriveDefaultBackward() {
       Trajectory trajectory = DefaultTrajectoryBackward.getTrajectory();
-//      mDriveSubsystem.resetOdometry(trajectory.getInitialPose());
 
       mDriveRamsete = new DriveRamsete(trajectory);
     }  
   
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Return the command
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public Command getCommand()
     {
       return mDriveRamsete.getRamsete(); 

@@ -20,6 +20,9 @@
 //----------------------------------------------------------------------------
 package frc.robot.ramsete;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.trajectory.DefaultTrajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
@@ -37,10 +40,31 @@ import static frc.robot.Constants.DriveConstants.kaVoltSecondsSquaredPerMeter;
 import static frc.robot.Constants.DriveConstants.kDriveKinematics;
 import static frc.robot.Constants.DriveConstants.kPDriveVel;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DriveRamsete
+//
+// Purpose:
+//   Drive a trajectory either forward or backward
+//
+//----------------------------------------------------------------------------
 public class DriveRamsete {
+    // ----------------------------------------------------------------------------
+    // Class Attributes
+    // ----------------------------------------------------------------------------
     private final DriveSubsystem mRobotDrive = DriveSubsystem.getInstance();
     private Trajectory mTrajectory = DefaultTrajectory.getTrajectory();
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Constructor
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public DriveRamsete() {
     }
 
@@ -48,6 +72,14 @@ public class DriveRamsete {
         mTrajectory = trajectory;
     }
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Return the command
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public Command getRamsete()
     {
         RamseteCommand ramseteCommand = new RamseteCommand(

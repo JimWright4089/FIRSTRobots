@@ -20,6 +20,9 @@
 //----------------------------------------------------------------------------
 package frc.robot.ramsete;
 
+//----------------------------------------------------------------------------
+//  Imports
+//----------------------------------------------------------------------------
 import java.nio.file.Path;
 import java.io.IOException;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -33,17 +36,46 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.trajectory.DefaultTrajectory;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: DrivePath
+//
+// Purpose:
+//   Drive a path from PathWeaver
+//
+//----------------------------------------------------------------------------
 public class DrivePath 
 {
+    // ----------------------------------------------------------------------------
+    // Class Attributes
+    // ----------------------------------------------------------------------------
     DriveRamsete mDriveRamsete = new DriveRamsete();
     DriveSubsystem mDriveSubsystem = DriveSubsystem.getInstance();
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Constructor
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public DrivePath() {
         Trajectory trajectory = DefaultTrajectory.getTrajectory();
 
         mDriveRamsete = new DriveRamsete(trajectory);
       }    
 
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Load in a path
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public DrivePath(String name) {
         Trajectory trajectory = DefaultTrajectory.getTrajectory();
 
@@ -63,6 +95,14 @@ public class DrivePath
         mDriveRamsete = new DriveRamsete(trajectory);
     }  
     
+    // ----------------------------------------------------------------------------
+    // Purpose:
+    // Return the command
+    //
+    // Notes:
+    // None
+    //
+    // ----------------------------------------------------------------------------
     public Command getCommand()
     {
       return mDriveRamsete.getRamsete(); 

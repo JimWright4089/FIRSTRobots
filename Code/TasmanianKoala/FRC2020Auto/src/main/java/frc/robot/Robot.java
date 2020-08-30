@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
   private Command mBlueSixBallAuto;
   private Command mRandomBackToStart;
   private Command mInTakeBall;
+  private Command mInTakeBallML;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -55,9 +56,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    mBlueSixBallAuto = new BlueSixBallAuto();
+//    mBlueSixBallAuto = new BlueSixBallAuto();
     mRandomBackToStart = new RandomBackToStart();
-    mInTakeBall = new IntakeThatBall();
+//    mInTakeBall = new IntakeThatBall();
+//    mInTakeBallML = new IntakeThatBallML();
   }
 
   /**
@@ -98,10 +100,10 @@ public class Robot extends TimedRobot {
     System.out.println("autonomousInit()");
 
 //    m_robotDrive.resetOdometry(new Pose2d(3.126, -1.85, new Rotation2d(3.1415)));
-    m_robotDrive.zeroHeading();
+   // m_robotDrive.zeroHeading();
     //m_autonomousCommand = mBlueSixBallAuto;
-    //m_autonomousCommand = mRandomBackToStart;
-    m_autonomousCommand = mInTakeBall;
+    m_autonomousCommand = mRandomBackToStart;
+    //m_autonomousCommand = mInTakeBallML;
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -140,7 +142,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     m_robotDrive.arcadeDrive(-1*m_driverController.getY(GenericHID.Hand.kLeft)*0.5,
-    m_driverController.getX(GenericHID.Hand.kRight)*0.3);
+    m_driverController.getX(GenericHID.Hand.kRight)*0.2);
   }
 
   @Override

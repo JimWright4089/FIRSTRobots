@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //
-//  $Workfile: WaitTime.java$
+//  $Workfile: IntakeThatBallML.java$
 //
 //  $Revision: X$
 //
@@ -23,27 +23,26 @@ package frc.robot.commands;
 //----------------------------------------------------------------------------
 //  Imports
 //----------------------------------------------------------------------------
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.utils.*;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class WaitTime extends CommandBase
+public class IntakeThatBallML extends SequentialCommandGroup
 {
-  StopWatch mStopWatch = new StopWatch(1000);
-
-  public WaitTime(int millisecToWait) {
-    mStopWatch = new StopWatch(millisecToWait);
+  public IntakeThatBallML() {
+    addCommands(new InTakeBallML(0));
   } 
   
   @Override
   public void initialize()
   {
-    System.out.println("WaitTime::initialize()");
-    mStopWatch.reset();
+    super.initialize();
+    System.out.printf("S:%s\n",DriveSubsystem.getInstance().getPose().toString());
   }
 
   @Override
-  public boolean isFinished() {
-    System.out.println("SW:"+mStopWatch.timeLeft());
-    return mStopWatch.isExpired();
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+    System.out.printf("E:%s\n",DriveSubsystem.getInstance().getPose().toString());
   }
+
 }

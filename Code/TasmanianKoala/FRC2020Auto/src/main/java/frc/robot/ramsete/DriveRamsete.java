@@ -82,6 +82,7 @@ public class DriveRamsete {
     // ----------------------------------------------------------------------------
     public Command getRamsete()
     {
+        System.out.println("public Command getRamsete()");
         RamseteCommand ramseteCommand = new RamseteCommand(
             mTrajectory,
             mRobotDrive::getPose,

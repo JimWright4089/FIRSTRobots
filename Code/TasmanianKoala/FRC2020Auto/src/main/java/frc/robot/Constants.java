@@ -56,9 +56,9 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
     public static final int kTimeoutMs = 20;
 
-    public static final double ksVolts = 0.101;
-    public static final double kvVoltSecondsPerMeter = 1.87;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.0656;
+    public static final double ksVolts = 0.201;
+    public static final double kvVoltSecondsPerMeter = 4.87;
+    public static final double kaVoltSecondsSquaredPerMeter = 3.656;
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPDriveVel = 2.4;

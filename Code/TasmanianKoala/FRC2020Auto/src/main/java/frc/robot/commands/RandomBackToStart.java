@@ -31,14 +31,15 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RandomBackToStart extends SequentialCommandGroup
 {
   public RandomBackToStart() {
+    System.out.println("public RandomBackToStart()");
+
     DriveTrajectory drivePath1 = new DriveTrajectory(DriveFourMeters.getTrajectory());  
     DriveTrajectory drivePath2 = new DriveTrajectory(DriveOdd.getTrajectory());      
     DriveTrajectory drivePath3 = new DriveTrajectory(DriveFourMetersRev.getTrajectory());      
-    addCommands(new WaitTime(1000));
     addCommands(drivePath1.getCommand());
-    addCommands(new WaitTime(3000));
-  //  addCommands(drivePath2.getCommand());
-    addCommands(new WaitTime(3000));
+    addCommands(new WaitTime(30));
+    addCommands(drivePath2.getCommand());
+    addCommands(new WaitTime(30));
     addCommands(drivePath3.getCommand());
   } 
   

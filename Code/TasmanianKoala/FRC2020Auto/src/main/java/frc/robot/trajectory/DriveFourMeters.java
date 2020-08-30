@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import frc.robot.subsystems.DriveSubsystem;
 
 //----------------------------------------------------------------------------
 //  Import static consts
@@ -80,9 +81,10 @@ public class DriveFourMeters {
         kMaxAccelerationMetersPerSecondSquared);
         // Add kinematics to ensure max speed is actually obeyed
         trajectoryConf.setKinematics(kDriveKinematics);
-        trajectoryConf.setReversed(true);
         // Apply the voltage constraint
         trajectoryConf.addConstraint(mAutoVoltageConstraint);
+
+        System.out.println(DriveSubsystem.getInstance().getPose().toString());
 
         return(TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction

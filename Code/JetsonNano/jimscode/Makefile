@@ -6,10 +6,13 @@ LDFLAGS += $(shell pkg-config --libs --static opencv4)
 default: finder
 
 finder:  main.o config.o utils.o stopWatch.o
-	$(CC) -o finder main.o config.o stopWatch.o utils.o $(LDFLAGS) -lstdc++ -lstdc++fs -ljsoncpp
+	$(CC) -o finder main.o config.o stopWatch.o utils.o $(LDFLAGS) -lstdc++ -lstdc++fs -ljsoncpp  -lrealsense2
 
 file:  fileAndDriectoryTest.o 
 	$(CC) -o file fileAndDriectoryTest.o $(LDFLAGS) -lstdc++ -lstdc++fs 
+
+realsense: realsense.o
+	$(CC) -o realsense realsense.o $(LDFLAGS) -lstdc++ -lstdc++fs -lrealsense2
 
 fileAndDriectoryTest.o:  fileAndDriectoryTest.cpp 
 	$(CC) $(CFLAGS) -c -std=c++17 fileAndDriectoryTest.cpp
@@ -19,6 +22,9 @@ config.o:  config.cpp
 
 main.o:  main.cpp 
 	$(CC) $(CFLAGS) -c -std=c++17 main.cpp
+
+realsense.o:  realsense.cpp 
+	$(CC) $(CFLAGS) -c -std=c++17 realsense.cpp
 
 utils.o:  utils.cpp 
 	$(CC) $(CFLAGS) -c -std=c++17 utils.cpp

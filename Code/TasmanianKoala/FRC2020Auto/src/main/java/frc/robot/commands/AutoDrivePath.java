@@ -27,13 +27,40 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ramsete.*;
 import frc.robot.subsystems.DriveSubsystem;
 
+//----------------------------------------------------------------------------
+//Class Declarations
+//----------------------------------------------------------------------------
+//
+//Class Name: AutoDrivePath
+//
+//Purpose:
+//  Run a path from a file
+//
+//----------------------------------------------------------------------------
 public class AutoDrivePath extends SequentialCommandGroup
 {
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public AutoDrivePath(String path) {
     DrivePath drivePath = new DrivePath(path);  
     addCommands(drivePath.getCommand());
   } 
   
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Run the setup before the loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void initialize()
   {
@@ -41,6 +68,14 @@ public class AutoDrivePath extends SequentialCommandGroup
     System.out.printf("S:%s\n",DriveSubsystem.getInstance().getPose().toString());
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   When the command ends this is what is called
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);

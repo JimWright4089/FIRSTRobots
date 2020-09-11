@@ -28,9 +28,16 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.MLBall;
 import frc.robot.utils.*;
 
-/**
- * A command that will turn the robot to the specified angle using a motion profile.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: InTakeBallML
+//
+// Purpose:
+//  use the Tensorflow model and camera to find the ball
+//
+//----------------------------------------------------------------------------
 public class InTakeBallML extends CommandBase {
   final double kPOffset = 0.0008;
   final double kIOffset = 0.0001;
@@ -38,6 +45,9 @@ public class InTakeBallML extends CommandBase {
   final double kISize = 0.00000;
   final int kTimeoutSize = 20;
 
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   DriveSubsystem mDrive = DriveSubsystem.getInstance();
   MLBall mMLBall = MLBall.getInstance();
   double mAngle = 0;
@@ -48,16 +58,39 @@ public class InTakeBallML extends CommandBase {
   double mSumErrorSize = 0;
   int mTimeoutCount = 0;
   
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public InTakeBallML(double targetAngleDegrees) {
     mAngle = targetAngleDegrees;
   }
 
-
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Run the setup before the loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override 
   public void  initialize() {
     mTimeoutCount = 0;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   run this code every loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override 
   public void execute() {
     double turnPower = 0;
@@ -88,6 +121,14 @@ public class InTakeBallML extends CommandBase {
     }
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   is the command done
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public boolean isFinished() {
     if(0 == mMLBall.getArea())
@@ -108,6 +149,14 @@ public class InTakeBallML extends CommandBase {
     return ((Math.abs(mErrorOffset) < 5) && (mMLBall.getArea() > mSize));
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   When the command ends this is what is called
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void end(boolean interupted) {
     mDrive.arcadeDrive(0, 0);

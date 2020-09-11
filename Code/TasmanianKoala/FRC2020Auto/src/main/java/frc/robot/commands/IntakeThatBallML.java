@@ -26,12 +26,38 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: IntakeThatBallML
+//
+// Purpose:
+//  Run intake ball group
+//
+//----------------------------------------------------------------------------
 public class IntakeThatBallML extends SequentialCommandGroup
 {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public IntakeThatBallML() {
     addCommands(new InTakeBallML(0));
   } 
   
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Run the setup before the loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void initialize()
   {
@@ -39,6 +65,14 @@ public class IntakeThatBallML extends SequentialCommandGroup
     System.out.printf("S:%s\n",DriveSubsystem.getInstance().getPose().toString());
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   When the command ends this is what is called
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);

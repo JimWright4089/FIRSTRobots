@@ -26,12 +26,25 @@ import edu.wpi.first.networktables.*;
 import static frc.robot.Constants.RaspPiImage.kXCenter;
 
 public class RaspPiCamera extends SubsystemBase {
+  //----------------------------------------------------------------------------
+  //  Static Class Atributes
+  //----------------------------------------------------------------------------
+  static RaspPiCamera mInstance;
 
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   NetworkTableEntry mX;  
   NetworkTableEntry mArea;  
 
-  static RaspPiCamera mInstance;
-
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public static RaspPiCamera getInstance()
   {
     if(null == mInstance)

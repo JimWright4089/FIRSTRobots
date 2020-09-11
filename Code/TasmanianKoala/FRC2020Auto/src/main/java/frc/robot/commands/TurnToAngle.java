@@ -30,19 +30,32 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-/**
- * A command that will turn the robot to the specified angle using a motion profile.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: TurnToAngle
+//
+// Purpose:
+//  Turn robot to an angle
+//
+//----------------------------------------------------------------------------
 public class TurnToAngle extends ProfiledPIDCommand {
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   DriveSubsystem mDrive = DriveSubsystem.getInstance();
   double mAngle = 0;
-  /**
-   * Turns to robot to the specified angle using a motion profile.
-   *
-   * @param targetAngleDegrees The angle to turn to
-   * @param drive              The drive subsystem to use
-   */
-   public TurnToAngle(double targetAngleDegrees, DriveSubsystem drive) {
+
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
+  public TurnToAngle(double targetAngleDegrees, DriveSubsystem drive) {
     super(
         new ProfiledPIDController(DriveConstants.kTurnP, DriveConstants.kTurnI,
                                   DriveConstants.kTurnD, new TrapezoidProfile.Constraints(
@@ -66,6 +79,14 @@ public class TurnToAngle extends ProfiledPIDCommand {
     mAngle = targetAngleDegrees;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   is the command done
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public boolean isFinished() {
     double posError = Math.abs(mDrive.getPoseThetaDegrees() - mAngle);

@@ -29,8 +29,26 @@ import frc.robot.trajectory.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RaspPiCamera;
 
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: BlueSixBallAuto
+//
+// Purpose:
+//  Run a path from the auto line to get three balls
+//
+//----------------------------------------------------------------------------
 public class BlueSixBallAuto extends SequentialCommandGroup
 {
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public BlueSixBallAuto() {
     DriveTrajectory drivePath1 = new DriveTrajectory(BlueSixBallAutoCollectThree.getTrajectory());  
     DriveTrajectory drivePath2 = new DriveTrajectory(BlueSixBallAutoBackToLine.getTrajectory());      
@@ -45,6 +63,14 @@ public class BlueSixBallAuto extends SequentialCommandGroup
     addCommands(new WaitTime(1000));
   } 
   
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Run the setup before the loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void initialize()
   {
@@ -52,6 +78,14 @@ public class BlueSixBallAuto extends SequentialCommandGroup
     System.out.printf("S:%s\n",DriveSubsystem.getInstance().getPose().toString());
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   When the command ends this is what is called
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);

@@ -45,6 +45,14 @@ import static frc.robot.Constants.DriveConstants.kGyroPort;
 import static frc.robot.Constants.DriveConstants.kEncoderDistancePerPulse;
 
 public class DriveSubsystem extends SubsystemBase {
+  //----------------------------------------------------------------------------
+  //  Static Class Atributes
+  //----------------------------------------------------------------------------
+  static DriveSubsystem mInstance;
+
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   private final CANSparkMax  sMotorLeftA = new CANSparkMax(kLeftMotor1Port,MotorType.kBrushless);
   private final CANSparkMax  sMotorLeftB = new CANSparkMax(kLeftMotor2Port,MotorType.kBrushless);
   private final CANSparkMax  sMotorRightA = new CANSparkMax(kRightMotor1Port,MotorType.kBrushless);
@@ -74,8 +82,14 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry sOdometry;
 
-  static DriveSubsystem mInstance;
-
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public static DriveSubsystem getInstance()
   {
     if(null == mInstance)
@@ -100,69 +114,91 @@ public class DriveSubsystem extends SubsystemBase {
     sOdometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPosition(), getRightEncoderPosition());
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Return the current pose
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public Pose2d getPose() {
     return sOdometry.getPoseMeters();
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Return the degrees the robot is pointing
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public double getPoseThetaDegrees()
   {
     return sOdometry.getPoseMeters().getRotation().getDegrees();
   }
 
-  /**
-   * Returns the current wheel speeds of the robot.
-   *
-   * @return The current wheel speeds.
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Return the speed of the wheels
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftEncoderSpeed(), getRightEncoderSpeed());
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Reset the robot to 0,0 and theta 0
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Drive the base with one joystick
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public void arcadeDrive(double fwd, double rot) {
     sDrive.arcadeDrive(fwd, rot);
   }
 
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Drive the robot with two joysticks
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public void tankDrive(double left, double right) {
     sDrive.tankDrive(left, right);
   }
 
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Drive the robot with voltages as the speed
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     double left = leftVolts;
     double right = rightVolts;
-//    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
     sLeftMotors.setVoltage(left);
     sRightMotors.setVoltage(-right);
     sDrive.feed();

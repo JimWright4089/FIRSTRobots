@@ -31,14 +31,32 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RaspPiCamera;
 
-/**
- * A command that will turn the robot to the specified angle using a motion profile.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: TurnToCenterLowGoal
+//
+// Purpose:
+//  Point the robot to the goal
+//
+//----------------------------------------------------------------------------
 public class TurnToCenterLowGoal extends ProfiledPIDCommand {
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   RaspPiCamera mCamera = RaspPiCamera.getInstance();
   double mAngle = 0;
   int mDebugCount = 0;
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public TurnToCenterLowGoal(double targetAngleDegrees, DriveSubsystem drive, RaspPiCamera camera) {
     super(
         new ProfiledPIDController(DriveConstants.kTurnPFind, DriveConstants.kTurnIFind,
@@ -63,6 +81,14 @@ public class TurnToCenterLowGoal extends ProfiledPIDCommand {
     mAngle = targetAngleDegrees;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   is the command done
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public boolean isFinished() {
     double posError = Math.abs(mCamera.getX() - mAngle);

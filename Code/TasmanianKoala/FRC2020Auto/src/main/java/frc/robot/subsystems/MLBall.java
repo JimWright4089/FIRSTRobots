@@ -24,12 +24,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.*;
 
 public class MLBall extends SubsystemBase {
+  //----------------------------------------------------------------------------
+  //  Static Class Atributes
+  //----------------------------------------------------------------------------
+  static MLBall mInstance;
 
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   NetworkTableEntry mX;  
   NetworkTableEntry mArea;  
   final double kXCenter = 360.0;
-
-  static MLBall mInstance;
 
   public static MLBall getInstance()
   {
@@ -40,6 +45,14 @@ public class MLBall extends SubsystemBase {
     return mInstance;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   private MLBall() {
       NetworkTableInstance inst = NetworkTableInstance.getDefault();
       mX = inst.getEntry("/ML/centerX");

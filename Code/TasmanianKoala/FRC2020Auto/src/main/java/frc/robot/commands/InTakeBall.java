@@ -28,15 +28,28 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RaspPiCamera;
 import frc.robot.utils.*;
 
-/**
- * A command that will turn the robot to the specified angle using a motion profile.
- */
+//----------------------------------------------------------------------------
+// Class Declarations
+//----------------------------------------------------------------------------
+//
+// Class Name: InTakeBall
+//
+// Purpose:
+//  use the camera to find the ball
+//
+//----------------------------------------------------------------------------
 public class InTakeBall extends CommandBase {
+  //----------------------------------------------------------------------------
+  //  Constants
+  //----------------------------------------------------------------------------
   final double kPOffset = 0.0015;
   final double kIOffset = 0.0001;
   final double kPSize = 0.00015;
   final double kISize = 0.000015;
 
+  //----------------------------------------------------------------------------
+  //  Class Atributes
+  //----------------------------------------------------------------------------
   DriveSubsystem mDrive = DriveSubsystem.getInstance();
   RaspPiCamera mCamera = RaspPiCamera.getInstance();
   double mAngle = 0;
@@ -46,10 +59,26 @@ public class InTakeBall extends CommandBase {
   double mErrorSize = 0;
   double mSumErrorSize = 0;
   
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   Constructor
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   public InTakeBall(double targetAngleDegrees) {
     mAngle = targetAngleDegrees;
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   run this code every loop
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override 
   public void execute() {
     double turnPower = 0;
@@ -73,6 +102,14 @@ public class InTakeBall extends CommandBase {
     mSumErrorSize = DriveMath.Cap(mSumErrorSize,10000);
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   is the command done
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public boolean isFinished() {
     if(-1 == mCamera.getArea())
@@ -83,6 +120,14 @@ public class InTakeBall extends CommandBase {
     return ((Math.abs(mErrorOffset) < 5) && (mCamera.getArea() > mSize));
   }
 
+  //----------------------------------------------------------------------------
+  //  Purpose:
+  //   When the command ends this is what is called
+  //
+  //  Notes:
+  //      None
+  //
+  //----------------------------------------------------------------------------
   @Override
   public void end(boolean interupted) {
     mDrive.arcadeDrive(0, 0);

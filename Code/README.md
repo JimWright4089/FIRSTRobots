@@ -2,17 +2,17 @@
 
 ## RoboRio based robots
  Tyrannosaurus Wombat</br>
- Tornado Platypus
- Tasmanian Koala
- Robot in a Box
+ Tornado Platypus</br>
+ Tasmanian Koala</br>
+ Robot in a Box</br>
 
 ## Other boards
- Arduino
- Jetson Nano
- Raspberry Pi
+ Arduino</br>
+ Jetson Nano</br>
+ Raspberry Pi</br>
 
 ## Misc Code
- Tensor Flow
- Windows
+ Tensor Flow</br>
+ Windows</br>
 
 

@@ -1,4 +1,4 @@
-# FIRST Robots Code
+# FIRST Robots Design
 
 ## RoboRio based robots
  [Tyrannosaurus Wombat](http://jimwright.org/robot/twambat/twambat.html)</br>

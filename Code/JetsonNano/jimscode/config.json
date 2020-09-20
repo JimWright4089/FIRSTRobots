@@ -2,5 +2,12 @@
   "outputPath":  "/media/jim/DATA",
   "saveOutputTime":  2000,
   "saveOutput":  1,
-  "outputPrefix": "output-"
-}
+  "outputPrefix": "output-",
+  "colorName": "yellow",
+  "colorCode": {
+    "h": [  8, 43],
+    "s": [144,255],
+    "v": [ 43,255]},
+	"colorRgb" : [0,255,355],
+	"minArea":  1000
+	}

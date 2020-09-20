@@ -15,7 +15,7 @@
 //  $
 //
 //  Notes:
-//     This is the main entry poiint
+//     This is the main entry point
 //
 //----------------------------------------------------------------------------
 
@@ -34,12 +34,21 @@ using namespace cv;
 
 //#define WEBCAM
 #define BAL_DIST
+#define MASK
 
 
 Mat gSourceImage;
+Mat gSourceImageOutline;
 #ifndef WEBCAM
 Mat gSourceImageIR;
+Mat gSourceImageIROutline;
 #endif
+int gMorphSize = 7;
+vector<vector<Point> > gContours;
+vector<Vec4i> gHierarchy;
+Rect gRectangle;
+Mat gMaskImage;
+
 
 //----------------------------------------------------------------------------
 //  Purpose:
@@ -56,8 +65,13 @@ int main()
   int lastFrameCount = 0;
   string originalPath = config->getOutputOriginalPath();
   string distancePath = config->getOutputDistancePath();
+  string thresholdPath = config->getOutputThresholdPath();
   StopWatch waitASecond;
   StopWatch waitForSaving;
+  rs2::colorizer theColorizer;
+  Mat imageInHueSatVal;
+  Mat imgThresholded;
+  Mat imgThresholdedCopy;
   
   //------------------------------------------
   //  List the config
@@ -74,6 +88,7 @@ int main()
     config->setOutputPath(outputPath);
     originalPath = config->getOutputOriginalPath();
     distancePath = config->getOutputDistancePath();
+    thresholdPath = config->getOutputThresholdPath();
     waitForSaving.setTime(config->getSaveOutputTime());
   }
 
@@ -116,12 +131,15 @@ int main()
   rs2::config cfg;
 
   //Add desired streams to configuration
-  cfg.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_BGR8, 30);
-  cfg.enable_stream(RS2_STREAM_INFRARED, 640, 480, RS2_FORMAT_Y8, 30);
-  cfg.enable_stream(RS2_STREAM_DEPTH, 640, 480, RS2_FORMAT_Z16, 30);
+  cfg.enable_stream(RS2_STREAM_COLOR);
+  cfg.enable_stream(RS2_STREAM_DEPTH);
 
   //Instruct pipeline to start streaming with the requested configuration
   pipe.start(cfg);
+
+  // that should not be performed in the main loop
+  rs2::align align_to_depth(RS2_STREAM_DEPTH);
+  rs2::align align_to_color(RS2_STREAM_COLOR);
 
   // Camera warmup - dropping several first frames to let auto-exposure stabilize
   rs2::frameset frames;
@@ -148,34 +166,89 @@ int main()
       break;
     }
 #else
-      frames = pipe.wait_for_frames();
+      // Using the align object, we block the application until a frameset is available
+      rs2::frameset frameset = pipe.wait_for_frames();
 
-      //Get each frame
-      rs2::frame color_frame = frames.get_color_frame();
+      // Align all frames to color viewport
+      frameset = align_to_color.process(frameset);
+
+      // With the aligned frameset we proceed as usual
+      rs2::frame depth_frame = frameset.get_depth_frame();
+      rs2::frame color_frame = frameset.get_color_frame();
+      rs2::frame colorized_depth = theColorizer.colorize(depth_frame);
+
       // Creating OpenCV Matrix from a color image
       Mat tempColor(Size(640, 480), CV_8UC3, (void*)color_frame.get_data(), Mat::AUTO_STEP);
       gSourceImage = tempColor;
 
-      //Get each frame
-      rs2::frame ir_frame = frames.first(RS2_STREAM_INFRARED);
-      rs2::frame depth_frame = frames.get_depth_frame();
-
       // Creating OpenCV matrix from IR image
-      Mat tempIR(Size(640, 480), CV_8UC1, (void*)ir_frame.get_data(), Mat::AUTO_STEP);
+      Mat tempIR(Size(640, 480), CV_8UC3, (void*)colorized_depth.get_data(), Mat::AUTO_STEP);
       gSourceImageIR = tempIR;
-
-#ifdef BAL_DIST      
-      // Apply Histogram Equalization
-      equalizeHist( gSourceImageIR, gSourceImageIR );
-      applyColorMap(gSourceImageIR, gSourceImageIR, COLORMAP_JET);
-#endif      
 #endif
 
     frameCount++;
+    
+    cvtColor(gSourceImage, gSourceImage, COLOR_RGB2BGR);
+    // Convert the captured frame from BGR to HSV
+    // I like working in Hue Sat Value
+    cvtColor(gSourceImage, imageInHueSatVal, COLOR_BGR2HSV);
+
+    inRange(imageInHueSatVal, 
+        Scalar( config->getHueLow(),  config->getSatLow(),  config->getValLow()), 
+        Scalar( config->getHueHigh(), config->getSatHigh(), config->getValHigh()), 
+        
+        imgThresholded); //Threshold the image
+
+    //morphological opening (remove small objects from the foreground)
+    erode(imgThresholded, imgThresholded, 
+        getStructuringElement(MORPH_ELLIPSE, Size(gMorphSize, gMorphSize)));
+    dilate(imgThresholded, imgThresholded, 
+        getStructuringElement(MORPH_ELLIPSE, Size(gMorphSize, gMorphSize)));
+
+    //morphological closing (fill small holes in the foreground)
+    dilate(imgThresholded, imgThresholded, 
+        getStructuringElement(MORPH_ELLIPSE, Size(gMorphSize, gMorphSize)));
+    erode(imgThresholded, imgThresholded, 
+        getStructuringElement(MORPH_ELLIPSE, Size(gMorphSize, gMorphSize)));
+
+#ifdef MASK
+    gSourceImage.copyTo(gSourceImageOutline,imgThresholded);
+#ifndef WEBCAM  
+    gSourceImageIR.copyTo(gSourceImageIROutline,imgThresholded);
+#endif
+#else
+    // finding the contours corupts the image passed in
+    imgThresholded.copyTo(imgThresholdedCopy);
+    gSourceImage.copyTo(gSourceImageOutline);
+    gSourceImageIR.copyTo(gSourceImageIROutline);
+    
+    findContours(imgThresholdedCopy, gContours, gHierarchy, 
+        RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+    
+    for (int i = 0; i< (int)gContours.size(); i++)
+    {
+      vector<Point> countour = gContours.at(i);
+      double area = contourArea(countour);
+      
+      if(area > config->getMinArea())
+      {
+        gRectangle = boundingRect(countour);
+        approxPolyDP(Mat(countour), countour, 3, true);
+
+        Scalar color = Scalar(255, 255, 255);
+        drawContours(gSourceImageOutline, gContours, i, color, 2, 8, gHierarchy, 0, Point());
+        Scalar color2 = Scalar( config->getRGBR(),config->getRGBG(),config->getRGBB());
+        rectangle(gSourceImageOutline, gRectangle, color2, 2);
+      }
+    }
+#endif    
+    imshow("Thresholded Image", imgThresholded); //show the thresholded image
+    imshow("Original Outline", gSourceImageOutline); //show the thresholded image
 
     imshow("Original", gSourceImage); //show the original image
 #ifndef WEBCAM
     imshow("IR", gSourceImageIR); //show the original image
+    imshow("IR Outline", gSourceImageIROutline); //show the original image
 #endif
 
     if(true == waitASecond.isExpired())
@@ -192,13 +265,20 @@ int main()
         string fileName = originalPath + "/frame-"+to_string(frameCount)+".jpg";
         imwrite( fileName, gSourceImage );
 
+        fileName = originalPath + "/frameOut-"+to_string(frameCount)+".jpg";
+        imwrite( fileName, gSourceImageOutline );
+
+        fileName = thresholdPath + "/frame-"+to_string(frameCount)+".jpg";
+        imwrite( fileName, imgThresholded );
+
 #ifndef WEBCAM
         string fileNameIR = distancePath + "/frame-"+to_string(frameCount)+".jpg";
         imwrite( fileNameIR, gSourceImageIR );
-        
-        cout << fileName << " " << fileNameIR << "\n";
-        
+
+        fileNameIR = distancePath + "/frameOut-"+to_string(frameCount)+".jpg";
+        imwrite( fileNameIR, gSourceImageIROutline );
 #endif
+        cout << fileName << " " << fileNameIR << "\n";
         waitForSaving.reset();
       }
     }

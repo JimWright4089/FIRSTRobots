@@ -59,6 +59,18 @@ class Config
     string mCurrentOutputPath = "";
     bool   mSaveOutput = false;
     long   mSaveOutputTime = 1000;
+    string mColorName = "All";
+    long   mHueLow = 0;
+    long   mHueHigh = 255;
+    long   mSatLow = 0;
+    long   mSatHigh = 255;
+    long   mValLow = 0;
+    long   mValHigh = 255;
+    long   mRGBG = 255;
+    long   mRGBR = 255;
+    long   mRGBB = 255;
+    long   mMinArea = 1000;
+
     Json::Value mConfigData;
     
     Config();
@@ -76,6 +88,17 @@ class Config
     string getOutputDistancePath();
     string getOutputThresholdPath();
     string getCurrentOutputPath();
+    string getColorName();
+    long   getHueLow();
+    long   getHueHigh();
+    long   getSatLow();
+    long   getSatHigh();
+    long   getValLow();
+    long   getValHigh();
+    long   getRGBG();
+    long   getRGBR();
+    long   getRGBB();
+    long   getMinArea();
     bool   setOutputPath(string currentOutputPath);
     string toString();
 };

@@ -1,0 +1,11 @@
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\bin\Debug\FaceBuilder.exe.config
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\bin\Debug\FaceBuilder.exe
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\bin\Debug\FaceBuilder.pdb
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.csproj.AssemblyReference.cache
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.csproj.SuggestedBindingRedirects.cache
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.FaceBuilder.resources
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.Properties.Resources.resources
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.csproj.GenerateResource.cache
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.csproj.CoreCompileInputs.cache
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.exe
+C:\Home\JimsCode\CS\FaceBuilder\FaceBuilder\obj\Debug\FaceBuilder.pdb

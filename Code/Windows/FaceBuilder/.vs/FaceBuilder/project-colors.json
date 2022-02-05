@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "cc71b015-84e9-45e3-afc8-90e795d6dfcb": {
+      "ProjectGuid": "cc71b015-84e9-45e3-afc8-90e795d6dfcb",
+      "DisplayName": "FaceBuilder",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

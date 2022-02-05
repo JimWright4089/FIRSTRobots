@@ -9,3 +9,14 @@ C:\Home\JimsCode\CS\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.Generat
 C:\Home\JimsCode\CS\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.CoreCompileInputs.cache
 C:\Home\JimsCode\CS\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.exe
 C:\Home\JimsCode\CS\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.pdb
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\bin\Debug\ConvertEyes.exe.config
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\bin\Debug\ConvertEyes.exe
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\bin\Debug\ConvertEyes.pdb
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.AssemblyReference.cache
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.SuggestedBindingRedirects.cache
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.ConvertEyes.resources
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.Properties.Resources.resources
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.GenerateResource.cache
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.csproj.CoreCompileInputs.cache
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.exe
+C:\Home\JimsRobot\FIRSTRobots\Code\Windows\ConvertEyes\ConvertEyes\obj\Debug\ConvertEyes.pdb

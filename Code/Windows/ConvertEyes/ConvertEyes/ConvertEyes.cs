@@ -1,29 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿//----------------------------------------------------------------------------
+//
+//  $Workfile: ConvertEyes.cs$
+//
+//  $Revision: X$
+//
+//  Project:    Robot Eyes
+//
+//                            Copyright (c) 2022
+//                               James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//  Notes:
+//     This is a tool for taking images that were made in Photoshop and convert
+//     them to code.
+//
+//----------------------------------------------------------------------------
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
 namespace ConvertEyes
 {
+  //----------------------------------------------------------------------------
+  //  Class Declarations
+  //----------------------------------------------------------------------------
+  //
+  // Class Name: ConvertEyes
+  // 
+  // Purpose:
+  //      Make the code for eyes from images
+  //
+  //----------------------------------------------------------------------------
   public partial class ConvertEyes : Form
   {
+    //----------------------------------------------------------------------------
+    //  Class Constants
+    //----------------------------------------------------------------------------
     const int WIDTH = 32;
     const int HEIGHT = 32;
 
+    //----------------------------------------------------------------------------
+    //  Class Attributes
+    //----------------------------------------------------------------------------
     Bitmap mMainImage;
     string mName = "";
 
+    //--------------------------------------------------------------------
+    // Purpose:
+    //     Constructor
+    //
+    // Notes:
+    //     None.
+    //--------------------------------------------------------------------
     public ConvertEyes()
     {
         InitializeComponent();
     }
 
+    //--------------------------------------------------------------------
+    // Purpose:
+    //     Look at the image and build code out of it
+    //
+    // Notes:
+    //     None.
+    //--------------------------------------------------------------------
     public string buildCode()
     {
       int top = -1;
@@ -62,7 +107,6 @@ namespace ConvertEyes
         }
       }
 
-      //      results = "{ " + top.ToString() + ", " + bottom.ToString();
       results = "{ 0";
 
       for (int i = 0; i < HEIGHT; i++)
@@ -84,7 +128,13 @@ namespace ConvertEyes
       return results;
     }
 
-
+    //--------------------------------------------------------------------
+    // Purpose:
+    //     Load the image and convert it
+    //
+    // Notes:
+    //     None.
+    //--------------------------------------------------------------------
     private void bLoad_Click(object sender, EventArgs e)
     {
       OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -104,6 +154,13 @@ namespace ConvertEyes
       }
     }
 
+    //--------------------------------------------------------------------
+    // Purpose:
+    //     Save the code to a file
+    //
+    // Notes:
+    //     None.
+    //--------------------------------------------------------------------
     private void bSave_Click(object sender, EventArgs e)
     {
       StreamWriter mFile = new StreamWriter(mName+".cpp");

@@ -1,22 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿//----------------------------------------------------------------------------
+//
+//  $Workfile: Program.cs$
+//
+//  $Revision: X$
+//
+//  Project:    Robot Eyes
+//
+//                            Copyright (c) 2022
+//                               James A Wright
+//                            All Rights Reserved
+//
+//  Modification History:
+//  $Log:
+//  $
+//
+//  Notes:
+//     This is a tool for taking images that were made in Photoshop and convert
+//     them to code.
+//
+//----------------------------------------------------------------------------
+using System;
 using System.Windows.Forms;
 
 namespace ConvertEyes
 {
-    internal static class Program
+  //----------------------------------------------------------------------------
+  //  Class Declarations
+  //----------------------------------------------------------------------------
+  //
+  // Class Name: Program
+  // 
+  // Purpose:
+  //      Main runner
+  //
+  //----------------------------------------------------------------------------
+  internal static class Program
+  {
+    //--------------------------------------------------------------------
+    // Purpose:
+    //     The main entry point for the application.
+    //
+    // Notes:
+    //     None.
+    //--------------------------------------------------------------------
+    [STAThread]
+    static void Main()
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ConvertEyes());
-        }
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new ConvertEyes());
     }
+  }
 }

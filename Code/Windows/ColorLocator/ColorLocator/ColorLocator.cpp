@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     while (true)
     {
 #ifdef FROM_IMAGE
-        mSourceImage = imread("F:\\JimsRobot\\FIRSTRobots\\Code\\Windows\\Ball.png", 3);
+        mSourceImage = imread("C:\\Home\\JimsRobot\\FIRSTRobots\\Code\\Windows\\TwoBalls2022-2.jpg", 3);
 #else`
         bool bSuccess = cap.read(mSourceImage); // read a new frame from video
 
@@ -104,8 +104,8 @@ int main(int argc, char** argv)
 
         // Convert the captured frame from BGR to HSV
         // I like working in Hue Sat Value
-        cvtColor(mSourceImage, imageInHueSatVal, COLOR_BGR2HSV);
-        //mSourceImage.copyTo(imageInHueSatVal);
+        //cvtColor(mSourceImage, imageInHueSatVal, COLOR_BGR2HSV);
+        mSourceImage.copyTo(imageInHueSatVal);
 
         Mat imgThresholded;
         Mat imgThresholdedCopy;

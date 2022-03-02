@@ -30,6 +30,10 @@
 const int MAX_HEIGHT = 32;
 const int MAX_WIDTH = 256;
 
+const int PIN_OFF = 14;
+const int PIN_INTRO = 24;
+
+
 //----------------------------------------------------------------------------
 //  Globals
 //----------------------------------------------------------------------------
@@ -38,6 +42,7 @@ uint8_t addrPins[] = {A5, A4, A3, A2};
 uint8_t clockPin   = 13;
 uint8_t latchPin   = 0;
 uint8_t oePin      = 1;
+uint32_t lastTime  = 0;
 
 Adafruit_Protomatter matrix(
   256,          // Width of matrix (or matrix chain) in pixels
@@ -46,6 +51,11 @@ Adafruit_Protomatter matrix(
   4, addrPins, // # of address pins (height is inferred), array of pins
   clockPin, latchPin, oePin, // Other matrix control pins
   false);      // No double-buffering here (see "doublebuffer" example)
+
+uint32_t times[] = {5000, 2000, 5000, 3000, 5000, 4000, 5000, 5000, 5000, 5000, 5000, 5000, 10000 };
+
+uint8_t image = 0;
+uint16_t waitTime = 1000;
 
 //----------------------------------------------------------------------------
 //  Images in flash
@@ -478,8 +488,7 @@ const PROGMEM uint16_t  thanks[] = {
 //     None.
 //--------------------------------------------------------------------
 void setup(void) {
-  Serial.begin(9600);
-  randomSeed(analogRead(0));
+  Serial.begin(115200);
   
   // Initialize matrix...
   ProtomatterStatus status = matrix.begin();
@@ -490,6 +499,10 @@ void setup(void) {
     Serial.print("Matrix setup encountered an error.");
     delay(1000);
   }
+  pinMode(PIN_OFF, INPUT_PULLUP);
+  pinMode(PIN_INTRO, INPUT_PULLUP);
+
+
 }
 
 //--------------------------------------------------------------------
@@ -501,32 +514,88 @@ void setup(void) {
 //--------------------------------------------------------------------
 void loop(void) 
 {
-  drawImage(firstLogo);
-  delay(5000);
-  drawImage(team);
-  delay(2000);
-  drawImage(stealth4089Logo);
-  delay(5000);
-  drawImage(from);
-  delay(3000);
-  drawImage(cedarcrestLogo);
-  delay(5000);
-  drawImage(thanks);
-  delay(4000);
-  drawImage(boeingLogo);
-  delay(5000);
-  drawImage(speeaLogo);
-  delay(5000);
-  drawImage(microsoftLogo);
-  delay(5000);
-  drawImage(ospiLogo);
-  delay(5000);
-  drawImage(freshLogo);
-  delay(5000);
-  drawImage(firstWashingtonLogo);
-  delay(5000);
-  clearImage();
-  delay(10000);
+  Serial.print(digitalRead(14));
+  Serial.println(digitalRead(24));
+
+  if(0 == digitalRead(PIN_INTRO))
+  {
+    drawImage(stealth4089Logo);
+    delay(2000);
+    drawImage(cedarcrestLogo);
+    delay(2000);
+    drawImage(stealth4089Logo);
+    delay(2000);
+    drawImage(cedarcrestLogo);
+    delay(2000);
+    drawImage(stealth4089Logo);
+    delay(2000);
+    drawImage(cedarcrestLogo);
+    delay(2000);
+    clearImage();
+
+    while(0==digitalRead(PIN_INTRO))
+    {
+     delay(200);
+    }
+  }
+
+  if(0 == digitalRead(PIN_OFF))
+  {
+    clearImage();
+    while(0==digitalRead(PIN_OFF))
+    {
+     delay(200);
+    }
+  }
+
+
+  if((millis() - lastTime) > waitTime)
+  {
+    waitTime = times[image];
+    switch(image)
+    {
+      case(0):  drawImage(firstLogo);
+                image++;
+                break;
+      case(1):  drawImage(team);
+                image++;
+                break;
+      case(2):  drawImage(stealth4089Logo);
+                image++;
+                break;
+      case(3):  drawImage(from);
+                image++;
+                break;
+      case(4):  drawImage(cedarcrestLogo);
+                image++;
+                break;
+      case(5):  drawImage(thanks);
+                image++;
+                break;
+      case(6):  drawImage(boeingLogo);
+                image++;
+                break;
+      case(7):  drawImage(speeaLogo);
+                image++;
+                break;
+      case(8):  drawImage(microsoftLogo);
+                image++;
+                break;
+      case(9):  drawImage(ospiLogo);
+                image++;
+                break;
+      case(10): drawImage(freshLogo);
+                image++;
+                break;
+      case(11):  drawImage(firstWashingtonLogo);
+                image++;
+                break;
+      case(12): clearImage();
+                image=0;
+                break;
+    }
+    lastTime = millis();
+  }
 }
 
 //--------------------------------------------------------------------

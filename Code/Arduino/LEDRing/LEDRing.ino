@@ -31,8 +31,8 @@ typedef unsigned char uint8;
 //----------------------------------------------------------------------------
 const long MAX_TIME       = 1000;
 const uint8 MAX_LEDS      =   16;
-const uint8 LEDPin        =   20;
-const int  COLORReduction =   27;
+const uint8 LEDPin        =    8;
+const int  COLORReduction =    3;
 
 const uint8 COLOR_BLUE    =  0;
 const uint8 COLOR_GREEN   =  1;
@@ -48,16 +48,29 @@ const uint8 MAX_COLORS    = 10;
 
 const uint8 colorArray[] = 
 {
-  0,   0, 255,
-  0, 128,   0,
-255,   0,   0,
-255, 255,   0,
-  0, 255, 255,
-255,   0, 255,
-255, 255, 255,
+ 0, 0,  25,
+ 0, 25,  0,
+25,  0,  0,
+25, 25,  0,
+ 0, 25, 25,
+25,  0, 25,
+25, 25, 25,
+ 0,  0,  0,
+ 0, 25,  0,
+25, 10,  0};
+
+const uint8 colorArrayx[] = 
+{
+  0,   0, 255/4,
+  0, 128/4,   0,
+255/4,   0,   0,
+255/4, 255/4,   0,
+  0, 255/4, 255/4,
+255/4,   0, 255/4,
+255/4, 255/4, 255/4,
   0,   0,   0,
-  0, 255,   0,
-255, 165,   0};
+  0, 255/4,   0,
+255/4, 165/4,   0};
 
 const int delayTime = 2000;
 //----------------------------------------------------------------------------
@@ -96,36 +109,14 @@ void loopGreen()
   ColorSet(COLOR_BRIGHT_GREEN);
 }
 
-void loop() 
+void loopz() 
 { 
   ColorSet(COLOR_WHITE);
 }
 
-void loopz() 
+void loop() 
 { 
-  SpinColor(COLOR_WHITE);
-  delay(delayTime);
   SpinColor(COLOR_YELLOW);
-  delay(delayTime);
-  SpinColor(COLOR_GREEN);
-  delay(delayTime);
-  SpinColor(COLOR_BLUE);
-  delay(delayTime);
-  SpinColor(COLOR_RED);
-  delay(delayTime);
-  ColorSet(COLOR_WHITE);
-  delay(delayTime);
-  ColorSet(COLOR_YELLOW);
-  delay(delayTime);
-  ColorSet(COLOR_GREEN);
-  delay(delayTime);
-  ColorSet(COLOR_BLUE);
-  delay(delayTime);
-  ColorSet(COLOR_RED);
-  delay(delayTime);
-  ColorSet(COLOR_BLACK);
-  delay(delayTime);
-  
   delay(10);
 }
 

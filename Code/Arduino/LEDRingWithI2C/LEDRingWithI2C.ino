@@ -26,8 +26,8 @@ typedef unsigned char uint8;
 //----------------------------------------------------------------------------
 const long MAX_TIME       = 1000;
 const uint8 MAX_LEDS      =   16;
-const uint8 LEDPin        =   20;
-const int  COLORReduction =   27;
+const uint8 LEDPin        =    8;
+const int  COLORReduction =    3;
 
 const uint8 COLOR_BLUE    =  0;
 const uint8 COLOR_GREEN   =  1;
@@ -43,16 +43,16 @@ const uint8 MAX_COLORS    = 10;
 
 const uint8 colorArray[] = 
 {
-  0,   0, 255,
-  0, 128,   0,
-255,   0,   0,
-255, 255,   0,
-  0, 255, 255,
-255,   0, 255,
-255, 255, 255,
-  0,   0,   0,
-  0, 255,   0,
-255, 165,   0};
+ 0, 0,  25,
+ 0, 25,  0,
+25,  0,  0,
+25, 25,  0,
+ 0, 25, 25,
+25,  0, 25,
+25, 25, 25,
+ 0,  0,  0,
+ 0, 25,  0,
+25, 10,  0};
 
 const uint8 ALL_OFF      = 0x20;
 const uint8 SOLID_GREEN  = 0x30;
@@ -71,7 +71,7 @@ const uint8 SPIN_RED     = 0x48;
 //----------------------------------------------------------------------------
 Adafruit_NeoPixel mStrip    = Adafruit_NeoPixel(MAX_LEDS, LEDPin, NEO_GRB + NEO_KHZ800);
 uint8 mSpinColor = 0;
-uint8 mColor = ALL_OFF;
+uint8 mColor = SPIN_GREEN;
 
 //----------------------------------------------------------------------------
 //  Purpose:

@@ -1,28 +1,30 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #include <cstdio>
 #include <string>
-#include <string_view>
 #include <thread>
 #include <vector>
 
-#include <fmt/format.h>
+#include <ntcore.h>
 #include <networktables/NetworkTableInstance.h>
 #include <vision/VisionPipeline.h>
 #include <vision/VisionRunner.h>
-#include <wpi/StringExtras.h>
-#include <wpi/json.h>
-#include <wpi/raw_istream.h>
-#include <wpi/raw_ostream.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-
-using namespace cv;
+#include <wpi/StringRef.h>
+#include <wpi/json.h>
+#include <wpi/raw_istream.h>
+#include <wpi/raw_ostream.h>
 
 #include "cameraserver/CameraServer.h"
+
+using namespace cv;
 
 /*
    JSON format:
@@ -90,8 +92,8 @@ std::vector<CameraConfig> cameraConfigs;
 std::vector<SwitchedCameraConfig> switchedCameraConfigs;
 std::vector<cs::VideoSource> cameras;
 
-void ParseError(std::string_view msg) {
-  fmt::print(stderr, "config error in '{}': {}\n", configFile, msg);
+wpi::raw_ostream& ParseError() {
+  return wpi::errs() << "config error in '" << configFile << "': ";
 }
 
 bool ReadCameraConfig(const wpi::json& config) {
@@ -101,7 +103,7 @@ bool ReadCameraConfig(const wpi::json& config) {
   try {
     c.name = config.at("name").get<std::string>();
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("could not read camera name: {}", e.what()));
+    ParseError() << "could not read camera name: " << e.what() << '\n';
     return false;
   }
 
@@ -109,7 +111,8 @@ bool ReadCameraConfig(const wpi::json& config) {
   try {
     c.path = config.at("path").get<std::string>();
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("camera '{}': could not read path: {}", c.name, e.what()));
+    ParseError() << "camera '" << c.name
+                 << "': could not read path: " << e.what() << '\n';
     return false;
   }
 
@@ -129,8 +132,7 @@ bool ReadSwitchedCameraConfig(const wpi::json& config) {
   try {
     c.name = config.at("name").get<std::string>();
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("could not read switched camera name: {}",
-                           e.what()));
+    ParseError() << "could not read switched camera name: " << e.what() << '\n';
     return false;
   }
 
@@ -138,8 +140,8 @@ bool ReadSwitchedCameraConfig(const wpi::json& config) {
   try {
     c.key = config.at("key").get<std::string>();
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("switched camera '{}': could not read key: {}",
-                           c.name, e.what()));
+    ParseError() << "switched camera '" << c.name
+                 << "': could not read key: " << e.what() << '\n';
     return false;
   }
 
@@ -162,13 +164,13 @@ bool ReadConfig() {
   try {
     j = wpi::json::parse(is);
   } catch (const wpi::json::parse_error& e) {
-    ParseError(fmt::format("byte {}: {}", e.byte, e.what()));
+    ParseError() << "byte " << e.byte << ": " << e.what() << '\n';
     return false;
   }
 
   // top level must be an object
   if (!j.is_object()) {
-    ParseError("must be JSON object");
+    ParseError() << "must be JSON object\n";
     return false;
   }
 
@@ -176,7 +178,7 @@ bool ReadConfig() {
   try {
     team = j.at("team").get<unsigned int>();
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("could not read team number: {}", e.what()));
+    ParseError() << "could not read team number: " << e.what() << '\n';
     return false;
   }
 
@@ -184,15 +186,16 @@ bool ReadConfig() {
   if (j.count("ntmode") != 0) {
     try {
       auto str = j.at("ntmode").get<std::string>();
-      if (wpi::equals_lower(str, "client")) {
+      wpi::StringRef s(str);
+      if (s.equals_lower("client")) {
         server = false;
-      } else if (wpi::equals_lower(str, "server")) {
+      } else if (s.equals_lower("server")) {
         server = true;
       } else {
-        ParseError(fmt::format("could not understand ntmode value '{}'", str));
+        ParseError() << "could not understand ntmode value '" << str << "'\n";
       }
     } catch (const wpi::json::exception& e) {
-      ParseError(fmt::format("could not read ntmode: {}", e.what()));
+      ParseError() << "could not read ntmode: " << e.what() << '\n';
     }
   }
 
@@ -202,7 +205,7 @@ bool ReadConfig() {
       if (!ReadCameraConfig(camera)) return false;
     }
   } catch (const wpi::json::exception& e) {
-    ParseError(fmt::format("could not read cameras: {}", e.what()));
+    ParseError() << "could not read cameras: " << e.what() << '\n';
     return false;
   }
 
@@ -213,7 +216,7 @@ bool ReadConfig() {
         if (!ReadSwitchedCameraConfig(camera)) return false;
       }
     } catch (const wpi::json::exception& e) {
-      ParseError(fmt::format("could not read switched cameras: {}", e.what()));
+      ParseError() << "could not read switched cameras: " << e.what() << '\n';
       return false;
     }
   }
@@ -222,9 +225,11 @@ bool ReadConfig() {
 }
 
 cs::UsbCamera StartCamera(const CameraConfig& config) {
-  fmt::print("Starting camera '{}' on {}\n", config.name, config.path);
+  wpi::outs() << "Starting camera '" << config.name << "' on " << config.path
+              << '\n';
+  auto inst = frc::CameraServer::GetInstance();
   cs::UsbCamera camera{config.name, config.path};
-  auto server = frc::CameraServer::StartAutomaticCapture(camera);
+  auto server = inst->StartAutomaticCapture(camera);
 
   camera.SetConfigJson(config.config);
   camera.SetConnectionStrategy(cs::VideoSource::kConnectionKeepOpen);
@@ -236,8 +241,10 @@ cs::UsbCamera StartCamera(const CameraConfig& config) {
 }
 
 cs::MjpegServer StartSwitchedCamera(const SwitchedCameraConfig& config) {
-  fmt::print("Starting switched camera '{}' on {}\n", config.name, config.key);
-  auto server = frc::CameraServer::AddSwitchedCamera(config.name);
+  wpi::outs() << "Starting switched camera '" << config.name << "' on "
+              << config.key << '\n';
+  auto server =
+      frc::CameraServer::GetInstance()->AddSwitchedCamera(config.name);
 
   nt::NetworkTableInstance::GetDefault()
       .GetEntry(config.key)
@@ -261,8 +268,9 @@ cs::MjpegServer StartSwitchedCamera(const SwitchedCameraConfig& config) {
   return server;
 }
 
+// example pipeline
 class MyPipeline : public frc::VisionPipeline {
-public:
+ public:
   double mVal = 0.0;
   nt::NetworkTableEntry mX;
   nt::NetworkTableEntry mY;
@@ -271,12 +279,12 @@ public:
   nt::NetworkTableEntry mLow;
   cs::CvSource mThreshold;
   cs::CvSource mOrigSource;
-  int mLow1Value = 0;
-  int mHigh1Value = 255;
-  int mLow2Value = 90;
-  int mHigh2Value = 226;
-  int mLow3Value = 214;
-  int mHigh3Value = 255;
+  int mLow1Value   =   0;
+  int mHigh1Value  = 255;
+  int mLow2Value   =  90;
+  int mHigh2Value  = 226;
+  int mLow3Value   = 214;
+  int mHigh3Value  = 255;
   int mMorphSize = 7;
   std::vector<std::vector<Point> > mContours;
   std::vector<Vec4i> mHierarchy;
@@ -300,11 +308,11 @@ public:
     cv::Mat imgThresholdedCopy;
     cv::Mat imageInHueSatVal;
 
-    //    mHigh1Value = mHigh.GetDouble(255);
-    //    mLow1Value = mLow.GetDouble(0);
+//    mHigh1Value = mHigh.GetDouble(255);
+//    mLow1Value = mLow.GetDouble(0);
 
-        // Convert the captured frame from BGR to HSV
-        // I like working in Hue Sat Value
+    // Convert the captured frame from BGR to HSV
+    // I like working in Hue Sat Value
     cv::cvtColor(mat, imageInHueSatVal, cv::COLOR_BGR2HSV);
 
     cv::inRange(imageInHueSatVal, Scalar(mLow1Value, mLow2Value, mLow3Value),
@@ -312,21 +320,21 @@ public:
 
     //morphological opening (remove small objects from the foreground)
     cv::erode(imgThresholded, imgThresholded,
-      cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
+            cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
     cv::dilate(imgThresholded, imgThresholded,
-      cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
+            cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
 
     //morphological closing (fill small holes in the foreground)
     cv::dilate(imgThresholded, imgThresholded,
-      cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
+            cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
     cv::erode(imgThresholded, imgThresholded,
-      cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
+            cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(mMorphSize, mMorphSize)));
 
     // finding the contours corupts the image passed in
     imgThresholded.copyTo(imgThresholdedCopy);
 
     cv::findContours(imgThresholdedCopy, mContours, mHierarchy,
-      cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, Point(0, 0));
+            cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, Point(0, 0));
 
     double largestArea = -1;
     int largestCont = -1;
@@ -359,10 +367,10 @@ public:
     {
       mRectangle = boundingRect(mContours.at(largestCont));
       approxPolyDP(Mat(mContours.at(largestCont)), mContours.at(largestCont), 3, true);
-      mX.SetValue(nt::Value::MakeDouble(mRectangle.x + (mRectangle.width / 2)));
-      mY.SetValue(nt::Value::MakeDouble(mRectangle.y + (mRectangle.height / 2)));
+      mX.SetValue(nt::Value::MakeDouble(mRectangle.x+(mRectangle.width/2)));
+      mY.SetValue(nt::Value::MakeDouble(mRectangle.y+(mRectangle.height/2)));
       mArea.SetValue(nt::Value::MakeDouble(largestArea));
-
+      
       //printf("X:%4d Y:%4d W:%4d H:%4d A:%6.1f\n",
       //          mRectangle.x, mRectangle.y, mRectangle.width, mRectangle.height, largestArea);
     }
@@ -372,20 +380,6 @@ public:
     mOrigSource.PutFrame(mat);
   }
 };
-
-
-
-#ifdef JUNK
-// example pipeline
-class MyPipeline : public frc::VisionPipeline {
- public:
-  int val = 0;
-
-  void Process(cv::Mat& mat) override {
-    ++val;
-  }
-};
-#endif
 }  // namespace
 
 int main(int argc, char* argv[]) {
@@ -397,12 +391,11 @@ int main(int argc, char* argv[]) {
   // start NetworkTables
   auto ntinst = nt::NetworkTableInstance::GetDefault();
   if (server) {
-    fmt::print("Setting up NetworkTables server\n");
+    wpi::outs() << "Setting up NetworkTables server\n";
     ntinst.StartServer();
   } else {
-    fmt::print("Setting up NetworkTables client for team {}\n", team);
+    wpi::outs() << "Setting up NetworkTables client for team " << team << '\n';
     ntinst.StartClientTeam(team);
-    ntinst.StartDSClient();
   }
 
   // start cameras

@@ -67,10 +67,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/basicviewer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/basicviewer
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles /home/stealth/JimsCode/opencv/colorlocator//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/basicviewer/CMakeFiles /home/stealth/JimsCode/opencv/basicviewer//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/basicviewer/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -130,44 +130,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named colorlocator
+# Target rules for targets named basicviewer
 
 # Build rule for target.
-colorlocator: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 colorlocator
-.PHONY : colorlocator
+basicviewer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 basicviewer
+.PHONY : basicviewer
 
 # fast build rule for target.
-colorlocator/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/build
-.PHONY : colorlocator/fast
+basicviewer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/basicviewer.dir/build.make CMakeFiles/basicviewer.dir/build
+.PHONY : basicviewer/fast
 
-colorlocator.o: colorlocator.cpp.o
+basicviewer.o: basicviewer.cpp.o
 
-.PHONY : colorlocator.o
+.PHONY : basicviewer.o
 
 # target to build an object file
-colorlocator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.o
-.PHONY : colorlocator.cpp.o
+basicviewer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/basicviewer.dir/build.make CMakeFiles/basicviewer.dir/basicviewer.cpp.o
+.PHONY : basicviewer.cpp.o
 
-colorlocator.i: colorlocator.cpp.i
+basicviewer.i: basicviewer.cpp.i
 
-.PHONY : colorlocator.i
+.PHONY : basicviewer.i
 
 # target to preprocess a source file
-colorlocator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.i
-.PHONY : colorlocator.cpp.i
+basicviewer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/basicviewer.dir/build.make CMakeFiles/basicviewer.dir/basicviewer.cpp.i
+.PHONY : basicviewer.cpp.i
 
-colorlocator.s: colorlocator.cpp.s
+basicviewer.s: basicviewer.cpp.s
 
-.PHONY : colorlocator.s
+.PHONY : basicviewer.s
 
 # target to generate assembly for a file
-colorlocator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.s
-.PHONY : colorlocator.cpp.s
+basicviewer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/basicviewer.dir/build.make CMakeFiles/basicviewer.dir/basicviewer.cpp.s
+.PHONY : basicviewer.cpp.s
 
 # Help Target
 help:
@@ -177,10 +177,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... colorlocator"
-	@echo "... colorlocator.o"
-	@echo "... colorlocator.i"
-	@echo "... colorlocator.s"
+	@echo "... basicviewer"
+	@echo "... basicviewer.o"
+	@echo "... basicviewer.i"
+	@echo "... basicviewer.s"
 .PHONY : help
 
 

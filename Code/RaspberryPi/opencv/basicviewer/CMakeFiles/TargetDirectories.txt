@@ -1,0 +1,3 @@
+/home/stealth/JimsCode/opencv/basicviewer/CMakeFiles/rebuild_cache.dir
+/home/stealth/JimsCode/opencv/basicviewer/CMakeFiles/edit_cache.dir
+/home/stealth/JimsCode/opencv/basicviewer/CMakeFiles/basicviewer.dir

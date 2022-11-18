@@ -67,10 +67,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/apriltags_opencv_demo
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/apriltags_opencv_demo
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles /home/stealth/JimsCode/opencv/colorlocator//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/apriltags_opencv_demo/CMakeFiles /home/stealth/JimsCode/opencv/apriltags_opencv_demo//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/apriltags_opencv_demo/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -130,44 +130,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named colorlocator
+# Target rules for targets named apriltagdemo
 
 # Build rule for target.
-colorlocator: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 colorlocator
-.PHONY : colorlocator
+apriltagdemo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 apriltagdemo
+.PHONY : apriltagdemo
 
 # fast build rule for target.
-colorlocator/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/build
-.PHONY : colorlocator/fast
+apriltagdemo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/apriltagdemo.dir/build.make CMakeFiles/apriltagdemo.dir/build
+.PHONY : apriltagdemo/fast
 
-colorlocator.o: colorlocator.cpp.o
+opencv_demo.o: opencv_demo.cpp.o
 
-.PHONY : colorlocator.o
+.PHONY : opencv_demo.o
 
 # target to build an object file
-colorlocator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.o
-.PHONY : colorlocator.cpp.o
+opencv_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/apriltagdemo.dir/build.make CMakeFiles/apriltagdemo.dir/opencv_demo.cpp.o
+.PHONY : opencv_demo.cpp.o
 
-colorlocator.i: colorlocator.cpp.i
+opencv_demo.i: opencv_demo.cpp.i
 
-.PHONY : colorlocator.i
+.PHONY : opencv_demo.i
 
 # target to preprocess a source file
-colorlocator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.i
-.PHONY : colorlocator.cpp.i
+opencv_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/apriltagdemo.dir/build.make CMakeFiles/apriltagdemo.dir/opencv_demo.cpp.i
+.PHONY : opencv_demo.cpp.i
 
-colorlocator.s: colorlocator.cpp.s
+opencv_demo.s: opencv_demo.cpp.s
 
-.PHONY : colorlocator.s
+.PHONY : opencv_demo.s
 
 # target to generate assembly for a file
-colorlocator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.s
-.PHONY : colorlocator.cpp.s
+opencv_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/apriltagdemo.dir/build.make CMakeFiles/apriltagdemo.dir/opencv_demo.cpp.s
+.PHONY : opencv_demo.cpp.s
 
 # Help Target
 help:
@@ -177,10 +177,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... colorlocator"
-	@echo "... colorlocator.o"
-	@echo "... colorlocator.i"
-	@echo "... colorlocator.s"
+	@echo "... apriltagdemo"
+	@echo "... opencv_demo.o"
+	@echo "... opencv_demo.i"
+	@echo "... opencv_demo.s"
 .PHONY : help
 
 

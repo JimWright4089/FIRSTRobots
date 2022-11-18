@@ -67,10 +67,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_SOURCE_DIR = /home/stealth/JimsCode/opencv/displayimage
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/colorlocator
+CMAKE_BINARY_DIR = /home/stealth/JimsCode/opencv/displayimage
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles /home/stealth/JimsCode/opencv/colorlocator//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/displayimage/CMakeFiles /home/stealth/JimsCode/opencv/displayimage//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/colorlocator/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stealth/JimsCode/opencv/displayimage/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -130,44 +130,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named colorlocator
+# Target rules for targets named displayimage
 
 # Build rule for target.
-colorlocator: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 colorlocator
-.PHONY : colorlocator
+displayimage: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 displayimage
+.PHONY : displayimage
 
 # fast build rule for target.
-colorlocator/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/build
-.PHONY : colorlocator/fast
+displayimage/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/displayimage.dir/build.make CMakeFiles/displayimage.dir/build
+.PHONY : displayimage/fast
 
-colorlocator.o: colorlocator.cpp.o
+displayimage.o: displayimage.cpp.o
 
-.PHONY : colorlocator.o
+.PHONY : displayimage.o
 
 # target to build an object file
-colorlocator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.o
-.PHONY : colorlocator.cpp.o
+displayimage.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/displayimage.dir/build.make CMakeFiles/displayimage.dir/displayimage.cpp.o
+.PHONY : displayimage.cpp.o
 
-colorlocator.i: colorlocator.cpp.i
+displayimage.i: displayimage.cpp.i
 
-.PHONY : colorlocator.i
+.PHONY : displayimage.i
 
 # target to preprocess a source file
-colorlocator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.i
-.PHONY : colorlocator.cpp.i
+displayimage.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/displayimage.dir/build.make CMakeFiles/displayimage.dir/displayimage.cpp.i
+.PHONY : displayimage.cpp.i
 
-colorlocator.s: colorlocator.cpp.s
+displayimage.s: displayimage.cpp.s
 
-.PHONY : colorlocator.s
+.PHONY : displayimage.s
 
 # target to generate assembly for a file
-colorlocator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colorlocator.dir/build.make CMakeFiles/colorlocator.dir/colorlocator.cpp.s
-.PHONY : colorlocator.cpp.s
+displayimage.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/displayimage.dir/build.make CMakeFiles/displayimage.dir/displayimage.cpp.s
+.PHONY : displayimage.cpp.s
 
 # Help Target
 help:
@@ -177,10 +177,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... colorlocator"
-	@echo "... colorlocator.o"
-	@echo "... colorlocator.i"
-	@echo "... colorlocator.s"
+	@echo "... displayimage"
+	@echo "... displayimage.o"
+	@echo "... displayimage.i"
+	@echo "... displayimage.s"
 .PHONY : help
 
 

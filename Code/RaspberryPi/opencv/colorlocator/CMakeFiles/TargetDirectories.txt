@@ -1,0 +1,3 @@
+/home/stealth/JimsCode/opencv/colorlocator/CMakeFiles/rebuild_cache.dir
+/home/stealth/JimsCode/opencv/colorlocator/CMakeFiles/edit_cache.dir
+/home/stealth/JimsCode/opencv/colorlocator/CMakeFiles/colorlocator.dir

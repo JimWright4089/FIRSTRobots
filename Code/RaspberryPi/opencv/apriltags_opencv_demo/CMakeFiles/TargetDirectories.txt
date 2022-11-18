@@ -1,0 +1,3 @@
+/home/stealth/JimsCode/opencv/apriltags_opencv_demo/CMakeFiles/rebuild_cache.dir
+/home/stealth/JimsCode/opencv/apriltags_opencv_demo/CMakeFiles/edit_cache.dir
+/home/stealth/JimsCode/opencv/apriltags_opencv_demo/CMakeFiles/apriltagdemo.dir

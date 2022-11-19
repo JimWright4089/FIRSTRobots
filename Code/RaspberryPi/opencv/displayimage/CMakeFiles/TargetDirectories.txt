@@ -1,3 +1,0 @@
-/home/stealth/JimsCode/opencv/displayimage/CMakeFiles/rebuild_cache.dir
-/home/stealth/JimsCode/opencv/displayimage/CMakeFiles/edit_cache.dir
-/home/stealth/JimsCode/opencv/displayimage/CMakeFiles/displayimage.dir

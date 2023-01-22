@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Lidar;
 import frc.robot.commands.MoveTo500mm;
@@ -57,13 +57,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    if(false == DriverStation.getInstance().isDisabled())
+    if(false == DriverStation.isDisabled())
     {
         mLEDRing.setDouble((double)'G');
     }
     else
     {
-      if(Alliance.Blue == DriverStation.getInstance().getAlliance())
+      if(Alliance.Blue == DriverStation.getAlliance())
       {
         mLEDRing.setDouble((double)'b');
       }

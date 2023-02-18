@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Lidar;
 import frc.robot.commands.MoveTo500mm;
-import frc.robot.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,7 +34,7 @@ public class Robot extends TimedRobot {
   private Joystick mJoystick = new Joystick(0);
   private Lidar mLidar = new Lidar();
   private Command mAutoCommand;
-  PowerDistribution mPDP = new PowerDistribution(10,ModuleType.kCTRE);
+  PowerDistribution mPDP = new PowerDistribution(Constants.DriveConstants.kPowerDistPort,ModuleType.kCTRE);
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -126,26 +125,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.format("-70:%8.2f\n", mLidar.getNdeg45());
-
-    double speed = mJoystick.getRawAxis(1);
-    double turn = mJoystick.getRawAxis(0);
-
-    if(true == mJoystick.getRawButton(1))
-    {
-      speed *= frc.robot.Constants.DriveConstants.kSlowSpeed;
-      turn *= frc.robot.Constants.DriveConstants.kSlowTurnSpeed;
-    }
-    else
-    {
-      if(false == mJoystick.getRawButton(2))
-      {
-        speed *= frc.robot.Constants.DriveConstants.kNormalSpeed;
-        turn *= frc.robot.Constants.DriveConstants.kNormalTurnSpeed ;
-      }
-    }
-
-    mDrive.arcadeDrive(speed,turn);
   }
 
   /**
@@ -176,7 +155,6 @@ public class Robot extends TimedRobot {
 
     System.out.format("R:%8.2f\n",
     right);
-  
 
     mDrive.tankDrive(left, right);
   }

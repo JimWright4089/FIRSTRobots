@@ -7,10 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import static frc.robot.Constants.OIConstants;
+import frc.robot.commands.DefaultDrive;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,6 +32,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
     mRobotDrive.setDefaultCommand(
@@ -43,16 +44,10 @@ public class RobotContainer {
             () -> mDriverController.getRawAxis(4),
             () -> mDriverController.getAButton(),
             () -> mDriverController.getBButton()));
+            
 }
 
   private void configureButtonBindings() {
-    
-    //mDriverController.a().onTrue(m_robotArm.setArmGoalCommand(2));
-    new JoystickButton(mDriverController, Button.kRightBumper.value)
-        .whileTrue(mRobotDrive.setMaxOutput(.25));
-
-//      .whenPressed(() -> driveBase.resetOdometry(new Pose2d()));
-
   }
 
   public DriveSubsystem getDriveSubsystem()

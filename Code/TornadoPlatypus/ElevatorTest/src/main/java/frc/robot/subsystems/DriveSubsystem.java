@@ -7,21 +7,20 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import static frc.robot.Constants.DriveConstants.kGyroReversed;
 import static frc.robot.Constants.DriveConstants.kLeftMotor1Port;
 import static frc.robot.Constants.DriveConstants.kRightMotor1Port;
-import static frc.robot.Constants.DriveConstants.kTimeoutMs;
 import static frc.robot.Constants.DriveConstants.kGyroPort;
 import frc.robot.utils.DriveParam;
 
@@ -29,19 +28,18 @@ public class DriveSubsystem extends SubsystemBase {
   private final WPI_TalonFX  sMotorLeftA = new WPI_TalonFX(kLeftMotor1Port);
   private final WPI_TalonFX  sMotorRightA = new WPI_TalonFX(kRightMotor1Port);
   // The motors on the left side of the drive.
-  private final SpeedControllerGroup sLeftMotors =
-      new SpeedControllerGroup(sMotorLeftA);
+  private final MotorControllerGroup sLeftMotors =
+      new MotorControllerGroup(sMotorLeftA);
 
   // The motors on the right side of the drive.
-  private final SpeedControllerGroup sRightMotors =
-      new SpeedControllerGroup(sMotorRightA);
+  private final MotorControllerGroup sRightMotors =
+      new MotorControllerGroup(sMotorRightA);
 
   // The robot's drive
   private final DifferentialDrive sDrive = new DifferentialDrive(sLeftMotors, sRightMotors);
 
   // The gyro sensor
-  private final PigeonIMU sGyro = new PigeonIMU(kGyroPort);
-  private PigeonIMU.FusionStatus mFusionStatus = new PigeonIMU.FusionStatus();
+  private final WPI_Pigeon2 sGyro = new WPI_Pigeon2(kGyroPort);
   private double[] mXYZDegreePerSecond = new double[3];
 
   // Odometry class for tracking robot pose
@@ -52,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public DriveSubsystem() {
     resetEncoders();
-    sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()),getLeftEncoderPosition(),getRightEncoderPosition());
   }
 
   @Override
@@ -87,7 +85,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    sOdometry.resetPosition(Rotation2d.fromDegrees(getHeading()),getLeftEncoderPosition(),getRightEncoderPosition(), pose);
   }
 
   /**
@@ -97,7 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry() {
     resetEncoders();
-    sOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(getHeading()));
+    sOdometry.resetPosition(Rotation2d.fromDegrees(getHeading()),getLeftEncoderPosition(),getRightEncoderPosition(), new Pose2d());
   }
 
   /**
@@ -118,7 +116,6 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void arcadeDrive(DriveParam driveParam) {
     sDrive.arcadeDrive(driveParam.getForward(), driveParam.getRotation());
-    //System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
   }
 
   /**
@@ -173,7 +170,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Zeroes the heading of the robot.
    */
   public void zeroHeading() {
-    sGyro.setFusedHeading(0.0, kTimeoutMs);
+    sGyro.reset();
   }
 
   /**
@@ -182,9 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from 180 to 180
    */
   public double getHeading() {
-    sGyro.getFusedHeading(mFusionStatus);
-
-    return Math.IEEEremainder(mFusionStatus.heading, 360) * (kGyroReversed ? -1.0 : 1.0);  
+    return Math.IEEEremainder(sGyro.getCompassHeading(), 360) * (kGyroReversed ? -1.0 : 1.0);  
   }
 
   /**

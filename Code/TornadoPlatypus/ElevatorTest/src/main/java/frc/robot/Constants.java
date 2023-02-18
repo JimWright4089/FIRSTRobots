@@ -20,6 +20,7 @@ public final class Constants {
     public static final int kLeftMotor1Port = 1;
     public static final int kRightMotor1Port = 2;
     public static final int kGyroPort = 10;
+    public static final int kPowerDistPort = 18;
     public static final boolean kLeftEncoderReversed = false;
     public static final boolean kRightEncoderReversed = true;
     
@@ -75,6 +76,19 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+  }
+
+  public static final class ElevatorConstants {
+    public static final double kTopPos = 10000;
+    public static final double kMiddlePos = 5000;
+    public static final double kBottomPos = 0;
+    
+    public static final double kP = 0.00011;
+    public static final double kD = 0.00005;
+    public static final double kI = 0.000012;
+
+    public static final double kIMin = -100000;
+    public static final double kIMax =  100000;
   }
 
   public static final class AutoConstants {

@@ -7,14 +7,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Lidar;
 import frc.robot.commands.MoveTo500mm;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   private Joystick mJoystick = new Joystick(0);
   private Lidar mLidar = new Lidar();
   private Command mAutoCommand;
+  PowerDistribution mPDP = new PowerDistribution(10,ModuleType.kCTRE);
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -146,8 +148,6 @@ public class Robot extends TimedRobot {
     mDrive.arcadeDrive(speed,turn);
   }
 
-  
-  PowerDistributionPanel mPDP = new PowerDistributionPanel(18);
   /**
    * This function is called periodically during test mode.
    */
@@ -179,16 +179,5 @@ public class Robot extends TimedRobot {
   
 
     mDrive.tankDrive(left, right);
-/*
-    System.out.format("L:%8.2f R:%8.2f H:%8.2f LS:%8.2f LP:%8.2f RS:%8.2f RP:%8.2f T:%8.2f E:%8.2f 1:%8.2f 2:%8.2f 0d:%8.2f -70d:%8.2f\n",
-    left,right,
-    mDrive.getHeading(),
-    mDrive.getLeftEncoderSpeed(),mDrive.getLeftEncoderPosition(),
-    mDrive.getRightEncoderSpeed(),mDrive.getRightEncoderPosition(),
-    mPDP.getTotalCurrent(),mPDP.getTotalPower(),
-    mPDP.getCurrent(14), mPDP.getCurrent(15),
-    mLidar.get0(),
-    mLidar.getNdeg70());
-*/    
   }
 }

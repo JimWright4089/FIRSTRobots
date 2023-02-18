@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,28 +16,42 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import static frc.robot.Constants.DriveConstants.kGyroReversed;
 import static frc.robot.Constants.DriveConstants.kLeftMotor1Port;
+import static frc.robot.Constants.DriveConstants.kLeftMotor2Port;
 import static frc.robot.Constants.DriveConstants.kRightMotor1Port;
+import static frc.robot.Constants.DriveConstants.kRightMotor2Port;
 import static frc.robot.Constants.DriveConstants.kTimeoutMs;
+import static frc.robot.Constants.DriveConstants.kLeftEncoderPort;
+import static frc.robot.Constants.DriveConstants.kRightEncoderPort;
 import static frc.robot.Constants.DriveConstants.kGyroPort;
-import frc.robot.utils.DriveParam;
+import static frc.robot.Constants.DriveConstants.kEncoderDistancePerPulse;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final WPI_TalonFX  sMotorLeftA = new WPI_TalonFX(kLeftMotor1Port);
-  private final WPI_TalonFX  sMotorRightA = new WPI_TalonFX(kRightMotor1Port);
+  private final CANSparkMax  sMotorLeftA = new CANSparkMax(kLeftMotor1Port,MotorType.kBrushless);
+  private final CANSparkMax  sMotorLeftB = new CANSparkMax(kLeftMotor2Port,MotorType.kBrushless);
+  private final CANSparkMax  sMotorRightA = new CANSparkMax(kRightMotor1Port,MotorType.kBrushless);
+  private final CANSparkMax  sMotorRightB = new CANSparkMax(kRightMotor2Port,MotorType.kBrushless);
   // The motors on the left side of the drive.
-  private final MotorControllerGroup sLeftMotors =
-      new MotorControllerGroup(sMotorLeftA);
+  private final SpeedControllerGroup sLeftMotors =
+      new SpeedControllerGroup(sMotorLeftA,sMotorLeftB);
 
   // The motors on the right side of the drive.
-  private final MotorControllerGroup sRightMotors =
-      new MotorControllerGroup(sMotorRightA);
+  private final SpeedControllerGroup sRightMotors =
+      new SpeedControllerGroup(sMotorRightA,sMotorRightB);
 
   // The robot's drive
   private final DifferentialDrive sDrive = new DifferentialDrive(sLeftMotors, sRightMotors);
+
+  // The left-side drive encoder
+  private final CANCoder sLeftEncoder = new CANCoder(kLeftEncoderPort);
+
+  // The right-side drive encoder
+  private final CANCoder sRightEncoder = new CANCoder(kRightEncoderPort);
 
   // The gyro sensor
   private final PigeonIMU sGyro = new PigeonIMU(kGyroPort);
@@ -47,19 +61,31 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry sOdometry;
 
+  static DriveSubsystem mInstance;
+
+  public static DriveSubsystem getInstance()
+  {
+    if(null == mInstance)
+    {
+      mInstance = new DriveSubsystem();
+    }
+    return mInstance;
+  }
+
   /**
    * Creates a new DriveSubsystem.
    */
-  public DriveSubsystem() {
+  private DriveSubsystem() {
+    sDrive.setMaxOutput(0.4);
     resetEncoders();
     sOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    System.out.println("new DifferentialDriveOdometry");
+    sDrive.setSafetyEnabled(true);
   }
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-    sOdometry.update(Rotation2d.fromDegrees(getHeading()), sMotorLeftA.getSelectedSensorPosition(),
-        sMotorRightA.getSelectedSensorPosition());
+    sOdometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPosition(), getRightEncoderPosition());
   }
 
   /**
@@ -71,13 +97,18 @@ public class DriveSubsystem extends SubsystemBase {
     return sOdometry.getPoseMeters();
   }
 
+  public double getPoseThetaDegrees()
+  {
+    return sOdometry.getPoseMeters().getRotation().getDegrees();
+  }
+
   /**
    * Returns the current wheel speeds of the robot.
    *
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(sMotorLeftA.getSelectedSensorVelocity(), sMotorRightA.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderSpeed(), getRightEncoderSpeed());
   }
 
   /**
@@ -86,18 +117,9 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
+    System.out.println("resetOdometry");
     resetEncoders();
     sOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-  }
-
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry() {
-    resetEncoders();
-    sOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(getHeading()));
   }
 
   /**
@@ -107,18 +129,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
+    System.out.printf("%f  -  ",rot);
     sDrive.arcadeDrive(fwd, rot);
-  }
-
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(DriveParam driveParam) {
-    sDrive.arcadeDrive(driveParam.getForward(), driveParam.getRotation());
-    //System.out.format("F:%8.2f R:%8.2f\n", driveParam.getForward(), driveParam.getRotation());
   }
 
   /**
@@ -129,7 +141,6 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void tankDrive(double left, double right) {
     sDrive.tankDrive(left, right);
-    sDrive.feed();
   }
 
   /**
@@ -139,16 +150,30 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    sLeftMotors.setVoltage(leftVolts);
-    sRightMotors.setVoltage(-rightVolts);
+    double left = leftVolts;
+    double right = rightVolts;
+//    System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    sLeftMotors.setVoltage(left);
+    sRightMotors.setVoltage(-right);
+    sDrive.feed();
+  }
+
+  public void tankDriveVoltsBackwards(double leftVolts, double rightVolts) {
+    double left = leftVolts;
+    double right = rightVolts;
+    //System.out.printf("%f %f \n",left,right);
+   //System.out.printf("%s\n",sOdometry.getPoseMeters().toString());
+    sLeftMotors.setVoltage(-left);
+    sRightMotors.setVoltage(right);
+    sDrive.feed();
   }
 
   /**
    * Resets the drive encoders to currently read a position of 0.
    */
   public void resetEncoders() {
-    sMotorLeftA.setSelectedSensorPosition(-0);
-    sMotorRightA.setSelectedSensorPosition(-0);
+    sLeftEncoder.setPosition(0.00);
+    sRightEncoder.setPosition(0.00);
   }
 
   /**
@@ -157,7 +182,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (sMotorLeftA.getSelectedSensorPosition() + sMotorRightA.getSelectedSensorPosition()) / 2.0;
+    return (sLeftEncoder.getPosition() + sRightEncoder.getPosition()) / 2.0;
   }
 
   /**
@@ -200,18 +225,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getLeftEncoderPosition()
   {
-    return sMotorLeftA.getSelectedSensorPosition();
+    return sLeftEncoder.getPosition() * kEncoderDistancePerPulse;
   }
   public double getRightEncoderPosition()
   {
-    return sMotorRightA.getSelectedSensorPosition();
+    return sRightEncoder.getPosition() * kEncoderDistancePerPulse;
   }
   public double getLeftEncoderSpeed()
   {
-    return sMotorLeftA.getSelectedSensorVelocity();
+    return sLeftEncoder.getVelocity() * kEncoderDistancePerPulse;
   }
   public double getRightEncoderSpeed()
   {
-    return sMotorRightA.getSelectedSensorVelocity();
+    return sRightEncoder.getVelocity() * kEncoderDistancePerPulse;
   }
 }

@@ -9,10 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.JoystickButton;
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj.Trigger;
-
 import static frc.robot.Constants.OIConstants;
 
 /**
@@ -37,7 +34,6 @@ public class RobotContainer {
 
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-    /*
     mRobotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -47,16 +43,10 @@ public class RobotContainer {
             () -> mDriverController.getRawAxis(4),
             () -> mDriverController.getAButton(),
             () -> mDriverController.getBButton()));
- */
 }
 
-  /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
+    
     //mDriverController.a().onTrue(m_robotArm.setArmGoalCommand(2));
     new JoystickButton(mDriverController, Button.kRightBumper.value)
         .whileTrue(mRobotDrive.setMaxOutput(.25));

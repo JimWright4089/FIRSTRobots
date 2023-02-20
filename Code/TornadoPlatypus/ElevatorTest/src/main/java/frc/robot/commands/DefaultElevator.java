@@ -14,6 +14,8 @@ public class DefaultElevator extends CommandBase {
   private final BooleanSupplier mTop;
   private final BooleanSupplier mMiddle;
   private final BooleanSupplier mBottom;
+  private final BooleanSupplier mUp;
+  private final BooleanSupplier mDown;
   private double mTargetPos = 1000.0;
   private int mCount = 0;
   private double mPrevError = 0;
@@ -22,11 +24,15 @@ public class DefaultElevator extends CommandBase {
   public DefaultElevator(DriveSubsystem subsystem,
       BooleanSupplier top,
       BooleanSupplier middle,
-      BooleanSupplier bottom) {
+      BooleanSupplier bottom,
+      BooleanSupplier up,
+      BooleanSupplier down) {
     mDrive = subsystem;
     mTop = top;
     mMiddle = middle;
     mBottom = bottom;
+    mUp = up;
+    mDown = down;
     addRequirements(mDrive);
   }
 
@@ -56,6 +62,17 @@ public class DefaultElevator extends CommandBase {
         }
       }
     }
+
+    if(true == mUp.getAsBoolean())
+    {
+      mTargetPos += ElevatorConstants.kSetpointAdjust;
+    }
+
+    if(true == mDown.getAsBoolean())
+    {
+      mTargetPos -= ElevatorConstants.kSetpointAdjust;
+    }
+
 
     double curPos = mDrive.getLeftEncoderPosition();
 

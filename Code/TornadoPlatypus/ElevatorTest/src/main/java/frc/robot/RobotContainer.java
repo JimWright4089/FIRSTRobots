@@ -16,9 +16,11 @@ public class RobotContainer {
   private final DriveSubsystem mRobotDrive = new DriveSubsystem();
   XboxController mDriverController = new XboxController(OIConstants.kDriverControllerPort);
   private final DefaultElevator mElevator = new DefaultElevator(mRobotDrive,
-  () -> mDriverController.getAButton(),
-  () -> mDriverController.getBButton(),
-  () -> mDriverController.getXButton());
+    () -> mDriverController.getYButton(),
+    () -> mDriverController.getBButton(),
+    () -> mDriverController.getAButton(),
+    () -> mDriverController.getRightBumper(),
+    () -> mDriverController.getLeftBumper());
 
   public RobotContainer() {
     configureButtonBindings();

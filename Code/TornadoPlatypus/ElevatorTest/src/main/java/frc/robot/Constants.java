@@ -83,12 +83,14 @@ public final class Constants {
     public static final double kMiddlePos = 5000;
     public static final double kBottomPos = 0;
     
-    public static final double kP = 0.00011;
+    public static final double kP = 0.00010;
     public static final double kD = 0.00005;
     public static final double kI = 0.000012;
 
     public static final double kIMin = -100000;
     public static final double kIMax =  100000;
+
+    public static final double kSetpointAdjust = 10;
   }
 
   public static final class AutoConstants {

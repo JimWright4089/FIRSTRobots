@@ -1,0 +1,4 @@
+See file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/createEmbeddedBinaryReleaseStaticLibrary/output.txt for all output for createEmbeddedBinaryReleaseStaticLibrary.
+archiving embeddedBinary.lib successful.
+
+Finished createEmbeddedBinaryReleaseStaticLibrary, see full log file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/createEmbeddedBinaryReleaseStaticLibrary/output.txt.

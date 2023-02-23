@@ -1,0 +1,17 @@
+See file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/linkFrcUserProgramWindowsx86-64DebugExecutable/output.txt for all output for linkFrcUserProgramWindowsx86-64DebugExecutable.
+linking frcUserProgram.exe successful.
+REVLib.lib(CANSparkMaxLowLevel.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(CANSparkMaxLowLevel.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxAlternateEncoder.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxAlternateEncoder.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxRelativeEncoder.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxRelativeEncoder.obj)' or at ''; linking object as if no debug info
+REVLib.lib(CANSparkMax.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(CANSparkMax.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxAbsoluteEncoder.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxAbsoluteEncoder.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxAnalogSensor.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxAnalogSensor.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxLimitSwitch.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxLimitSwitch.obj)' or at ''; linking object as if no debug info
+REVLib.lib(SparkMaxPIDController.obj) : warning LNK4099: PDB '' was not found with 'REVLib.lib(SparkMaxPIDController.obj)' or at ''; linking object as if no debug info
+REVLibDriver.lib(CANSparkMaxDriver.obj) : warning LNK4099: PDB '' was not found with 'REVLibDriver.lib(CANSparkMaxDriver.obj)' or at ''; linking object as if no debug info
+REVLibDriver.lib(CANSparkMaxHeartbeat.obj) : warning LNK4099: PDB '' was not found with 'REVLibDriver.lib(CANSparkMaxHeartbeat.obj)' or at ''; linking object as if no debug info
+REVLibDriver.lib(REVLibErrors.obj) : warning LNK4099: PDB '' was not found with 'REVLibDriver.lib(REVLibErrors.obj)' or at ''; linking object as if no debug info
+REVLibDriver.lib(CANSparkMax.obj) : warning LNK4099: PDB '' was not found with 'REVLibDriver.lib(CANSparkMax.obj)' or at ''; linking object as if no debug info
+REVLibDriver.lib(REVUtils.obj) : warning LNK4099: PDB '' was not found with 'REVLibDriver.lib(REVUtils.obj)' or at ''; linking object as if no debug info
+
+Finished linkFrcUserProgramWindowsx86-64DebugExecutable, see full log file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/linkFrcUserProgramWindowsx86-64DebugExecutable/output.txt.

@@ -1,0 +1,8 @@
+See file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileEmbeddedBinaryReleaseStaticLibraryEmbeddedBinaryCpp/output.txt for all output for compileEmbeddedBinaryReleaseStaticLibraryEmbeddedBinaryCpp.
+compiling empty.cpp successful.
+empty.cpp
+
+compiling frcUserProgram.cpp successful.
+frcUserProgram.cpp
+
+Finished compileEmbeddedBinaryReleaseStaticLibraryEmbeddedBinaryCpp, see full log file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileEmbeddedBinaryReleaseStaticLibraryEmbeddedBinaryCpp/output.txt.

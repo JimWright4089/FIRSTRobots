@@ -1,0 +1,5 @@
+See file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileFrcUserProgramWindowsx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramWindowsx86-64DebugExecutableFrcUserProgramCpp.
+compiling MechanismRobot.cpp successful.
+MechanismRobot.cpp
+
+Finished compileFrcUserProgramWindowsx86-64DebugExecutableFrcUserProgramCpp, see full log file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileFrcUserProgramWindowsx86-64DebugExecutableFrcUserProgramCpp/output.txt.

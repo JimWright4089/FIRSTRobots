@@ -1,0 +1,4 @@
+See file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
+compiling MechanismRobot.cpp successful.
+
+Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///C:/JimsHome/JimsRobot/sysid/sysid-projects/mechanism/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.

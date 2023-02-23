@@ -1,0 +1,32 @@
+/DEBUG:FULL
+/PDBALTPATH:%_PDB%
+/SOURCELINK:C:\\JimsHome\\JimsRobot\\sysid\\sysid-projects\\mechanism\\build\\tmp\\generateSourceLinkFileFrcUserProgramWindowsx86-64DebugExecutable\\SourceLink.json
+/OUT:C:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\build\exe\frcUserProgram\windowsx86-64\debug\frcUserProgram.exe
+/NOLOGO
+"/LIBPATH:C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\lib\x64"
+"/LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.19041.0\um\x64"
+"/LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.19041.0\ucrt\x64"
+C:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\build\objs\frcUserProgram\windowsx86-64\debug\frcUserProgramCpp\6gihqev445dgh73hy89t5p3gl\MechanismRobot.obj
+C:\JimsHome\JimsRobot\sysid\sysid-library\build\libs\libsysid\static\windowsx86-64\debug\libsysid.lib
+C:\Users\Jim\.gradle\caches\transforms-3\c801cf4d96cb040427e5cdf17d76f67a\transformed\REVLib-cpp-2023.1.2-windowsx86-64staticdebug\windows\x86-64\static\REVLib.lib
+C:\Users\Jim\.gradle\caches\transforms-3\55058b8307836c09b687ddace4d13dc0\transformed\REVLib-driver-2023.1.2-windowsx86-64staticdebug\windows\x86-64\static\REVLibDriver.lib
+C:\Users\Jim\.gradle\caches\transforms-3\61ee1a570414b462662cfb3be391e3a5\transformed\wpiapi-cpp-sim-5.30.4-windowsx86-64debug\windows\x86-64\shared\CTRE_Phoenix_WPISim.lib
+C:\Users\Jim\.gradle\caches\transforms-3\9a3abfb2a5f39fbd667af905e748e4aa\transformed\api-cpp-sim-5.30.4-windowsx86-64debug\windows\x86-64\shared\CTRE_PhoenixSim.lib
+C:\Users\Jim\.gradle\caches\transforms-3\f1adb8f918e9120bc0515ec26839540a\transformed\cci-sim-5.30.4-windowsx86-64debug\windows\x86-64\shared\CTRE_PhoenixCCISim.lib
+C:\Users\Jim\.gradle\caches\transforms-3\becb31a1cf60fcd7ad177deff41b59eb\transformed\tools-sim-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_PhoenixTools_Sim.lib
+C:\Users\Jim\.gradle\caches\transforms-3\b79735d40230e5ca9e2d53c2c172e1f3\transformed\simTalonSRX-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimTalonSRX.lib
+C:\Users\Jim\.gradle\caches\transforms-3\9d8d37dd4b7d7eac0c41a52aa4ab7b24\transformed\simTalonFX-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimTalonFX.lib
+C:\Users\Jim\.gradle\caches\transforms-3\08cdd28d742892fc27d6e22c1bbaaf84\transformed\simVictorSPX-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimVictorSPX.lib
+C:\Users\Jim\.gradle\caches\transforms-3\70ae95f0464a7141f81ec85d20dd2bed\transformed\simPigeonIMU-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimPigeonIMU.lib
+C:\Users\Jim\.gradle\caches\transforms-3\387ec4d27d57489ec374e2515b5f43c8\transformed\simCANCoder-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimCANCoder.lib
+C:\Users\Jim\.gradle\caches\transforms-3\e2a9c6157ea1b0fb5915fa2aea35c6d9\transformed\simProTalonFX-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimProTalonFX.lib
+C:\Users\Jim\.gradle\caches\transforms-3\8e8c71368c93c15d1e42623e28f24656\transformed\simProCANcoder-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimProCANcoder.lib
+C:\Users\Jim\.gradle\caches\transforms-3\fe2c600b4f063472b7196a1865684149\transformed\simProPigeon2-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_SimProPigeon2.lib
+C:\Users\Jim\.gradle\caches\transforms-3\d150198be0f9db9d2874044b6dab7c30\transformed\wpiapi-cpp-sim-23.0.5-windowsx86-64debug\windows\x86-64\shared\CTRE_PhoenixPro_WPISim.lib
+C:\Users\Jim\.gradle\caches\transforms-3\a2eeccde45dd17c29bdb9ef49336dc3b\transformed\navx-frc-cpp-2023.0.3-windowsx86-64staticdebug\windows\x86-64\static\NavX.lib
+C:\Users\Jim\.gradle\caches\transforms-3\6d5b69f176fe4f62c7355a7ddb8e4037\transformed\wpilibc-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\wpilibcd.lib
+C:\Users\Jim\.gradle\caches\transforms-3\653785c25294b1f07cc8e38eb248f020\transformed\ntcore-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\ntcored.lib
+C:\Users\Jim\.gradle\caches\transforms-3\2b59ba94516f7d21bfc2e9893db864ad\transformed\hal-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\wpiHald.lib
+C:\Users\Jim\.gradle\caches\transforms-3\35dede93107c2dc82a9adeabf5f832cd\transformed\wpimath-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\wpimathd.lib
+C:\Users\Jim\.gradle\caches\transforms-3\765678e6ef0489ac81dd4c7156a52ced\transformed\wpinet-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\wpinetd.lib
+C:\Users\Jim\.gradle\caches\transforms-3\6bb3ad058ba336434de34243618593f1\transformed\wpiutil-cpp-2023.4.1-windowsx86-64debug\windows\x86-64\shared\wpiutild.lib

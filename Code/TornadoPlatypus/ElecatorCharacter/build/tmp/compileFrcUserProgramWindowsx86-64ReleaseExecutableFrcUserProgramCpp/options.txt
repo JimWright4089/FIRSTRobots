@@ -1,0 +1,51 @@
+/TP
+/nologo
+/c
+/DPROJECT_ROOT_DIR=C:\\JimsHome\\JimsRobot\\sysid\\sysid-projects\\mechanism
+/W3
+/EHsc
+/FS
+/Zc:inline
+/wd4244
+/wd4267
+/wd4146
+/wd4996
+/Zc:throwingNew
+/D_CRT_SECURE_NO_WARNINGS
+/std:c++20
+/permissive-
+/bigobj
+/Zc:__cplusplus
+/Zc:preprocessor
+/wd5105
+/O2
+/MD
+/Zi
+/IC:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\src\main\include
+/IC:\JimsHome\JimsRobot\sysid\sysid-library\src\main\include
+/IC:\Users\Jim\.gradle\caches\transforms-3\9b5bd167fae0c1a52f78c56468bd035c\transformed\REVLib-cpp-2023.1.2-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\777837d9530e2bde72134aa7072fa6e4\transformed\REVLib-driver-2023.1.2-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\8c7bff73d80c3060aece7ca9871eab99\transformed\wpiapi-cpp-sim-5.30.4-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\768085e863fc681a5291b129f3e7d966\transformed\api-cpp-sim-5.30.4-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\c9b5aee6ec5899a327e4a90becbf9119\transformed\cci-sim-5.30.4-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\c0c33a3e0ba9ef3aa4a80e61d544c1b8\transformed\tools-sim-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\8e55db068c6fa02b0ebb8aef8f8cfc9e\transformed\simTalonSRX-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\81bacfb963f62f4d6460f984112810b9\transformed\simTalonFX-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\77588bd0cd85780a9b4bde17ee41361b\transformed\simVictorSPX-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\5c9dfaf498a4f5023d5eb972524a9729\transformed\simPigeonIMU-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\aa71fe8237dab77d207353b7623afa21\transformed\simCANCoder-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\d4b0c56776cdd6d80b61fb5b5dae70ad\transformed\simProTalonFX-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\ab63774459051390b4a78bdd4c959718\transformed\simProCANcoder-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\3a2f45d6b41c5d8a06167e09621ca86d\transformed\simProPigeon2-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\cac589f3c17c1aa7a2e19a40302a0c65\transformed\wpiapi-cpp-sim-23.0.5-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\17bed23153af44485e43f52713e08dee\transformed\navx-frc-cpp-2023.0.3-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\33dd1ea1677cb10a573d865b55b9cbcf\transformed\wpilibc-cpp-2023.4.1-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\3ee4c62f956af2c33c0f9927640eec37\transformed\ntcore-cpp-2023.4.1-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\3900b621686435d0f5bd1a14c250763f\transformed\hal-cpp-2023.4.1-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\67ca9a1f117c17670da334213c0d7fc9\transformed\wpimath-cpp-2023.4.1-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\dc6b99a06c7261ff3f50b407cd461476\transformed\wpinet-cpp-2023.4.1-headers
+/IC:\Users\Jim\.gradle\caches\transforms-3\2b7e07ea30498b9a0b505b5304ac9fce\transformed\wpiutil-cpp-2023.4.1-headers
+"/IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt"

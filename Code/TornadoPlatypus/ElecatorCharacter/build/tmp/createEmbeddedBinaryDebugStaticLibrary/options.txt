@@ -1,0 +1,4 @@
+/OUT:C:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\build\libs\embeddedBinary\static\debug\embeddedBinary.lib
+/NOLOGO
+C:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\build\objs\embeddedBinary\static\debug\embeddedBinaryCpp\1cmt10req89s6s800qki8dfhw\empty.obj
+C:\JimsHome\JimsRobot\sysid\sysid-projects\mechanism\build\objs\embeddedBinary\static\debug\embeddedBinaryCpp\3hqevtzow6zz6jrw5ief3ipwp\frcUserProgram.obj

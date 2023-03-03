@@ -100,34 +100,17 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     mMotor.getEncoder().setPosition(0.0);
-    mMotor.set(.2);
-    mMoved = false;
   }
 
   @Override
   public void testPeriodic() {
-    if((mPDP.getCurrent(3)>0.1)&&(false==mMoved))
-    {
-      mMotor.set(.2);
-      if(mMotor.getEncoder().getPosition()<20)
-      {
-        System.out.format("%8.2f %8.2f %8.2f %8.2f %8.2f\n" , 
-        mMotor.getEncoder().getPositionConversionFactor(),
-        mMotor.getEncoder().getPosition(),
-        mMotor.getEncoder().getVelocityConversionFactor(),
-        mMotor.getEncoder().getVelocity(),
-        mPDP.getCurrent(3));
-      }
-      else
-      {
-        mMotor.set(0);
-        mMoved = true;
-      }
-    }
-    else
-    {
-      mMotor.getEncoder().setPosition(0.0);
-    }
+    mMotor.set(.1);
+    System.out.format("%8.2f %8.2f %8.2f %8.2f %8.2f\n" , 
+    mMotor.getEncoder().getPositionConversionFactor(),
+    mMotor.getEncoder().getPosition(),
+    mMotor.getEncoder().getVelocityConversionFactor(),
+    mMotor.getEncoder().getVelocity(),
+    mPDP.getCurrent(3));
   }
 
   @Override

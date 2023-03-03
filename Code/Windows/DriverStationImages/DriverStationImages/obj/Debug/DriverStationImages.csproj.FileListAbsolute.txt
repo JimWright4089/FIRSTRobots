@@ -9,3 +9,14 @@ C:\Home\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImag
 C:\Home\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.csproj.CoreCompileInputs.cache
 C:\Home\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.exe
 C:\Home\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.pdb
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\bin\Debug\DriverStationImages.exe.config
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\bin\Debug\DriverStationImages.exe
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\bin\Debug\DriverStationImages.pdb
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.csproj.AssemblyReference.cache
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.csproj.SuggestedBindingRedirects.cache
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.DSImages.resources
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.Properties.Resources.resources
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.csproj.GenerateResource.cache
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.csproj.CoreCompileInputs.cache
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.exe
+C:\JimsHome\JimsRobot\FIRSTRobots\Code\Windows\DriverStationImages\DriverStationImages\obj\Debug\DriverStationImages.pdb

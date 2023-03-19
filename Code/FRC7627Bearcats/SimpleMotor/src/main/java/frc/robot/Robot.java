@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.*;
 
 public class Robot extends TimedRobot {
   PowerDistribution mPDP = new PowerDistribution();
-  CANSparkMax mMotor = new CANSparkMax(21, MotorType.kBrushless);
+  CANSparkMax mMotor = new CANSparkMax(1, MotorType.kBrushless);
   double mPrevAmps = 0;
   boolean mMoved = false;
   Joystick mStick = new Joystick(0);
@@ -104,13 +104,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    mMotor.set(.1);
+    mMotor.set(.3);
+    // System.out.format("%8.2f %8.2f %8.2f %8.2f %8.2f\n" , 
+    // mMotor.getEncoder().getPositionConversionFactor(),
+    // mMotor.getEncoder().getPosition(),
+    // mMotor.getEncoder().getVelocityConversionFactor(),
+    // mMotor.getEncoder().getVelocity(),
+    // mPDP.getCurrent(14));
     System.out.format("%8.2f %8.2f %8.2f %8.2f %8.2f\n" , 
-    mMotor.getEncoder().getPositionConversionFactor(),
-    mMotor.getEncoder().getPosition(),
-    mMotor.getEncoder().getVelocityConversionFactor(),
-    mMotor.getEncoder().getVelocity(),
-    mPDP.getCurrent(3));
+    mPDP.getCurrent(11),
+    mPDP.getCurrent(12),
+    mPDP.getCurrent(13),
+    mPDP.getCurrent(14),
+    mPDP.getCurrent(15));
   }
 
   @Override

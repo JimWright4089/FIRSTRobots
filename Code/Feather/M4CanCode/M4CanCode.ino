@@ -52,7 +52,7 @@ void setup() {
   gStrip.begin();
   gStrip.setBrightness(50);
 
-  // start the CAN bus at 250 kbps
+  // start the CAN bus at 1 mbps
   if (!gCAN.begin(1000000)) {
     Serial.println("Starting CAN failed!");
     while (1) delay(10);

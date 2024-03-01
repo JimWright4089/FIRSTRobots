@@ -373,7 +373,7 @@ void drawFullFace(Frame frame)
             eyeLeft -= MAX_WIDTH + MAX_WIDTH;
           }
         }
-        matrix.drawPixel(eyeLeft, i, matrix.color565(50, 50, 100));
+        matrix.drawPixel(eyeLeft, i, matrix.color565(30, 0, 30));
       }
     }
 
@@ -404,7 +404,7 @@ void drawFullFace(Frame frame)
           }
         }
 
-        matrix.drawPixel(eyeRight, i, matrix.color565(50, 50, 100));
+        matrix.drawPixel(eyeRight, i, matrix.color565(30, 0, 30));
       }
     }
   }

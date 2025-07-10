@@ -17,17 +17,18 @@ enum TheSigns {
   NERDS,
   SERIF_TEST,
   SERIF,
-  NO_KINGS
+  NO_KINGS,
+  ALL_ARE_WELCOME
 };
 
 TheSigns gCurSign = NONE;
-TheSigns gWantedSign = NO_KINGS;
+TheSigns gWantedSign = ALL_ARE_WELCOME;
 
 int SANS_LINE_X[] PROGMEM = { 0,  0,  0, 128, 128, 128, 128, 256, 256};
 int SANS_LINE_Y[] PROGMEM = {19, 41, 63,  -1,  22,  45,  68,   3,  42};
 
 int SERIF_LINE_X[] PROGMEM = { 0,  0, 128, 128, 256};
-int SERIF_LINE_Y[] PROGMEM = {25, 56,  25,  56,  24};
+int SERIF_LINE_Y[] PROGMEM = {25, 56,  25,  56,  40};
 
 int BIG_LINE_X[] PROGMEM = { 0, 128};
 int BIG_LINE_Y[] PROGMEM = {40,  40};
@@ -58,6 +59,7 @@ const char* SERIF_TEST_TEXT[] PROGMEM = {
   "Line 2",
   "Line 3",
   "Line 4",
+  "Line 5",
 };
 
 const char* SERIF_TEXT[] PROGMEM = {
@@ -124,7 +126,10 @@ void loop(void) {
         break;        
       case(NO_KINGS):
         print_lines_big(BIG_LINE_X, BIG_LINE_Y, NO_KINGS_TEXT);
-        break;        
+        break;
+      case(ALL_ARE_WELCOME):        
+        all_are_welcome();
+        break;
       default:
         break;
     }
@@ -134,10 +139,52 @@ void loop(void) {
   delay(100);
 }
 
+void all_are_welcome2()
+{
+  matrix.drawLine(0,0,127,64,matrix.color565(40, 40, 0));
+  matrix.drawLine(128,0,255,64,matrix.color565(40, 40, 0));
+  matrix.drawLine(256,16,383,48,matrix.color565(40, 40, 0));
+}
+
+void all_are_welcome()
+{
+  for(int i=0;i<160;i++)
+  {
+    int real_y = 0;
+    int real_x = 0;
+    double dbl_color = ((double)i/160.0);
+
+    real_y = i;
+    if(real_y > 127)
+    {
+      real_y -= 127;
+      real_y += 16;
+      real_x = 256;
+    }
+    else
+    {
+      if(real_y > 63)
+      {
+        real_y -= 63;
+        real_x = 128; 
+      }
+    }
+    matrix.drawLine(real_x,real_y,real_x+127,real_y,matrix.colorHSV((int)(dbl_color*0xFFFF), 255, 40));
+  }
+  matrix.setFont(&FreeSerif18pt7b);
+  matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.color565(0, 0, 0));
+  print_centered_line(SERIF_LINE_X[1], SERIF_LINE_Y[1], "ALL");
+  print_centered_line(SERIF_LINE_X[2], SERIF_LINE_Y[2], "ARE");
+  print_centered_line(SERIF_LINE_X[3], SERIF_LINE_Y[3], "welcome");
+  
+}
+
 void print_lines_big(int x[], int y[], const char* atext[])
 {
   matrix.setFont(&FreeSans24pt7b);
   matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 
   print_centered_line(x[0], y[0], atext[0]);
   print_centered_line(x[1], y[1], atext[1]);
@@ -147,6 +194,7 @@ void print_six_lines_serif18pt7b(int x[], int y[], const char* atext[])
 {
   matrix.setFont(&FreeSerif18pt7b);
   matrix.setTextWrap(false);
+  matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 
   print_centered_line(x[0], y[0], atext[0]);
   print_centered_line(x[1], y[1], atext[1]);
@@ -159,6 +207,8 @@ void print_seven_lines_sans12pt7b(int x[], int y[], const char* atext[])
 {
   matrix.setFont(&FreeSans12pt7b);
   matrix.setTextWrap(true);
+  matrix.setTextColor(matrix.color565(35, 35, 35));         // White
+
   print_centered_line(x[0], y[0], atext[0]);
   print_centered_line(x[1], y[1], atext[1]);
   print_centered_line(x[2], y[2], atext[2]);

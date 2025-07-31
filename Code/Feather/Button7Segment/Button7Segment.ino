@@ -2,7 +2,7 @@
 #include <Adafruit_GFX.h>
 #include "Adafruit_LEDBackpack.h"
 
-const int buttonPin = 6;
+const int buttonPin = 32;
 
 int segmentNumber = 0;
 int buttonState;            // the current reading from the input pin

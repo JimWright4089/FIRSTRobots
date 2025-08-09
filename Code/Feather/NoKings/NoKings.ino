@@ -10,6 +10,13 @@ uint8_t addrPins[] = {A5, A4, A3, A2, A1};
 uint8_t clockPin   = 13;
 uint8_t latchPin   = 0;
 uint8_t oePin      = 1;
+uint8_t buttonDown = 22;
+uint8_t buttonUp = 21;
+int buttonState;            // the current reading from the input pin
+int lastButtonState = LOW;
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 200;
+
 
 enum TheSigns {
   NONE,
@@ -84,7 +91,7 @@ Adafruit_Protomatter matrix(
   true);       // HERE IS THE MAGIC FOR DOUBLE-BUFFERING!
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Initialize matrix...
   ProtomatterStatus status = matrix.begin();
@@ -95,6 +102,9 @@ void setup(void) {
     for(;;);
   }
 
+  pinMode(buttonDown, INPUT);
+  pinMode(buttonUp, INPUT);
+
   matrix.setFont(&FreeSans12pt7b); // Use nice bitmap font
 //  matrix.setFont(&FreeSansBold12pt7b); // Use nice bitmap font
   matrix.setTextWrap(true);           // Allow text off edge
@@ -104,6 +114,41 @@ void setup(void) {
 // LOOP - RUNS REPEATEDLY AFTER SETUP --------------------------------------
 int count = 0;
 void loop(void) {
+
+  Serial.print(digitalRead(buttonDown));
+  Serial.print(" ");
+  Serial.println(digitalRead(buttonUp));
+
+  int reading = digitalRead(buttonDown);
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      if (buttonState == HIGH) {
+        switch(gWantedSign)
+        {
+           case NERDS:
+            gWantedSign = SERIF;
+            break;
+           case SERIF:
+            gWantedSign = NO_KINGS;
+            break;
+           case NO_KINGS:
+            gWantedSign = ALL_ARE_WELCOME;
+            break;
+           default:
+            gWantedSign = NERDS;
+            break;
+        }
+      }
+    }
+  }  
+  
+  lastButtonState = reading;
 
   if(gCurSign != gWantedSign)
   {

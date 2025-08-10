@@ -5,6 +5,8 @@
 #include <Fonts/FreeSans24pt7b.h>
 #include <Fonts/FreeSerif18pt7b.h>
 
+//#define DEBUG_SCREENS
+
 uint8_t rgbPins[]  = {6, 5, 9, 11, 10, 12};
 uint8_t addrPins[] = {A5, A4, A3, A2, A1};
 uint8_t clockPin   = 13;
@@ -24,6 +26,9 @@ enum TheSigns {
   NERDS,
   SERIF_TEST,
   SERIF,
+  DEBT,
+  GAS,
+  RED_WORDS,
   NO_KINGS,
   ALL_ARE_WELCOME
 };
@@ -50,14 +55,74 @@ const char* TEST_TEXT[] PROGMEM = {
   "Test Line 6"
 };
 
+const char* TEST_COLORS[] PROGMEM = {
+  "WWWW GGGGGG",
+  "WWWW BBBBBB",
+  "WWWW R",
+  "WWWW YYYYYY",
+  "WWWW M",
+  "WWWW CCCCCC",
+  "WWWW WWWWWW"
+};
+
 const char* NERDS_TEXT[] PROGMEM = {
-  " ",
+  "        ",
   "Now even",
   "the nerds",
   "are building",
   "protest",
   "signs",
-  " "
+  "       "
+};
+
+const char* NERDS_COLORS[] PROGMEM = {
+  "        ",
+  "WWW WWWW",
+  "WWW GGGGG",
+  "WWW WWWWWWWW",
+  "WWWWWWW",
+  "WWWWW",
+  "       "
+};
+
+const char* DEBT_TEXT[] PROGMEM = {
+  "        ",
+  "Debt up ",
+  "  $719  ",
+  " billion",
+  "  since ",
+  "1/20/2025",
+  "       "
+};
+
+const char* DEBT_COLORS[] PROGMEM = {
+  "        ",
+  "WWWWWWWW",
+  "  RRRR  ",
+  " RRRRRRR",
+  "  WWWWW ",
+  "WWWWWWWWW",
+  "       "
+};
+
+const char* GAS_TEXT[] PROGMEM = {
+  "         ",
+  "GAS is up",
+  "   45%   ",
+  "  since  ",
+  "1/20/2025",
+  "         ",
+  "         "
+};
+
+const char* GAS_COLORS[] PROGMEM = {
+  "         ",
+  "RRR WWWWW",
+  "   RRR   ",
+  "  WWWWW  ",
+  "WWWWWWWWW",
+  "         ",
+  "         "
 };
 
 const char* SERIF_TEST_TEXT[] PROGMEM = {
@@ -69,6 +134,31 @@ const char* SERIF_TEST_TEXT[] PROGMEM = {
   "Line 5",
 };
 
+const char* SERIF_TEST_COLORS[] PROGMEM = {
+  "RRRRRR",
+  "GGGGGG",
+  "BBBBBB",
+  "YYYYYY",
+  "MMMMMM",
+  "CCCCCC",
+};
+
+const char* RED_TEXT[] PROGMEM = {
+  "READ",
+  "THE",
+  "RED",
+  "WORDS",
+  " "
+};
+
+const char* RED_COLORS[] PROGMEM = {
+  "WWWW",
+  "WWW",
+  "RRR",
+  "RRRRR",
+  " "
+};
+
 const char* SERIF_TEXT[] PROGMEM = {
   "I'm so",
   "mad I'm",
@@ -77,9 +167,22 @@ const char* SERIF_TEXT[] PROGMEM = {
   " "
 };
 
+const char* SERIF_COLORS[] PROGMEM = {
+  "WWWWWW",
+  "RRR WWW",
+  "WWWWWWWWW",
+  "WW BBBBB",
+  " "
+};
+
 const char* NO_KINGS_TEXT[] PROGMEM = {
   "no",
   "kings"
+};
+
+const char* NO_KINGS_COLORS[] PROGMEM = {
+  "WW",
+  "WWWWW"
 };
 
 Adafruit_Protomatter matrix(
@@ -102,7 +205,9 @@ void setup(void) {
     for(;;);
   }
 
+  pinMode(buttonDown, INPUT_PULLUP);
   pinMode(buttonDown, INPUT);
+  pinMode(buttonUp, INPUT_PULLUP);
   pinMode(buttonUp, INPUT);
 
   matrix.setFont(&FreeSans12pt7b); // Use nice bitmap font
@@ -111,8 +216,7 @@ void setup(void) {
   matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 }
 
-// LOOP - RUNS REPEATEDLY AFTER SETUP --------------------------------------
-int count = 0;
+  int count = 0;
 void loop(void) {
 
   Serial.print(digitalRead(buttonDown));
@@ -128,17 +232,36 @@ void loop(void) {
     if (reading != buttonState) {
       buttonState = reading;
 
-      if (buttonState == HIGH) {
+      if (buttonState == LOW) {
         switch(gWantedSign)
         {
            case NERDS:
             gWantedSign = SERIF;
             break;
            case SERIF:
+            gWantedSign = RED_WORDS;
+            break;
+           case RED_WORDS:
+            gWantedSign = GAS;
+            break;
+           case GAS:
+            gWantedSign = DEBT;
+            break;
+           case DEBT:
             gWantedSign = NO_KINGS;
             break;
            case NO_KINGS:
+#ifndef DEBUG_SCREENS
             gWantedSign = ALL_ARE_WELCOME;
+#else           
+            gWantedSign = TEST;
+            break;
+           case TEST:
+            gWantedSign = SERIF_TEST;
+            break;
+           case SERIF_TEST:
+            gWantedSign = ALL_ARE_WELCOME;
+#endif            
             break;
            default:
             gWantedSign = NERDS;
@@ -158,19 +281,28 @@ void loop(void) {
     switch(gCurSign)
     {
       case(TEST):
-        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, TEST_TEXT);
+        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, TEST_TEXT, TEST_COLORS);
         break;
       case(NERDS):
-        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, NERDS_TEXT);
+        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, NERDS_TEXT, NERDS_COLORS);
         break;
       case(SERIF_TEST):
-        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, SERIF_TEST_TEXT);
+        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, SERIF_TEST_TEXT, SERIF_TEST_COLORS);
         break;
       case(SERIF):
-        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, SERIF_TEXT);
+        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, SERIF_TEXT, SERIF_COLORS);
+        break;        
+      case(RED_WORDS):
+        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, RED_TEXT, RED_COLORS);
+        break;        
+      case(GAS):
+        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, GAS_TEXT, GAS_COLORS);
+        break;        
+      case(DEBT):
+        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, DEBT_TEXT, DEBT_COLORS);
         break;        
       case(NO_KINGS):
-        print_lines_big(BIG_LINE_X, BIG_LINE_Y, NO_KINGS_TEXT);
+        print_lines_big(BIG_LINE_X, BIG_LINE_Y, NO_KINGS_TEXT, NO_KINGS_COLORS);
         break;
       case(ALL_ARE_WELCOME):        
         all_are_welcome();
@@ -219,61 +351,92 @@ void all_are_welcome()
   matrix.setFont(&FreeSerif18pt7b);
   matrix.setTextWrap(false);
   matrix.setTextColor(matrix.color565(0, 0, 0));
-  print_centered_line(SERIF_LINE_X[1], SERIF_LINE_Y[1], "ALL");
-  print_centered_line(SERIF_LINE_X[2], SERIF_LINE_Y[2], "ARE");
-  print_centered_line(SERIF_LINE_X[3], SERIF_LINE_Y[3], "welcome");
-  
+  print_centered_line(SERIF_LINE_X[1], SERIF_LINE_Y[1], "ALL", "     ");
+  print_centered_line(SERIF_LINE_X[2], SERIF_LINE_Y[2], "ARE", "     ");
+  print_centered_line(SERIF_LINE_X[3], SERIF_LINE_Y[3], "welcome", "          ");
 }
 
-void print_lines_big(int x[], int y[], const char* atext[])
+void print_lines_big(int x[], int y[], const char* atext[], const char* acolors[])
 {
   matrix.setFont(&FreeSans24pt7b);
   matrix.setTextWrap(false);
   matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 
-  print_centered_line(x[0], y[0], atext[0]);
-  print_centered_line(x[1], y[1], atext[1]);
+  print_centered_line(x[0], y[0], atext[0], acolors[0]);
+  print_centered_line(x[1], y[1], atext[1], acolors[1]);
 }
 
-void print_six_lines_serif18pt7b(int x[], int y[], const char* atext[])
+void print_six_lines_serif18pt7b(int x[], int y[], const char* atext[], const char* acolors[])
 {
   matrix.setFont(&FreeSerif18pt7b);
   matrix.setTextWrap(false);
   matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 
-  print_centered_line(x[0], y[0], atext[0]);
-  print_centered_line(x[1], y[1], atext[1]);
-  print_centered_line(x[2], y[2], atext[2]);
-  print_centered_line(x[3], y[3], atext[3]);
-  print_centered_line(x[4], y[4], atext[4]);
+  print_centered_line(x[0], y[0], atext[0],acolors[0]);
+  print_centered_line(x[1], y[1], atext[1],acolors[1]);
+  print_centered_line(x[2], y[2], atext[2],acolors[2]);
+  print_centered_line(x[3], y[3], atext[3],acolors[3]);
+  print_centered_line(x[4], y[4], atext[4],acolors[4]);
 }
 
-void print_seven_lines_sans12pt7b(int x[], int y[], const char* atext[])
+void print_seven_lines_sans12pt7b(int x[], int y[], const char* atext[], const char* acolors[])
 {
   matrix.setFont(&FreeSans12pt7b);
   matrix.setTextWrap(true);
-  matrix.setTextColor(matrix.color565(35, 35, 35));         // White
 
-  print_centered_line(x[0], y[0], atext[0]);
-  print_centered_line(x[1], y[1], atext[1]);
-  print_centered_line(x[2], y[2], atext[2]);
-  print_centered_line(x[3], y[3], atext[2]);
-  print_centered_line(x[4], y[4], atext[3]);
-  print_centered_line(x[5], y[5], atext[4]);
-  print_centered_line(x[6], y[6], atext[5]);
-  print_centered_line(x[7], y[7], atext[5]);
-  print_centered_line(x[8], y[8], atext[6]);
+  matrix.setTextColor(matrix.color565(35, 35, 35));         // White
+  print_centered_line(x[0], y[0], atext[0],acolors[0]);
+  print_centered_line(x[1], y[1], atext[1],acolors[1]);
+  print_centered_line(x[2], y[2], atext[2],acolors[2]);
+  print_centered_line(x[3], y[3], atext[2],acolors[2]);
+  print_centered_line(x[4], y[4], atext[3],acolors[3]);
+  print_centered_line(x[5], y[5], atext[4],acolors[4]);
+  print_centered_line(x[6], y[6], atext[5],acolors[5]);
+  print_centered_line(x[7], y[7], atext[5],acolors[5]);
+  print_centered_line(x[8], y[8], atext[6],acolors[6]);
 }
 
-void print_centered_line(int x, int y, const char* text)
+void print_centered_line(int x, int y, const char* text, const char* acolors)
 {
   int16_t x1;
   int16_t y1;
   uint16_t w;
   uint16_t h;
+  ;
     
   matrix.getTextBounds(text, x, y, &x1, &y1, &w, &h);
   matrix.setCursor(x + ((128-w)/2), y);
-  matrix.print(text);
-  
+
+  for(uint8_t i=0;i<strlen(text);i++)
+  {
+    switch(acolors[i])
+    {
+      case 'W':
+        matrix.setTextColor(matrix.color565(35, 35, 35));         // White
+        break;
+      case 'R':
+        matrix.setTextColor(matrix.color565(35, 0, 0));           // Red
+        break;
+      case 'G':
+        matrix.setTextColor(matrix.color565(0, 35, 0));           // Green
+        break;
+      case 'B':
+        matrix.setTextColor(matrix.color565(0, 0, 35));           // Blue
+        break;
+      case 'M':
+        matrix.setTextColor(matrix.color565(35, 0, 35));          // Magenta
+        break;
+      case 'C':
+        matrix.setTextColor(matrix.color565(0, 35, 35));          // Cyan
+        break;
+      case 'Y':
+        matrix.setTextColor(matrix.color565(35, 35, 0));          // Yellow
+        break;
+      default:
+        matrix.setTextColor(matrix.color565(0, 0, 0));
+        break;
+    }
+    matrix.write(text[i]);  
+  }
+  //matrix.print(text);
 }

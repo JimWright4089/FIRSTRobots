@@ -108,7 +108,7 @@ const char* DEBT_COLORS[] PROGMEM = {
 const char* GAS_TEXT[] PROGMEM = {
   "         ",
   "GAS is up",
-  "   45%   ",
+  "   13%   ",
   "  since  ",
   "1/20/2025",
   "         ",

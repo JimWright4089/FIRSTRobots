@@ -24,13 +24,15 @@ enum TheSigns {
   NONE,
   TEST,
   NERDS,
+  BERG,
   SERIF_TEST,
   SERIF,
   DEBT,
   GAS,
   RED_WORDS,
   NO_KINGS,
-  ALL_ARE_WELCOME
+  ALL_ARE_WELCOME,
+  FIRST
 };
 
 TheSigns gCurSign = NONE;
@@ -85,11 +87,31 @@ const char* NERDS_COLORS[] PROGMEM = {
   "       "
 };
 
+const char* BERG_TEXT[] PROGMEM = {
+  "This is",
+  "Bergham",
+  "Wood",
+  "marching",
+  "to",
+  "Dunsanain",
+  "       "
+};
+
+const char* BERG_COLORS[] PROGMEM = {
+  "WWWW WW",
+  "YYYYYYY",
+  "YYYY",
+  "WWWWWWWW",
+  "WW",
+  "GGGGGGGGG",
+  "       "
+};
+
 const char* DEBT_TEXT[] PROGMEM = {
   "        ",
   "Debt up ",
-  "  $719  ",
-  " billion",
+  "  $1.7  ",
+  "trillion",
   "  since ",
   "1/20/2025",
   "       "
@@ -99,7 +121,7 @@ const char* DEBT_COLORS[] PROGMEM = {
   "        ",
   "WWWWWWWW",
   "  RRRR  ",
-  " RRRRRRR",
+  "RRRRRRRR",
   "  WWWWW ",
   "WWWWWWWWW",
   "       "
@@ -156,6 +178,22 @@ const char* RED_COLORS[] PROGMEM = {
   "WWW",
   "RRR",
   "RRRRR",
+  " "
+};
+
+const char* FIRST_TEXT[] PROGMEM = {
+  "This",
+  "is",
+  "the",
+  "1st",
+  " "
+};
+
+const char* FIRST_COLORS[] PROGMEM = {
+  "WWWW",
+  "BB",
+  "WWW",
+  "GGG",
   " "
 };
 
@@ -236,12 +274,18 @@ void loop(void) {
         switch(gWantedSign)
         {
            case NERDS:
+            gWantedSign = BERG;
+            break;
+           case BERG:
             gWantedSign = SERIF;
             break;
            case SERIF:
             gWantedSign = RED_WORDS;
             break;
            case RED_WORDS:
+            gWantedSign = FIRST;
+            break;
+           case FIRST:
             gWantedSign = GAS;
             break;
            case GAS:
@@ -286,6 +330,9 @@ void loop(void) {
       case(NERDS):
         print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, NERDS_TEXT, NERDS_COLORS);
         break;
+      case(BERG):
+        print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, BERG_TEXT, BERG_COLORS);
+        break;
       case(SERIF_TEST):
         print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, SERIF_TEST_TEXT, SERIF_TEST_COLORS);
         break;
@@ -294,6 +341,9 @@ void loop(void) {
         break;        
       case(RED_WORDS):
         print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, RED_TEXT, RED_COLORS);
+        break;        
+      case(FIRST):
+        print_six_lines_serif18pt7b(SERIF_LINE_X, SERIF_LINE_Y, FIRST_TEXT, FIRST_COLORS);
         break;        
       case(GAS):
         print_seven_lines_sans12pt7b(SANS_LINE_X, SANS_LINE_Y, GAS_TEXT, GAS_COLORS);
